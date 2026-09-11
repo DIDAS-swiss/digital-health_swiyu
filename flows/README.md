@@ -12,6 +12,8 @@ Repository](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository), whose
 `basic-flow/` covers registration, issuance and verification for the Swiss e-ID
 trust infrastructure. Its convention is that domain flows abstract those steps
 and point back to it, and these flows follow it.
+[`likec4/`](likec4/README.md) holds the same flows as a C4 model, validated in
+CI and published as interactive diagrams alongside the portal.
 [`trust-flow-basis.md`](trust-flow-basis.md) records the mapping step by step:
 which of our steps are the reference flow under another name, which are
 health-specific additions, and the three the reference model has no shape for,

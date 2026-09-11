@@ -33,7 +33,8 @@ it is checked in so the prose versions alongside the credential definitions and
 the flows it describes.
 
 Open it locally with `open site/index.html`; it has no build step and no runtime
-dependencies.
+dependencies. The interactive flow diagrams are built alongside it from
+[`flows/likec4/`](flows/likec4/README.md) and published under `/flows/`.
 
 ## Why the record lives in the wallet
 

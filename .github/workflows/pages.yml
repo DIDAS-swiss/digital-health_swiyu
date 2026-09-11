@@ -16,7 +16,7 @@ name: portal
 on:
   push:
     branches: [main]
-    paths: ['site/**', '.github/workflows/pages.yml']
+    paths: ['site/**', 'flows/likec4/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -59,6 +59,22 @@ jobs:
               echo "set to **GitHub Actions**. The next push that touches \`site/\` then publishes."
             } >> "$GITHUB_STEP_SUMMARY"
           fi
+
+      # The interactive flow diagrams are built at publish time so the
+      # generated bundle never lands in git. site/flows/ is ignored for the
+      # same reason.
+      - if: steps.pages_site.outputs.configured == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - if: steps.pages_site.outputs.configured == 'true'
+        run: npm ci
+
+      - if: steps.pages_site.outputs.configured == 'true'
+        name: Build the LikeC4 flow diagrams into site/flows
+        run: npm run flows:build
 
       - if: steps.pages_site.outputs.configured == 'true'
         uses: actions/configure-pages@v5

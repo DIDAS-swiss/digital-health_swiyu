@@ -182,7 +182,7 @@ export const PRESCRIPTION: CredentialDefinition = {
               path: 'medication_order/order/medication_details/name',
             },
             fhir: { path: 'MedicationRequest.medicationCodeableConcept.coding.code' },
-            terminology: { system: 'https://www.gs1.org/gtin', code: 'GTIN' },
+            terminology: { system: 'urn:oid:2.51.1.1', code: 'GTIN', display: 'GS1 Global Trade Item Number' },
           },
           label: { 'de-CH': 'GTIN', 'fr-CH': 'GTIN', 'it-CH': 'GTIN', 'en-GB': 'GTIN' },
           schema: { type: 'string', pattern: '^[0-9]{13,14}$' },

@@ -56,6 +56,13 @@ jobs:
       - name: Browser bundle builds
         run: npm run build:browser
 
+      # The LikeC4 model is diagrams-as-code, so it can be wrong in the way
+      # code is wrong: a view that references an element it never includes, a
+      # relationship between elements that do not exist. Validating parses it;
+      # exporting computes every view, which is what catches the second kind.
+      - name: LikeC4 health flow model is valid
+        run: npm run flows:check
+
       - name: Verification queries are publishable as vqPS
         env:
           PRAXIS_DID: did:webvh:ci:praxis

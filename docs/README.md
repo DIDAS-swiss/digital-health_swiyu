@@ -24,6 +24,7 @@ Start wherever your question is.
 | [**Architecture**](architecture.md) | The four layers, what we deliberately do not implement, and the trade-offs taken. |
 | [**Integration guide**](integration-guide.md) | For a practice, pharmacy or insurer system: the two APIs you actually call, and the things that will bite you. |
 | [**Swiss Profile conformance**](spec-conformance.md) | Every rule this project enforces, mapped to the clause it comes from. |
+| [**eHealth Suisse alignment**](ehealth-suisse-alignment.md) | The Swiss identifiers, exchange formats and CH VACD mechanisms this project reuses, the three it repurposes for its own open questions, and where it diverges. |
 | [**Source verification**](source-verification.md) | What was checked against a primary source, what rests on a secondary one, and which assertions — the legal citations in particular — are unverified. |
 
 ## What the credentials are

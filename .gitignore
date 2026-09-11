@@ -15,3 +15,6 @@ dist/
 .env.onboard
 build/
 .env.generated
+
+# Built at publish time by "npm run flows:build".
+site/flows/

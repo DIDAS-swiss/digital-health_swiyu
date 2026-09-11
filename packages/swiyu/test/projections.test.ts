@@ -18,7 +18,7 @@ describe('FHIR projection', () => {
       card_number: '80756000000000000001',
       personal_administrative_number: '756.1234.5678.97',
       insurer_name: 'DIDAS',
-      insurer_bag_number: '01509',
+      insurer_ber_number: '01509',
       coverage: ['KVG', 'VVG'],
       valid_from: '2026-01-01',
       expiry_date: '2026-12-31',
