@@ -649,10 +649,10 @@ views {
         Disclosed: `target_disease`, `occurrence_date`, `dose_number`,
         `doses_in_series`, `vaccine_code`.
 
-        Withheld: both names, the birth date, the performer and their GLN, the
-        organisation, the lot number, route, site, country, the immunization id
-        and the next dose due. Eleven of eighteen claims, and every one that
-        identifies a person or a practitioner.
+        Withheld: both names, the birth date, the vaccine name, the performer
+        and their GLN, the organisation, the lot number, route, site, country,
+        the immunization id and the next dose due — thirteen of eighteen
+        claims, including every one that identifies a person or a practitioner.
 
         A photocopied booklet discloses all of it. This flow is the one case in
         the set where selective disclosure reduces disclosure below what the
