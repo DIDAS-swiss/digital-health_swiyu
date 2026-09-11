@@ -15,8 +15,8 @@ Where something is *not* implemented, it says so.
    answered, the data is out. A check at the verifier is a promise; a check at
    query construction is a control.
 2. **A role is granted, never claimed.** An actor's entitlements derive from
-   trust statements published by someone accountable, not from what its software
-   asserts about itself.
+   trust statements published by someone accountable. What its software asserts
+   about itself carries no weight.
 3. **MUST and SHOULD are kept apart.** Profile-level MUST rules are enforced
    under every policy. SHOULDs may be waived — and a waiver is *recorded*, not
    silently applied.
@@ -29,8 +29,7 @@ Where something is *not* implemented, it says so.
 
 ## Actors and roles
 
-A role is a registered capability, not an organisation. One organisation holds
-several: a family practice is also an authorised vaccinator and often runs its
+A role is a registered capability. One organisation holds several: a family practice is also an authorised vaccinator and often runs its
 own laboratory.
 
 | Role | Identifier | Issues | Verifies |
@@ -137,13 +136,13 @@ journal entry for every issuance.
 
 ## Retention
 
-Retention attaches to the receiving role, not to the credential:
+Retention attaches to the receiving role:
 
 - **Practice** — disclosed claims may be kept as long as the billing record
   requires (10 years, OR Art. 958f).
 - **Pharmacy** — a dispensation record under HMG/LPTh; not the credential.
-- **Travel clinic** — the conclusion that the series was confirmed, not a copy
-  of every dose.
+- **Travel clinic** — the conclusion that the series was confirmed, without a
+  copy of every dose.
 - **Research** — only what the consent covers, and never identifying claims,
   which the entitlement makes unobtainable anyway.
 
@@ -162,8 +161,7 @@ Three operations share one mechanism and must not be confused:
 
 **The status list cannot distinguish motive.** "Recorded in error", "used up"
 and "we no longer recognise this" produce the same bit. Only the issuer's
-journal separates them, which is what makes the journal a governance control
-rather than a convenience.
+journal separates them, which is what makes the journal a governance control.
 
 Two rules follow, neither technically enforceable:
 
@@ -172,7 +170,7 @@ Two rules follow, neither technically enforceable:
   undo the dose; it withdraws an assertion the issuer should not have made.
 - **A prescription is revoked on dispensing**, which is what makes it
   single-use. Only the issuer can revoke, so redemption is a request between two
-  accountable parties rather than a flag one of them flips alone.
+  accountable parties.
 
 Status list contents are **public**. A suspension is therefore a disclosure —
 a reason to prefer correction-by-revocation over suspension-on-suspicion for

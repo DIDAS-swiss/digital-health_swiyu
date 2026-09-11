@@ -78,7 +78,8 @@ export class MockState {
   /**
    * Trust statements, keyed by DID. The Trust Registry is the only reason a
    * verifier can say anything about who an issuer is, so the demo makes the
-   * markers explicit and configurable rather than assuming everyone is trusted.
+   * markers explicit and configurable, so a demo can withhold one and show the
+   * refusal.
    */
   readonly trustMarkers = new Map<string, IssuerTrustMarker>();
 

@@ -19,8 +19,9 @@ That intent shapes the format:
   footnotes. A flow that documents only the message exchange is the easy half.
   The half that decides whether a flow can be deployed is who is allowed to
   play each role, what they may ask for, what they must keep, and which parts of
-  the standards stack are fixed rather than chosen.
-- **Open questions are recorded, not resolved by omission.** Where this project
+  the standards stack are fixed: the Swiss Profile settles the format, the
+  algorithms and the flows, and a use case chooses only what it asks for.
+- **Open questions are recorded.** Where this project
   had to decide something that the ecosystem has not decided, the decision is
   marked as ours.
 
@@ -31,7 +32,7 @@ That intent shapes the format:
 | `id` | Stable identifier. Referenced from other flows and from code comments. |
 | `status` | `implemented` — runnable in this repository. `partial` — the happy path is implemented, named gaps are not. `roadmap` — specified here, deliberately not built. |
 | `roadmap_step` | 1 = Immunization Showcase (2026), 2 = International Patient Summary (2027), 3 = Swiss Health App (2028). |
-| `actors` | Roles, not organisations. An organisation may hold several. |
+| `actors` | Roles. An organisation may hold several. |
 | `credentials` | `vct` values the flow issues or consumes. |
 | `protocols` | Wire protocols, pinned to the Swiss Profile version. |
 | `trust_markers` | Trust Protocol 2.0 markers the flow depends on. |
@@ -55,7 +56,7 @@ That intent shapes the format:
 ## What is deliberately not here
 
 - **Wallet internals.** How a wallet stores, backs up or restores credentials is
-  the wallet's concern and is specified by the Confederation, not by a use case.
+  the wallet's concern and is specified by the Confederation.
 - **Billing.** The practice bills through existing channels; making that a flow
   would imply the trust infrastructure replaces it, which it does not.
 - **Identity proofing.** How a person obtains an e-ID is upstream of everything

@@ -23,7 +23,19 @@ patient wallet ──┬── Beta-ID (e-ID from 2026)         issued by the Co
 
 No registry sits in the middle of any of it.
 
-## Why not a central record
+## The portal
+
+[`site/index.html`](site/index.html) is the Immunization Showcase: a single page
+that walks the full journey — issuance, minimal disclosure at the travel clinic,
+the governance gates, the FHIR and openEHR projections, and the roadmap. It is
+published by the `portal` workflow on every push to `main` that touches it, and
+it is checked in so the prose versions alongside the credential definitions and
+the flows it describes.
+
+Open it locally with `open site/index.html`; it has no build step and no runtime
+dependencies.
+
+## Why the record lives in the wallet
 
 Switzerland has run the centralised version. `meineimpfungen.ch` held the
 national electronic vaccination record until it was shut down in 2021 after
@@ -53,12 +65,12 @@ missing element is not an error).
 
 See [`flows/F-07`](flows/F-07-model-projection.md).
 
-## Governance, not just protocol
+## Governance as well as protocol
 
 The technical profile answers "can this message be validated". It does not
 answer the questions that decide whether health data should change hands. Those
 live in [`packages/swiyu/src/governance.ts`](packages/swiyu/src/governance.ts)
-and are enforced in the flow rather than documented beside it:
+and run inside the flow:
 
 - **Who may issue.** `reviewIssuance()` refuses before a request reaches the
   issuer. A practice may issue an immunization because it holds the vaccinator
@@ -73,7 +85,7 @@ and are enforced in the flow rather than documented beside it:
 - **Trust markers.** Presentations are evaluated against a policy. The MUST
   rules (a governed use case without authorization is always refused) are
   enforced under every policy; the SHOULDs are waived under the Sandbox policy
-  and **recorded as waived** rather than quietly dropped.
+  and **recorded as waived**.
 - **The journal.** Every decision is recorded with its reasons — and with claim
   *names* only. A test asserts that no claim value ever reaches it.
 
@@ -93,8 +105,8 @@ built — see [`docs/roadmap.md`](docs/roadmap.md).
 DCQL builder, the conformance checks and the projections — into a single script
 that runs in a page. Only the *generators* need Node, because they compute CESR
 and SRI digests over files on disk. This exists so a walkthrough can exercise
-the real rules rather than a reimplementation of them; a demo that reimplements
-the rules it demonstrates proves nothing about the rules.
+the real rules. A demo that reimplements the rules it demonstrates proves
+nothing about them.
 
 ## Running it
 

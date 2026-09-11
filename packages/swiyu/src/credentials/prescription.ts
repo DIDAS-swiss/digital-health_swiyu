@@ -70,7 +70,7 @@ export const PRESCRIPTION: CredentialDefinition = {
     governed: true,
     revocation:
       'The pharmacy that dispenses asks the issuing practice to revoke, which is what makes ' +
-      'the prescription single-use: redemption is a status change, not a note in a database ' +
+      'the prescription single-use: redemption is a status change on the public status list ' +
       'the patient cannot see.',
     retention:
       'A pharmacy keeps the dispensation record under HMG/LPTh; the credential itself is not ' +

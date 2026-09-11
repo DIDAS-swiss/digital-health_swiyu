@@ -6,7 +6,7 @@ against the real Sandbox trust infrastructure.
 Budget a day for a first onboarding, mostly waiting on portal steps. Repeat it
 per actor: each is a separate legal entity with its own DID.
 
-> **Sandbox, not production.** The environment formerly called Public Beta was
+> **This is the Sandbox.** The environment formerly called Public Beta was
 > renamed Sandbox by change dossier CD-001 and separated from production. Use
 > the **swiyu Sandbox Wallet** ([iOS](https://apps.apple.com/us/app/swiyu-sandbox-wallet/id6771296857),
 > [Android](https://github.com/swiyu-admin-ch/eidch-android-wallet/releases)) —
@@ -36,7 +36,7 @@ Everything else — key generation, DID logs, API calls, deployment — is scrip
 | Status lists per business partner | 200 |
 
 One business partner can hold several DIDs, so a four-actor demo needs **one**
-registration, not four. Trust onboarding is still per DID.
+registration. Trust onboarding is still per DID.
 
 ### The leanest setup that shows the showcase
 
@@ -161,7 +161,7 @@ possible. A verifier-only actor needs the authentication key alone.
 > `.didtoolbox/id_ed25519`. Losing it means a DID you can never change again,
 > so back up `keys/` *and* `.didtoolbox/`.
 
-> **Reading the DID back out of the log: use `.state.id`, not a text search.**
+> **Reading the DID back out of the log: use `.state.id`.**
 > The first log entry contains `"method":"did:webvh:1.0"` in `parameters`,
 > which appears *before* the identifier — so `grep -o 'did:webvh:[^"]*'`
 > happily returns `did:webvh:1.0` and everything downstream is silently wrong.
@@ -238,9 +238,9 @@ npm run generate:config -- \
 
 These URLs are baked into the generated metadata, because the issuer metadata
 carries an SRI hash over the exact bytes of the Type Metadata document. Change a
-URL, regenerate — it is part of deployment, not a one-off.
+URL, regenerate. This is a deployment step that recurs.
 
-The generator runs the conformance checks and fails rather than emitting
+The generator runs the conformance checks and fails before emitting
 metadata a wallet would reject.
 
 ## 5 · Start the components
@@ -261,8 +261,8 @@ In practice this means one of:
 | A tunnel (`cloudflared`, `ngrok`) from a laptop | A demo you run yourself | The URL changes each restart, and the generated config is pinned to it — regenerate every time |
 | A small VPS or cloud host with a real certificate | A demo other people can try | Needs a stable hostname, which is what you want anyway |
 
-Whichever you pick, the URL goes into the config generation in step 4, not just
-into the environment: the issuer metadata carries an SRI hash over the exact
+Whichever you pick, the URL goes into the config generation in step 4 as well
+as into the environment: the issuer metadata carries an SRI hash over the exact
 bytes of the Type Metadata document served at that URL.
 
 ## 6 · Run the business application

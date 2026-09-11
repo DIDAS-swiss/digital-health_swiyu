@@ -27,12 +27,12 @@ record.
 
 The instruction that shaped this repository was explicit: reuse the schemas,
 without the centralised openEHR approach, on the basis of verifiable
-credentials. That makes the two showcases deliberate alternatives rather than
-competitors who happened not to talk. This document says what that costs.
+credentials. The two showcases are therefore deliberate alternatives, and this
+document says what that costs.
 
-## The objection, stated at full strength
+## The objection
 
-The openEHR position is not that wallets are unserious. It is this:
+The openEHR position is this:
 
 > A vaccination record must remain clinically usable throughout a person's
 > lifetime, and a document exchanged at a particular point in time is not the
@@ -57,16 +57,16 @@ Three specific consequences follow, and none of them is solved here:
    record beside it. In a CDR, a correction is a new version of a known object.
 3. **Custody over decades.** Key rotation, device loss, inheritance, incapacity.
    The swiyu wallet has a recovery story; a forty-year one, across issuers who
-   have ceased to exist, is not something this project has demonstrated.
+   have ceased to exist, remains undemonstrated here.
 
-The honest summary is that this repository is strong exactly where the CDR
+In summary, this repository is strong where the CDR
 approach is weak — consent, selective disclosure, no central store to breach or
 to be compelled — and weak exactly where it is strong.
 
 ## What the 2024 lineage already learned
 
-This is not an objection imported from outside. The DIDAS project's own
-follow-on repository records, in its learnings log, a pivot:
+The objection also arose inside the DIDAS project. Its own follow-on
+repository records, in its learnings log, a pivot:
 
 > Architecture changed from verifiable credentials as «source of truth» to
 > referenced information to accommodate for other sources of health data (e.g.
@@ -77,19 +77,18 @@ health data has other homes, and a wallet that insists on being the only one
 loses. That was written before this repository existed, and it argues against
 the strongest form of the position this repository takes.
 
-So the defensible claim is narrower than "records belong in the wallet". It is:
+So the defensible claim is narrower than "records belong in the wallet":
 
 **A credential is the right carrier for a fact that a specific party attested at
 a specific moment, and that a patient needs to present to someone who has no
 right to their whole record.** A vaccination at a border. Cover at a reception
-desk. A prescription at a pharmacy counter. These are presentations, not
-queries, and for them the wallet is not a worse repository — it is the correct
-instrument, and a repository is the wrong one.
+desk. A prescription at a pharmacy counter. Each of these is a presentation, and
+the wallet is the right instrument for a presentation.
 
-It is not the right carrier for "what is this patient's immunisation status",
-which is a question about a longitudinal record.
+For "what is this patient's immunisation status", the right instrument is a
+longitudinal record, and a credential answers only one dose of it.
 
-## The 2024 staging, which is where the two actually meet
+## The 2024 staging, where the two meet
 
 Project 1103 published a three-stage transition, and it remains the clearest
 frame available:
@@ -110,8 +109,7 @@ adjacent stages, and the overlap between them is the interesting part.
 
 ## Where they compose
 
-The models are the shared surface, and that is why this repository reuses them
-rather than inventing claim names:
+The models are the shared surface, which is why this repository reuses them:
 
 - Every claim here carries its **CH VACD / CH EMED / CH Core FHIR element path**
   and its **openEHR archetype and CKM node name**, verified against the
@@ -125,33 +123,32 @@ Which means the composition is already specified, and in both directions:
 one of them as a credential, because the credential's claims are already
 archetype-bound. The patient gains a presentable artefact; the CDR keeps the
 longitudinal record. This is the case this repository's F-02 already models — it
-simply assumes the issuer is a practice rather than a repository, and nothing in
-the flow depends on that.
+simply assumes the issuer is a practice, and nothing in the flow depends on
+that.
 
 **Wallet → repository.** A presented credential projects to a CH VACD
 `Immunization` that a FHIR façade accepts and FHIRconnect maps to a COMPOSITION.
-That is the same ingestion path project 28 already built. The credential is
-then what it should have been all along: not the record, but a signed,
-consented, verifiable statement of provenance for a record entry — better
-provenance than the CDR would otherwise have, since it carries the issuer's
-signature rather than a transport-level assertion about who sent it.
+That is the same ingestion path project 28 already built. The credential then serves as a
+signed, consented, verifiable statement of provenance for a record entry. That
+is better provenance than the CDR would otherwise have, because it carries the
+issuer's own signature over the content, and a transport-level assertion about
+who sent the data carries only the sender.
 
-The unresolved question is not technical. It is who governs the models when both
-stages are live — which is exactly the joint working group's remit, and a good
-reason for this repository's flows to be transferable to it.
+The unresolved question is a governance one: who governs the models when both
+stages are live. That is the joint working group's remit, and a good reason for
+this repository's flows to be transferable to it.
 
-## Divergences worth naming
+## Divergences
 
 Places where this repository knowingly differs from the sources it draws on:
 
 | Topic | Source | Here | Why |
 | --- | --- | --- | --- |
-| Medication coding | Project 1103 used ATC (`A02BC01`) | GTIN | A pharmacy dispenses against a package, not a substance; CH EMED carries both, and step 2 should carry both |
+| Medication coding | Project 1103 used ATC (`A02BC01`) | GTIN | A pharmacy dispenses against a package; CH EMED carries both codings, and step 2 should too |
 | Insurance identity | Project 1103 keyed the insurance proof on AVS13 | AVS13 present but governed | `personal_administrative_number` is a protected field under swiyu Trust Protocol 2.0; asking for it needs an entitlement, and the check-in flow does not ask |
 | Signature format | Project 1103 used AnonCreds via VCMS, with SD-JWT planned | SD-JWT VC only | The Swiss Profile permits nothing else: ISO mdoc and W3C VCDM are NOT SUPPORTED |
 | Persistence | Project 28 persists to a CDR | No persistence | The point of the exercise; the projections exist so that a deployment can choose otherwise |
 | Allergies | Project 1103's wallet carried allergies | Not implemented | Roadmap step 2 (IPS); the check-in flow requests cover only |
 
 That last row is a functional gap against the project this repository set out to
-implement, not a design choice, and it is recorded as such in
-[the roadmap](roadmap.md).
+implement, and it is recorded as such in [the roadmap](roadmap.md).

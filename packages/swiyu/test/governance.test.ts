@@ -112,7 +112,7 @@ describe('trust markers', () => {
     expect(reviewTrustMarkers(markers, STRICT_HEALTH_POLICY).outcome).toBe('deny');
     const sandbox = reviewTrustMarkers(markers, SANDBOX_HEALTH_POLICY);
     expect(sandbox.outcome).toBe('allow');
-    // The waiver is recorded rather than silently applied.
+    // The waiver is recorded with its reason.
     expect(sandbox.reasons.join(' ')).toContain('waived');
   });
 });

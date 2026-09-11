@@ -5,7 +5,7 @@
  * pre-authorized code flow, key attestation, mandatory request/response
  * encryption, signed issuer metadata, SD-JWT VC assembly and status list
  * publication to the Base Registry. A business issuer only creates offers and
- * moves credentials through their lifecycle — which is exactly this surface.
+ * moves credentials through their lifecycle, which is this surface.
  */
 
 import { HttpClient, type HttpOptions } from './http.js';
@@ -29,7 +29,7 @@ export class IssuerManagementClient {
   /**
    * Initialise a status list slot. This is a one-time operation per list: type,
    * config and length are immutable afterwards. Keep the returned
-   * `statusRegistryUrl` — offers reference the list by that URI, not by id.
+   * `statusRegistryUrl` — offers reference the list by that URI.
    */
   async createStatusList(request: StatusListCreateRequest): Promise<StatusList> {
     if (request.maxLength > LIMITS.statusListMaxEntries) {

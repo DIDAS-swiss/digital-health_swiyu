@@ -44,8 +44,8 @@ Start wherever your question is.
 
 `docs/credentials/` is generated from `packages/swiyu/src/credentials/` by
 `npm run generate:docs`, and CI fails if it is stale. Documentation that can be
-generated from a data structure should be, because prose goes stale quietly and
-usually in the direction that flatters the implementation.
+generated from a data structure should be. Hand-written prose about a data
+structure drifts out of date silently.
 
 Everything else here is an argument — and an argument that could be generated
 from a data structure was not worth making.

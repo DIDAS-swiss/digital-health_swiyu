@@ -37,7 +37,8 @@ Registry; every later presentation fails. Three properties follow:
 - **No register of who was prescribed what.** The status list records that a
   credential is no longer valid. It contains no patient, no medication, no
   pharmacy — the privacy improvement over a central e-prescription service is
-  structural rather than procedural.
+  structural: the status list is the only place the single-use property is
+  recorded, so the guarantee holds for every verifier that checks it.
 - **Only the issuer can revoke.** The pharmacy cannot flip the bit itself, so
   redemption is a request between two accountable parties. This is a feature: it
   forces the dispensing event to be visible to the prescriber, which is what the
@@ -74,14 +75,14 @@ sequenceDiagram
 
 - **Only a prescriber may issue.** MedBG/LPMéd; enforced through `issuerRole`
   and, in a real deployment, `gucaTM`.
-- **Revocation here means "used up", not "withdrawn".** The same mechanism
+- **Revocation here means "used up".** The same mechanism
   serves both, and the status list cannot distinguish them. The distinction has
   to live in the issuer's own record, which is why the redemption request is
   journalled with its reason.
 - **`repeats_authorized` is not implemented as repeat dispensing.** The claim is
   carried and shown, but the single-use mechanism revokes on first dispensing.
   Supporting repeats properly needs either re-issuance per repeat or a decrement
-  the status list cannot express. Recorded as a gap rather than papered over.
+  the status list cannot express. Recorded here as a gap.
 - **The pharmacy retains a dispensation record** under HMG/LPTh; it does not
   retain the credential.
 - **Substitution stays a professional decision.** `substitution_allowed` informs

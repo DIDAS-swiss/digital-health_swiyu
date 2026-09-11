@@ -42,7 +42,7 @@ built, before it reaches the holder. See `reviewRequest()`.
 
 **Revocation** — Only the issuer may revoke, and only to correct a recording error — never to withdraw a vaccination that took place. Revoking a dose credential does not undo the dose; it withdraws an assertion the issuer should not have made.
 
-**Retention** — A verifier checking vaccination status retains the outcome its own record requires and not the credential. A travel clinic needs to know the series is complete, not to keep a copy of every dose.
+**Retention** — A verifier checking vaccination status retains the outcome its own record requires and discards the credential. A travel clinic needs to know the series is complete, and keeps that conclusion alone.
 
 ## Clinical models
 

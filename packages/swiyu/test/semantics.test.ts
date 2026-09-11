@@ -41,7 +41,7 @@ const CKM_NODES: Record<string, readonly string[]> = {
   'openEHR-EHR-CLUSTER.specimen.v1': ['Collection date/time'],
 };
 
-/** Claims nest, so walk the tree rather than the top level only. */
+/** Claims nest, so walk the whole tree. */
 function everyClaim(claims: readonly ClaimDefinition[]): ClaimDefinition[] {
   return claims.flatMap((claim) => [claim, ...everyClaim(claim.claims ?? [])]);
 }

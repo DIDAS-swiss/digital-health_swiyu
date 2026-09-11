@@ -3,12 +3,11 @@
 What in this repository was checked against a primary source, what rests on a
 secondary source, and what could not be verified here at all.
 
-This exists because the project's claims fall into visibly different classes.
-"`nonce_endpoint` is REQUIRED" was read out of the profile text. "The insurer
-issues the insurance card under KVG/LAMal Art. 42a" was not — it is a legal
-statement that reads with the same confidence and carries none of the same
-backing. Publishing both in the same typeface, in the same tables, without
-saying which is which, would be the more serious defect of the two.
+The project's claims fall into visibly different classes. "`nonce_endpoint` is
+REQUIRED" was read out of the profile text. "The insurer issues the insurance
+card under KVG/LAMal Art. 42a" is a legal statement that reads with the same
+confidence and has no such backing behind it. Setting both in the same typeface,
+in the same tables, without saying which is which, is itself a defect.
 
 Verification date: 2026-09-11.
 
@@ -18,7 +17,7 @@ Verification date: 2026-09-11.
 | --- | --- |
 | **P** | Primary — the artefact itself was fetched and read in this environment |
 | **S** | Secondary — the primary source is unreachable here; the statement rests on search-result summaries and cross-references |
-| **U** | Unverified — asserted in the repository, not checked against any source available here |
+| **U** | Unverified — asserted in the repository; no source available here could confirm it |
 
 ## P · Verified against the primary artefact
 
@@ -71,7 +70,7 @@ to a `batch_id` node directly on `ACTION.medication.v1`, which has no such node
 (the free-text node is "Overall directions description"), the dispense quantity
 to an "Amount" node it does not define either ("Dispense amount"), and the three
 laboratory analyte claims to an `analyte_result` group that belongs to
-`CLUSTER.laboratory_test_analyte.v1` rather than to the observation entry.
+`CLUSTER.laboratory_test_analyte.v1`, one level down from the observation entry.
 
 All six were plausible-looking and all six were wrong. A flat path is
 template-specific and this project publishes no operational template, so a flat
@@ -104,24 +103,23 @@ Confirmed from these primary artefacts:
 | Patient "John Miller", Dr. Charles Brewster, «Universal Pharmacy» | same |
 | QR check-in triggering a proof request for insurance and health information | same |
 | Wallet held allergies and medication alongside the insurance card | same |
-| Credential schemas derived from FHIR subsets, not from a bespoke model | `health-ssi-schema.md` |
+| Credential schemas derived from FHIR subsets | `health-ssi-schema.md` |
 | Insurance proof modelled on `ch-core-patient`, keyed by AVS13 | same |
 | Practitioner identified by GLN | same |
 | SD-JWT chosen as the signature format | `health-ssi-2/README.md` |
 
-Two findings from these repositories changed this project's content rather than
-merely confirming it:
+Two findings from these repositories changed this project's content:
 
-1. **The 2024 payloads coded medication with ATC**, not GTIN (`A02BC01`
-   omeprazole, `N02BE01` paracetamol). This repository's prescription credential
-   codes with GTIN, which is what a Swiss pharmacy dispenses against, and CH EMED
-   carries both. The divergence is deliberate but it was not previously stated;
-   it is now noted in [`positioning.md`](positioning.md).
+1. **The 2024 payloads coded medication with ATC** (`A02BC01` omeprazole,
+   `N02BE01` paracetamol). This repository's prescription credential codes with
+   GTIN, which is what a Swiss pharmacy dispenses against, and CH EMED carries
+   both. The divergence is deliberate and had gone unstated; it is now noted in
+   [`positioning.md`](positioning.md).
 2. **The 2024 lineage's own learnings log records a pivot** away from treating
    verifiable credentials as the source of truth, toward referenced information,
    to accommodate other data sources. That is the same objection the openEHR
    showcase raises from the other direction, and it is discussed in
-   [`positioning.md`](positioning.md) rather than left out.
+   [`positioning.md`](positioning.md).
 
 The 2024 project's transition staging — document-oriented "EPD 1.0", structured
 server-based "EPD 2.0", structured wallet-based "EPD 3.0" — is quoted from
@@ -147,7 +145,7 @@ only channels that work. `OpendataCH/hackopendata-archive` was cloned on the
 chance that it mirrored the project pages; it does not contain project 1103.
 
 So the following are recorded as reported by search-result summaries and
-corroborated across more than one of them, not as read from the source:
+corroborated across more than one of them:
 
 | Statement | Primary source, unreachable |
 | --- | --- |
@@ -174,7 +172,7 @@ Medications 10160-0, Problems 11450-4, Procedures 47519-4, Immunizations
 the DIDAS lineage's own open-source IPS wallet, and are primary to that
 repository but secondary to the IPS specification, which is unreachable here.
 
-## U · Asserted, not verified here
+## U · Asserted, and unverified here
 
 These are the statements to have a lawyer read before this material is reused.
 They are stated in the repository as though settled; they are not, and no source
@@ -191,17 +189,17 @@ available in this environment could confirm them.
 The same caution applies to the healthcare retention periods used in the
 governance policies, and to the claim that a practice may retain what it
 verified at check-in. These are modelled as policy, and the policy is
-configurable; the citations are the project's reading, not counsel's.
+configurable, and the citations are the project's own reading.
 
 Two further categories are unverified for a different reason — no source could
 settle them, because they are about this code:
 
 - **Nothing here has run against the live swiyu Sandbox.** Every conformance
-  rule is enforced against the profile text, not against a server that accepted
-  or rejected a request. The onboarding script was verified against the real DID
+  rule is enforced against the profile text. No server has accepted or rejected
+  one of these requests. The onboarding script was verified against the real DID
   Toolbox, which found three real bugs; the issuance and verification paths have
   not had the equivalent.
 - **Illustrative codes are illustrative.** SNOMED CT vaccine codes, GLNs, BAG
   numbers, GTINs and LOINC codes in demo data are plausible and are not real. A
   deployment must take them from the terminology server. The schemas constrain
-  shape, not truth.
+  their shape and can say nothing about their truth.

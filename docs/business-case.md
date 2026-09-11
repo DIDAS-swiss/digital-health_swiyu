@@ -1,6 +1,6 @@
 # The business case
 
-Who pays, who benefits, and why this is worth doing in 2026 rather than later.
+Who pays, who benefits, and why 2026 is the moment to do it.
 
 ## The problem, stated without the technology
 
@@ -35,8 +35,7 @@ consequences follow that no amount of integration work delivers otherwise:
    patient's copy.
 2. **A narrow question gets a narrow answer.** A travel clinic asking about
    protection receives four claims out of the eighteen an immunization
-   credential holds. Not by policy, not by promise — the other fourteen are
-   never transmitted.
+   credential holds. The other fourteen are never transmitted.
 3. **There is no honeypot.** No database holds everyone's vaccination history,
    so no breach exposes it. The only shared infrastructure is a status list of
    bits, carrying no patient data at all.
@@ -48,7 +47,7 @@ consequences follow that no amount of integration work delivers otherwise:
 | **Patient** | A vaccination record they keep and can prove anywhere; the ability to answer one question without disclosing twenty | Installing a wallet; understanding a consent screen |
 | **Practice** | Identity and cover confirmed at check-in against two independent issuers, so a name mismatch surfaces; no re-keying; results handed over once | Integration with its practice management system; a DID and its onboarding |
 | **Pharmacy** | A prescription that can be verified and used up exactly once, without a central e-prescription register | A verifier deployment; a DID |
-| **Insurer** | Card data that can be revoked the day cover ends, rather than a plastic card in circulation for years | An issuer deployment; a DID |
+| **Insurer** | Card data that can be revoked the day cover ends, in place of a plastic card that stays in circulation for years | An issuer deployment; a DID |
 | **Laboratory** | Results delivered to the patient without operating a portal | An issuer deployment |
 | **Public health** | Vaccination coverage that is at least *knowable* per encounter, and a credential format that carries SNOMED codes | Loses the automatic population view a central register would give (see below) |
 | **Confederation / cantons** | A health use case on infrastructure already being built for the e-ID; no new register to fund, secure or defend | Standing up a health-domain governance body — the real cost, and the real blocker |
@@ -77,9 +76,9 @@ Three things line up, and they will not line up again for some years:
    clearest need for exactly that primitive.
 2. **The infrastructure is already funded and built.** The Base Registry, Trust
    Registry, generic issuer and verifier exist and are operated by FOITT. A
-   health use case is an application on top, not a programme.
+   health use case is an application on top of them.
 3. **The models are settled enough.** openEHR and HL7 FHIR give the clinical
-   content; the openEHR/HL7 joint working group is converging rather than
+   content; the openEHR/HL7 joint working group is converging the two, and
    diverging. Reusing them costs nothing and buys interoperability.
 
 The opposite of acting now is not "wait and see". It is watching the sector
@@ -96,8 +95,9 @@ reason health interoperability projects stall.
 2. **Add a pharmacy.** The prescription flow, with redemption by revocation.
    Still no central component.
 3. **Add an insurer.** Check-in against real cover.
-4. **Add credential types**, not participants: allergies, problems, medication
-   statements — the International Patient Summary set (roadmap step 2).
+4. **Add credential types** while the participants stay as they are: allergies,
+   problems, medication statements — the International Patient Summary set
+   (roadmap step 2).
 
 Each step is independently useful. A patient holding only immunization
 credentials still gets the travel clinic benefit. There is no threshold below
@@ -108,15 +108,15 @@ usually lack.
 
 - **Population-level surveillance.** A decentralised record does not produce
   coverage statistics as a side effect. Consent-based secondary use is sketched
-  in [F-09](../flows/F-09-secondary-use.md); it is not a substitute, and saying
-  otherwise would be the weakest claim in this project.
+  in [F-09](../flows/F-09-secondary-use.md), and it substitutes for neither.
+  Claiming otherwise would be the weakest argument in this project.
 - **Patients without a smartphone.** Every flow must degrade to the existing
   paper or plastic path without making those patients second-class. That is a
   service-design problem this repository does not answer.
 - **Emergency access.** A patient who is unconscious cannot consent. Any
   break-glass mechanism reintroduces a party who can read the record without
-  them — the exact property this design exists to avoid. Unsolved, and honestly
-  the hardest question in the architecture.
+  them — the exact property this design exists to avoid. Unsolved, and the
+  hardest question in the architecture.
 - **Clinical decision support.** "Protected against X" is an inference from
   dose, schedule and elapsed time. The credential carries facts; somebody still
   has to be accountable for the inference.
@@ -128,5 +128,5 @@ practice authorised to vaccinate". Until one does, verification falls back to
 explicitly listed issuer DIDs — workable for a pilot, unworkable at scale.
 
 The technology is ready some distance ahead of the institutional arrangements.
-That is the finding this project exists to surface, and the decision it puts in
-front of the sector.
+That is this project's main finding, and the decision it puts in front of the
+sector.

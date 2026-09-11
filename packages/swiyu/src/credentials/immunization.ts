@@ -95,8 +95,8 @@ export const IMMUNIZATION: CredentialDefinition = {
       'withdraws an assertion the issuer should not have made.',
     retention:
       'A verifier checking vaccination status retains the outcome its own record requires and ' +
-      'not the credential. A travel clinic needs to know the series is complete, not to keep a ' +
-      'copy of every dose.',
+      'discards the credential. A travel clinic needs to know the series is complete, and keeps ' +
+      'that conclusion alone.',
     verifierRoles: [
       {
         role: 'ch.didas.health.role.practice',
@@ -138,7 +138,7 @@ export const IMMUNIZATION: CredentialDefinition = {
       {
         // The case selective disclosure exists for. A travel clinic needs to
         // know which disease you are protected against and when — not the lot
-        // number, not who vaccinated you, not where.
+        // number. Who vaccinated you and where stay in the wallet.
         role: 'ch.didas.health.role.travel-clinic',
         purpose: 'Confirm protection against a specific disease for travel advice',
         claims: ['target_disease', 'occurrence_date', 'dose_number', 'doses_in_series'],
@@ -231,7 +231,7 @@ export const IMMUNIZATION: CredentialDefinition = {
       /**
        * The diseases this dose protects against, SNOMED-coded. Separate from
        * the product code on purpose: a verifier almost always cares about the
-       * disease, not the brand, and asking for this claim alone is the
+       * disease, so asking for this claim alone is the
        * minimising question.
        */
       name: 'target_disease',

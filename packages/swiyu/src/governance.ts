@@ -183,8 +183,9 @@ export const STRICT_HEALTH_POLICY: TrustPolicy = {
 /**
  * A policy for the Sandbox, where most actors have not been through a full
  * identity onboarding and the trust registry is still being populated. It keeps
- * the MUST rules and relaxes the SHOULDs, which is the honest way to run a
- * demonstrator: the rule is not deleted, it is recorded as waived.
+ * the MUST rules and relaxes the SHOULDs, recording each waiver with its reason,
+ * which is how to run a demonstrator: every relaxed rule stays visible in the
+ * decision record.
  */
 export const SANDBOX_HEALTH_POLICY: TrustPolicy = {
   requireVerifiedIdentity: false,

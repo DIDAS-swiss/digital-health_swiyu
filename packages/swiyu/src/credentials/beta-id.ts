@@ -8,7 +8,7 @@
  * issuer DID and the `vct` do.
  *
  * Two deliberate omissions. There is no `governance` block: the Confederation
- * governs this credential, not this project, and writing rules for it here
+ * governs this credential, and writing rules for it here
  * would put expectations in our repository that nobody here can enforce. And
  * it is not a member of `CREDENTIAL_DEFINITIONS`, which is the set of types
  * this project *issues* — we only ever verify this one.

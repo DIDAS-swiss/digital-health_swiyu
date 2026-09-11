@@ -62,7 +62,7 @@ function buildQuery(spec: VerificationQuerySpec): unknown {
     });
   });
   // Strip the runtime-only field so the published query is exactly the claim
-  // shape, not this deployment's list of accepted issuers.
+  // shape. This deployment's list of accepted issuers stays local.
   const query = dcqlQuery(...queries) as { credentials: Record<string, unknown>[] };
   for (const credential of query.credentials) delete credential.trusted_authorities;
   return query;

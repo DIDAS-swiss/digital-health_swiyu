@@ -34,7 +34,7 @@ describe('FHIR projection', () => {
   });
 
   it('only projects what the holder actually released', () => {
-    // A partial disclosure is legitimate, not an error.
+    // A partial disclosure is legitimate and projects cleanly.
     const { resource } = projectToFhir(INSURANCE_CARD, { insurer_name: 'DIDAS', coverage: ['KVG'] });
     expect(resource.beneficiary).toBeUndefined();
     expect((resource.payor as { display: string }[])[0]?.display).toBe('DIDAS');
@@ -116,7 +116,7 @@ describe('the immunization showcase projects into CH VACD and IPS shapes', () =>
     country: 'CH',
   };
 
-  it('assembles protocolApplied rather than scattering dose, series and disease', () => {
+  it('assembles dose, series and disease into one protocolApplied entry', () => {
     const { resource } = projectToFhir(IMMUNIZATION, dose);
     expect(resource.resourceType).toBe('Immunization');
     expect(resource.status).toBe('completed');
@@ -192,7 +192,7 @@ describe('openEHR projection', () => {
     expect(unmapped).toContain('medication[0].substitution_allowed');
   });
 
-  it('refuses a credential type with no openEHR model rather than inventing one', () => {
+  it('refuses a credential type that has no openEHR model', () => {
     expect(() => projectToOpenEhr(INSURANCE_CARD, {})).toThrow(/no openEHR template/);
   });
 });

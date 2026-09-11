@@ -38,7 +38,7 @@ This is a **governed** credential type: an actor must decline any interaction wh
 A request for any claim outside a role's entitlement is refused when the query is
 built, before it reaches the holder. See `reviewRequest()`.
 
-**Revocation** — The pharmacy that dispenses asks the issuing practice to revoke, which is what makes the prescription single-use: redemption is a status change, not a note in a database the patient cannot see.
+**Revocation** — The pharmacy that dispenses asks the issuing practice to revoke, which is what makes the prescription single-use: redemption is a status change on the public status list the patient cannot see.
 
 **Retention** — A pharmacy keeps the dispensation record under HMG/LPTh; the credential itself is not retained beyond the dispensation.
 

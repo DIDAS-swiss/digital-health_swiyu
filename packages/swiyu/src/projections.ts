@@ -9,26 +9,26 @@
  * is the record, and a receiving system reconstructs the representation it
  * already understands at the moment the data is presented to it.
  *
- * Two consequences are worth stating plainly:
+ * Two consequences follow:
  *
  *   1. A projection is derived, never authoritative. The signed SD-JWT VC is
  *      the evidence; the FHIR resource built from it is a local convenience and
  *      carries no signature of its own. Anything that needs to prove provenance
- *      must keep the presentation, not the projection.
+ *      must keep the presentation itself.
  *   2. A projection only ever contains the claims the holder actually released.
  *      Selective disclosure means a resource built this way is legitimately
- *      partial, and receiving systems have to tolerate that rather than
+ *      partial, and receiving systems have to tolerate that, without
  *      treating a missing element as an error.
  *
  * The mappings cover the claims of this project's three credential types. This
- * is a working projection for those models, not a general FHIRPath engine.
+ * is a working projection for those models.
  */
 
 import type { ClaimDefinition, CredentialDefinition } from './credential-definition.js';
 
 /* ------------------------------------------------------------------ FHIR */
 
-/** FHIR elements that are arrays, so a path through them appends rather than overwrites. */
+/** FHIR elements that are arrays, so a path through them appends a new entry. */
 const FHIR_ARRAY_ELEMENTS = new Set([
   'coding',
   'payor',
@@ -45,8 +45,8 @@ const FHIR_ARRAY_ELEMENTS = new Set([
 
 /**
  * `type` is an array on some resources and a single element on others. FHIR
- * cardinality is per-resource-element, not per-name, so the exceptions are
- * listed rather than guessed.
+ * cardinality is per-resource-element, so the exceptions are listed here by
+ * resource and element name.
  */
 const FHIR_SINGLE_ELEMENT_OVERRIDES = new Set(['Coverage.type', 'Coverage.identifier']);
 
@@ -60,7 +60,7 @@ function setFhirPath(
   let cursor: Record<string, unknown> = resource;
   let prefix = resourceType;
   // A repeated claim value (e.g. each code in `coverage`) must land in its own
-  // element of the first repeating ancestor, not overwrite the previous one.
+  // element of the first repeating ancestor, leaving the previous one intact.
   let pendingRepetition = options.appendRepetition ?? false;
 
   for (let index = 0; index < path.length; index += 1) {
@@ -340,7 +340,7 @@ export interface OpenEhrProjection {
  * Build an openEHR flat-format composition from disclosed claims.
  *
  * The output is exactly what an openEHR CDR's flat-format endpoint accepts —
- * for a deployment that runs one. The point is that it does not have to: the
+ * for a deployment that runs one, and a deployment can do without one: the
  * same structure can be handed to a local analysis, written to a research
  * export, or thrown away after the consultation. Reusing the archetype paths
  * costs nothing and keeps the door open; requiring a repository would close it.

@@ -3,7 +3,8 @@
  *
  * This is the "examination results" half of the hackathon scenario: after the
  * consultation the practice hands the patient their own results as a credential
- * they hold, rather than a PDF in a portal the practice controls. Analytes are
+ * they hold. The alternative in use today is a PDF in a portal the practice
+ * controls. Analytes are
  * identified by LOINC so a downstream system can read them.
  */
 

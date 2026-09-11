@@ -2,8 +2,8 @@
  * Runtime configuration for the three demo actors.
  *
  * Each actor is a separate legal entity with its own DID and its own instance
- * of the swiyu generic components — that separation is the point, not an
- * implementation detail, so it is expressed in configuration rather than
+ * of the swiyu generic components — that separation is the point of the
+ * exercise, so it is expressed in configuration and never
  * flattened into one service.
  *
  * `SWIYU_MODE` decides where the management APIs live:
@@ -149,7 +149,7 @@ export function loadConfig(overrides: ConfigOverrides = {}): AppConfig {
       },
       // A verifier that never needs to know who vaccinated you, only that you
       // are protected. It exists in the demo to make the minimisation
-      // difference visible rather than merely arguable.
+      // difference visible in the run.
       travelClinic: {
         key: 'travelClinic',
         displayName: env('TRAVEL_CLINIC_NAME', 'DIDAS Reisemedizin (Demo)'),

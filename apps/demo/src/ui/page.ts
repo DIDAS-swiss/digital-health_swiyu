@@ -60,7 +60,7 @@ export function renderPage(config: AppConfig): string {
       <h2><span class="n">1</span> Insurer issues the insurance card</h2>
       <p class="why">
         The health insurer is an issuer. It writes the card data into a credential the patient
-        keeps, and retains the ability to revoke it — the status list, not a card reader, is what
+        keeps, and retains the ability to revoke it — the status list is what
         makes cover verifiable later.
       </p>
       <form id="form-insurer" class="grid">

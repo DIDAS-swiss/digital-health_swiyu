@@ -64,7 +64,7 @@ things that are usually kept elsewhere: the **semantic bindings** onto FHIR and
 openEHR, and the **governance rules** — who may issue, who may ask, for what,
 with what retention.
 
-### 2 · Governance — decisions, not documentation
+### 2 · Governance — decisions made in code
 
 ```mermaid
 flowchart LR
@@ -78,10 +78,10 @@ flowchart LR
     RI -->|deny| J1
 ```
 
-Three properties are worth stating:
+Three properties hold:
 
 - **Minimisation is enforced where the query is built.** After the wallet has
-  answered, the data is out; a check at the verifier is a promise, not a control.
+  answered, the data is out, and a check at the verifier is only a promise.
 - **MUST and SHOULD are kept apart.** A governed use case without authorization
   is refused under every policy. The profile's SHOULDs are waived under the
   Sandbox policy — and *recorded as waived*, because a demo that silently drops
@@ -117,8 +117,7 @@ Declining the repository is the project's central bet, and it has a strong
 argument against it — that a vaccination record has to stay clinically usable
 for a lifetime, which a point-in-time document is not. That argument, the
 openEHR clinical data repository showcase it comes from, and the two directions
-in which the two designs compose rather than compete, are in
-[positioning](positioning.md).
+in which the two designs compose, are in [positioning](positioning.md).
 
 ## Why four separate actors
 
@@ -133,9 +132,9 @@ requires the pharmacy to ask the practice to revoke, because only the issuer can
 
 | Decision | Why | What it costs |
 | --- | --- | --- |
-| `vct` as a URN, not a URL | Issued credentials and DCQL queries keep their meaning when a deployment moves host | An extra indirection through `vct_metadata_uri` |
+| `vct` as a URN | Issued credentials and DCQL queries keep their meaning when a deployment moves host | An extra indirection through `vct_metadata_uri` |
 | External URL baked into generated config | The issuer metadata hashes the exact bytes of the Type Metadata; a templated URL would hash a document never served | Config must be regenerated per environment |
 | One credential per vaccination dose | Authorship stays with whoever administered; each issuer revokes only their own assertion | "Is the series complete?" spans several credentials |
 | Prescription revoked on dispensing | Single use without a central register of who was prescribed what | A window between presentation and revocation (F-05) |
-| Mock is not cryptographic | An honest mock beats a convincing one | The mock proves nothing about conformance |
+| Mock is not cryptographic | A mock that admits what it skips beats a convincing one | The mock proves nothing about conformance |
 | In-memory demo state | The demo is a demo | Restarting loses encounters; credentials survive, in the wallet |

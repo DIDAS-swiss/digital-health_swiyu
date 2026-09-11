@@ -5,7 +5,7 @@
  * business application can still hand them a request the profile forbids — a
  * cleartext `direct_post` response mode, a batch size below the privacy floor,
  * an issuer metadata document with encryption switched off. These checks run in
- * our own tests and at start-up, so such a mistake surfaces here rather than as
+ * our own tests and at start-up, so such a mistake surfaces here, ahead of
  * a wallet that silently refuses to connect.
  *
  * Each finding quotes the rule it comes from, so a failure is actionable

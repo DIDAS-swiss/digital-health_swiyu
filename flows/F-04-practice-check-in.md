@@ -37,8 +37,8 @@ because the card asserts both and nothing corroborates it.
 The claim list is where the data-minimisation argument becomes concrete. The
 practice asks for ten claims about cover and three about identity, and for
 nothing at all about health. The AHV number is among them because a Swiss
-practice bills with it — which is exactly why it is a protected field and why
-the entitlement for it is written down and reviewable rather than assumed.
+practice bills with it, which is why it is a protected field and why
+the entitlement for it is written down and reviewable.
 
 ## Sequence
 
@@ -68,22 +68,24 @@ sequenceDiagram
 - **Protected field, explicit entitlement.** `personal_administrative_number`
   requires a Governed Use Case Authorization Trust Marker. The practice holds it;
   the pharmacy does not, and `reviewRequest()` refuses a pharmacy that asks —
-  tested, not merely intended.
+  tested: a test presents a query built for the pharmacy role and asserts that
+  the AHV number is refused.
 - **No health data at check-in.** The purpose scope `ch.didas.health.checkin`
   covers identity and cover. A practice that wants the patient's medication list
   is asking a different question and must register a different purpose.
-- **A name mismatch is flagged to a human, not resolved by code.** The two
+- **A name mismatch is flagged to a human.** The two
   issuers disagreeing is the interesting case — a married name, a data entry
   error, or something worse — and reception is better placed than software to
   decide which.
-- **Retention follows the billing record**, not the credential: ten years under
+- **Retention follows the billing record**: ten years under
   OR Art. 958f for what the practice legitimately keeps. The credential itself is
   not stored.
 
 ## Standardisation constraints
 
 - Two DCQL credential queries in one authorization request; `multiple` remains
-  unsupported, so this is two *queries*, not one query for two credentials.
+  unsupported, so this is two *queries* inside one presentation request, each
+  naming its own credential type and claim paths.
 - `accepted_issuer_dids` is set per query, so the Beta-ID must come from the
   Beta Credential Service and the card from the patient's insurer. Without it the
   verifier would accept any issuer, which `checkVerificationRequest()` refuses.

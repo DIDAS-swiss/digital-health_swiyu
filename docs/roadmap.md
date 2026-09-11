@@ -1,7 +1,7 @@
 # Roadmap
 
 The mid-term ambition has three steps. This repository is step 1, delivered in
-full, with steps 2 and 3 specified rather than started.
+full, with steps 2 and 3 specified and not yet started.
 
 ```mermaid
 flowchart LR
@@ -27,8 +27,8 @@ flowchart LR
 
 **The gap that matters.** Nothing here can be deployed until someone can issue
 the trust statement that says "this DID is a practice authorised to vaccinate".
-That is a governance question, not an engineering one, and it is the honest
-headline of step 1: the technology is ready some distance ahead of the
+That is a governance question, and it is the headline of step 1: the
+technology is ready some distance ahead of the
 institutional arrangements. See F-01, open question 1.
 
 ## Step 2 — International Patient Summary (2027)
@@ -42,8 +42,8 @@ What has to be built:
    problems, medication statements as distinct from prescriptions. Each needs
    the F-02 treatment: a model, an issuer role, an entitlement, an OCA bundle.
 
-   Allergies are the one of these that is a gap rather than an extension: the
-   2024 project this repository continues carried allergies in the wallet and
+   Allergies are a gap here, and the other two are extensions: the 2024
+   project this repository continues carried allergies in the wallet and
    requested them at check-in, and this repository does not. See
    [positioning](positioning.md).
 
@@ -61,8 +61,7 @@ What has to be built:
    trustworthy immunization section.
 5. **EPD/DEP integration.** The Swiss electronic patient record is the
    incumbent. The coherent position for a decentralised design is that it
-   becomes one issuer among others, not the destination — but that is a position
-   to argue for, not to assume.
+   becomes one issuer among others. That position has to be argued for.
 6. **Composition with the openEHR/HL7 blueprint.** The joint working group of
    openEHR Switzerland and HL7 Switzerland is turning the other 2026 showcase —
    FHIR intake into an openEHR clinical data repository — into a reusable

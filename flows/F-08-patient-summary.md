@@ -74,8 +74,8 @@ flowchart TB
   an immunization section can be trusted.
 - **EPD/DEP integration.** Switzerland's electronic patient record exists and is
   the incumbent. Step 2 has to define whether the wallet reads from it, writes to
-  it, or neither. The honest position for a decentralised design is that the EPD
-  becomes one issuer among others rather than the destination.
+  it, or neither. The position a decentralised design has to argue is that the EPD
+  becomes one issuer among others.
 
 ## Governance constraints to carry forward
 
