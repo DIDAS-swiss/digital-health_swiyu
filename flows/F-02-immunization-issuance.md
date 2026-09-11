@@ -15,6 +15,7 @@ protocols:
   - Token Status List draft-20
 trust_markers:
   - gucaTM  # the issuer must be authorised for this credential type
+basis: basic-flow/issuance
 preconditions:
   - F-01
 produces:
@@ -25,6 +26,14 @@ produces:
 
 The showcase flow. A vaccination is administered; the vaccinator attests what
 they did; the attestation goes into the patient's wallet and stays there.
+
+The offer, the token exchange and the credential request are the `issuance` view
+of the reference model. Two things here depart from it, both because of the
+Swiss Profile: the status list exists before the credential that references it,
+and the wallet fetches signed metadata, Type Metadata and an OCA bundle between
+the offer and the token request
+([#4](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository/issues/4)).
+See [`trust-flow-basis.md`](trust-flow-basis.md).
 
 ## Why this shape
 

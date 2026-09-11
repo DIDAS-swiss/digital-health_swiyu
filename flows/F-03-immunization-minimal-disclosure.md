@@ -16,6 +16,7 @@ trust_markers:
   - viTM
   - caTM
   - gucTM / gucaTM on the issuer
+basis: basic-flow/verification
 preconditions:
   - F-02
 produces:
@@ -28,6 +29,15 @@ The flow that justifies the architecture. A travel clinic needs to know whether
 the person in front of them is protected against a disease. It does not need to
 know the vaccine brand, the batch number, the vaccinating physician, the clinic,
 or — arguably — the patient's name, which it already has from the appointment.
+
+This is the `verification` view of the reference model with a different claim
+name: the reference flow's "is this person over 18?" and this flow's "is this
+person protected against diphtheria?" are the same exchange. The mechanics are
+therefore left to the [reference
+diagram](https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/)
+and what follows is about what a travel clinic may ask for. One step here has no
+counterpart there — the holder declining
+([#5](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository/issues/5)).
 
 ## What is actually different here
 

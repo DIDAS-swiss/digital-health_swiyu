@@ -7,6 +7,16 @@ purpose — they are meant to be **transferred into a trust flows repository**,
 where they will sit next to flows from other sectors that have nothing to do
 with this codebase.
 
+The reference model they build on is the [Trust Flow Diagram
+Repository](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository), whose
+`basic-flow/` covers registration, issuance and verification for the Swiss e-ID
+trust infrastructure. Its convention is that domain flows abstract those steps
+and point back to it, and these flows follow it.
+[`trust-flow-basis.md`](trust-flow-basis.md) records the mapping step by step:
+which of our steps are the reference flow under another name, which are
+health-specific additions, and the three the reference model has no shape for,
+each raised there as an issue.
+
 That intent shapes the format:
 
 - **One file per flow, self-contained.** A flow can be copied out on its own
@@ -37,6 +47,7 @@ That intent shapes the format:
 | `protocols` | Wire protocols, pinned to the Swiss Profile version. |
 | `trust_markers` | Trust Protocol 2.0 markers the flow depends on. |
 | `preconditions` | Flows or states that must already hold. |
+| `basis` | The `basic-flow` view in the Trust Flow Diagram Repository this flow builds on. |
 
 ## Status of the set
 

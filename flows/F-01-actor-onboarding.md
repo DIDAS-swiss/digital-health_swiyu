@@ -20,6 +20,7 @@ trust_markers:
   - caTM   # Compliant Actor
   - gucTM  # Governed Use Case
   - gucaTM # Governed Use Case Authorization
+basis: basic-flow/registration
 preconditions: []
 produces:
   - A did:webvh identifier on the Base Registry
@@ -33,6 +34,16 @@ should anyone believe that the entity behind this DID is a medical practice?*
 This flow is that answer. It is listed first because it is the flow most often
 skipped in prototypes, and the one whose absence makes every later flow
 decorative.
+
+The key publication, the accreditation request and the trust statement that
+comes back are the `registration` view of the reference model, and this flow
+takes them as given — see the [reference
+diagram](https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/)
+for what happens inside each. What it adds is the layer above: a health
+governance body granting role-scoped authorisation, which the reference model
+has no shape for
+([#3](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository/issues/3)).
+The full mapping is in [`trust-flow-basis.md`](trust-flow-basis.md).
 
 ## Sequence
 
