@@ -280,6 +280,12 @@
   .stage ul { margin: 0; padding-left: 17px; font-size: 0.87rem; color: var(--ink-2); line-height: 1.5; }
   .stage li { margin-bottom: 4px; }
 
+  .rmsub {
+    font-family: var(--display); font-weight: 500; font-size: 1.02rem;
+    margin: 34px 0 10px; padding-top: 20px; border-top: 1px solid var(--rule-soft);
+  }
+  .rmnote { font-size: 0.87rem; color: var(--ink-2); margin-top: 14px; }
+
   /* ---- code sample ------------------------------------------------- */
   .projections { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 24px; }
   .projection { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
@@ -674,6 +680,7 @@
           <li>Multi-credential presentation at scale</li>
           <li>Absence semantics — "none known" vs "none held"</li>
           <li>EPD / DEP as one issuer among others</li>
+          <li>Composition with the openEHR / HL7 blueprint</li>
         </ul>
       </div>
       <div class="stage">
@@ -687,10 +694,70 @@
         </ul>
       </div>
     </div>
+
+    <h3 class="rmsub">Step 1, item by item</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Deliverable</th><th>Status</th><th>Where</th></tr></thead>
+        <tbody>
+          <tr><td>End-to-end prototype</td><td>Done</td><td class="mono">apps/demo</td></tr>
+          <tr><td>Immunization credential, issuance and verification</td><td>Done</td><td class="mono">F-02, F-03</td></tr>
+          <tr><td>FHIR / openEHR interplay</td><td>Done</td><td class="mono">F-07, projections.ts</td></tr>
+          <tr><td>Blueprint</td><td>Done</td><td class="mono">flows/ — ten flows</td></tr>
+          <tr><td>Governance model</td><td>Done</td><td class="mono">governance.ts</td></tr>
+          <tr><td>Supporting consultation flows</td><td>Done</td><td class="mono">F-04, F-05</td></tr>
+          <tr><td>Lifecycle and correction</td><td>Partial</td><td class="mono">F-06 — supersession missing</td></tr>
+          <tr><td>Actor onboarding</td><td>Partial</td><td class="mono">F-01 — no governance body</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="rmsub">The IPS sections step 2 has to cover</h3>
+    <p>
+      Step 1 covers Immunizations, and reaches partway into Medications and Results. The remaining
+      sections are the natural unit of work for 2027, with the LOINC codes the IPS uses:
+    </p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Section</th><th>LOINC</th><th>Status here</th></tr></thead>
+        <tbody>
+          <tr><td>Immunizations</td><td class="mono">11369-6</td><td>Covered — the showcase credential</td></tr>
+          <tr><td>Medications</td><td class="mono">10160-0</td><td>Partial — prescriptions, without medication statements</td></tr>
+          <tr><td>Results</td><td class="mono">30954-2</td><td>Partial — laboratory reports</td></tr>
+          <tr><td>Allergies</td><td class="mono">48765-2</td><td>Gap — the 2024 project carried these</td></tr>
+          <tr><td>Problems</td><td class="mono">11450-4</td><td>Step 2</td></tr>
+          <tr><td>Procedures</td><td class="mono">47519-4</td><td>Step 2</td></tr>
+          <tr><td>Devices</td><td class="mono">46264-8</td><td>Step 2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="rmnote">
+      Allergies are the one gap here against the project this work continues: the 2024 wallet carried
+      allergies and the practice asked for them at check-in. Everything else in this table is an
+      extension of what step 1 built.
+    </p>
+
+    <h3 class="rmsub">The other 2026 showcase</h3>
+    <p>
+      openEHR Switzerland brought a second vaccination showcase to the same hackathon: FHIR intake in
+      CH VACD format, persisted as an openEHR composition in a clinical data repository. openEHR
+      Switzerland and HL7 Switzerland have since formed a joint working group to turn it into a
+      reusable implementation blueprint. Their objection to the design on this page is the strongest
+      one available — a vaccination record has to stay clinically usable for a lifetime, and a
+      document exchanged at one moment is a different object from a record maintained over decades.
+    </p>
+    <p class="rmnote">
+      The 2024 project's own staging is where the two meet: document-oriented "EPD 1.0", structured
+      and server-based "EPD 2.0", structured and wallet-based "EPD 3.0". The openEHR showcase is a
+      working stage 2 and this one is a working stage 3, and both directions of composition are
+      already specified — a repository issuing credentials from records it holds, and a presented
+      credential projecting into the ingestion path that blueprint defines. Building that composition
+      is the highest-value item on the 2027 list.
+    </p>
   </section>
 
   <section>
-    <p class="kicker">Honest position</p>
+    <p class="kicker">Open questions</p>
     <h2>What is not solved</h2>
     <div class="oq">
       <div class="blocker">
