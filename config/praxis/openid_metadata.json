@@ -1,0 +1,4 @@
+{
+  "issuer": "http://localhost:8081",
+  "token_endpoint": "http://localhost:8081/oid4vci/api/token"
+}

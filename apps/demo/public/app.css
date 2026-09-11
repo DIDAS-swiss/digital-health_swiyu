@@ -1,0 +1,132 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f7f7f5;
+  --panel: #ffffff;
+  --ink: #1b1d1f;
+  --muted: #5d6266;
+  --line: #dfe1e3;
+  --accent: #d8232a;
+  --ok: #1e7a4c;
+  --warn: #a8630a;
+  --deny: #b3261e;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171a;
+    --panel: #1e2125;
+    --ink: #eceef0;
+    --muted: #a3a9ae;
+    --line: #31363b;
+    --ok: #4cc38a;
+    --warn: #e0a458;
+    --deny: #f2756b;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.55 "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; }
+.masthead { border-bottom: 1px solid var(--line); background: var(--panel); padding-block: 28px 20px; }
+.masthead h1 { margin: 0 0 6px; font-size: 1.55rem; letter-spacing: -0.01em; }
+.lede { margin: 0 0 12px; color: var(--muted); max-width: 62ch; }
+.badges { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.badge {
+  font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.06em;
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted);
+}
+.badge-warn { border-color: var(--warn); color: var(--warn); }
+.badge-ok { border-color: var(--ok); color: var(--ok); }
+.warn {
+  margin: 14px 0 0; padding: 10px 12px; border-left: 3px solid var(--warn);
+  background: color-mix(in srgb, var(--warn) 8%, transparent); font-size: 0.9rem; color: var(--ink);
+}
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; padding-block: 24px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+.step, .wallet-panel {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 18px 20px; margin-bottom: 18px;
+}
+.wallet-panel { position: sticky; top: 18px; }
+.step h2, .wallet-panel h2 { margin: 0 0 8px; font-size: 1.08rem; display: flex; align-items: center; gap: 10px; }
+.n {
+  display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent); color: #fff; font-size: 0.82rem; font-weight: 600;
+}
+.why { margin: 0 0 14px; color: var(--muted); font-size: 0.92rem; max-width: 70ch; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; align-items: end; }
+label { display: grid; gap: 4px; font-size: 0.82rem; color: var(--muted); }
+input, select {
+  font: inherit; font-size: 0.92rem; padding: 7px 9px; border: 1px solid var(--line);
+  border-radius: 7px; background: var(--bg); color: var(--ink); width: 100%;
+}
+button {
+  font: inherit; font-size: 0.92rem; font-weight: 500; padding: 8px 14px; border-radius: 7px;
+  border: 1px solid transparent; background: var(--accent); color: #fff; cursor: pointer;
+}
+button:hover { filter: brightness(1.08); }
+button:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+button.secondary { background: transparent; color: var(--ink); border-color: var(--line); }
+.linkish { background: none; border: none; color: var(--muted); text-decoration: underline; padding: 0; font-size: 0.78rem; }
+.two { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.result:not(:empty) { margin-top: 14px; }
+.card {
+  border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin-top: 10px;
+  background: var(--bg);
+}
+.card h3 { margin: 0 0 6px; font-size: 0.95rem; }
+.qr { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+.qr img { width: 168px; height: 168px; border-radius: 6px; background: #fff; padding: 6px; }
+.deeplink { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; color: var(--muted); word-break: break-all; max-width: 46ch; }
+
+.claims { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+.claims li {
+  font-size: 0.75rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  border: 1px solid var(--line); border-radius: 5px; padding: 2px 7px; background: var(--panel);
+}
+.claims li.protected { border-color: var(--warn); color: var(--warn); }
+
+.verdict { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-bottom: 6px; }
+.verdict.allow { color: var(--ok); }
+.verdict.deny { color: var(--deny); }
+.reasons { margin: 6px 0 0; padding-left: 18px; font-size: 0.86rem; color: var(--muted); }
+.reasons li { margin-bottom: 2px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 500; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+details { margin-top: 10px; }
+summary { cursor: pointer; font-size: 0.85rem; color: var(--muted); }
+pre {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 10px;
+  overflow-x: auto; font-size: 0.74rem; margin: 8px 0 0;
+}
+
+.vc {
+  border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 7px;
+  padding: 9px 11px; margin-bottom: 8px; background: var(--bg); font-size: 0.86rem;
+}
+.vc .vct { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.7rem; color: var(--muted); word-break: break-all; }
+.vc.revoked { border-left-color: var(--deny); opacity: 0.65; }
+.vc .state { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+
+.pending { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+.pending h3 { margin: 0 0 6px; font-size: 0.92rem; }
+.empty { color: var(--muted); font-size: 0.88rem; font-style: italic; }
+footer { padding-block: 20px 36px; color: var(--muted); font-size: 0.82rem; border-top: 1px solid var(--line); margin-top: 10px; }
+footer code { font-size: 0.76rem; }
+a { color: inherit; }
+
+/* The two showcase steps carry the argument of the project, so they are
+   visually separated from the supporting flow around them. */
+.step.showcase { border-left: 3px solid var(--accent); }

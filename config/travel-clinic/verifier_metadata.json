@@ -1,0 +1,18 @@
+{
+  "client_id": "${VERIFIER_DID}",
+  "client_name": "Travel Medicine Centre",
+  "client_name#de-CH": "Reisemedizin Zentrum",
+  "client_name#fr-CH": "Centre de médecine des voyages",
+  "client_name#it-CH": "Centro di medicina di viaggio",
+  "client_name#en": "Travel Medicine Centre",
+  "vp_formats_supported": {
+    "dc+sd-jwt": {
+      "sd-jwt_alg_values": [
+        "ES256"
+      ],
+      "kb-jwt_alg_values": [
+        "ES256"
+      ]
+    }
+  }
+}
