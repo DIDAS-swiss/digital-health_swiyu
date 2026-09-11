@@ -222,7 +222,7 @@ async function pollCheckIn() {
 $('issue-immunization').addEventListener('click', async () => {
   const dose = {
     vaccine_code: '871895005',
-    vaccine_name: 'Repevax (dTpa-IPV)',
+    vaccine_name: 'dTpa-IPV combination vaccine',
     target_disease: ['Diphtheria', 'Tetanus', 'Pertussis', 'Poliomyelitis'],
     dose_number: 1,
     doses_in_series: 3,
@@ -236,8 +236,8 @@ $('issue-immunization').addEventListener('click', async () => {
     $('result-immunization').innerHTML = renderOffer('Immunization record', result, 'accept');
     await showProjections('result-immunization', result.credential.vct, {
       immunization_id: 'IMM-demo',
-      patient_given_name: 'Helvetia',
-      patient_family_name: 'National',
+      patient_given_name: 'DIDAS',
+      patient_family_name: 'Patient',
       patient_birth_date: '1988-09-12',
       vaccine_code: dose.vaccine_code,
       vaccine_name: dose.vaccine_name,
@@ -247,9 +247,9 @@ $('issue-immunization').addEventListener('click', async () => {
       doses_in_series: dose.doses_in_series,
       lot_number: dose.lot_number,
       route: dose.route,
-      performer_name: 'Dr. med. B. Muster',
+      performer_name: 'Dr. med. DIDAS Muster',
       performer_gln: '7601000000001',
-      organization_name: 'Hausarztpraxis Bundesplatz',
+      organization_name: 'DIDAS Hausarztpraxis',
       country: 'CH',
     });
     await refreshJournal();
@@ -314,13 +314,13 @@ $('issue-lab').addEventListener('click', async () => {
     $('result-consultation').innerHTML += renderOffer('Laboratory report', result, 'accept');
     await showProjections('result-consultation', result.credential.vct, {
       report_id: 'LAB-demo',
-      patient_given_name: 'Helvetia',
-      patient_family_name: 'National',
+      patient_given_name: 'DIDAS',
+      patient_family_name: 'Patient',
       findings: [
         { loinc_code: '2093-3', analyte: 'Cholesterol total', value: '6.4', unit: 'mmol/L', reference_range: '< 5.0', flag: 'HIGH' },
       ],
       report_date: new Date().toISOString().slice(0, 10),
-      laboratory_name: 'Praxislabor',
+      laboratory_name: 'DIDAS Praxislabor',
     });
     await refreshJournal();
   } catch (error) {
@@ -332,7 +332,7 @@ $('issue-rx').addEventListener('click', async () => {
   try {
     const result = await api('POST', `/api/praxis/${encounterId}/prescription`, {
       medication: [
-        { name: 'Atorvastatin Sandoz 20 mg', gtin: '7680620930015', dosage: '1 tablet in the evening', quantity: 100, substitution_allowed: true },
+        { name: 'Atorvastatin 20 mg', gtin: '7680620930015', dosage: '1 tablet in the evening', quantity: 100, substitution_allowed: true },
       ],
       repeats: 2,
     });

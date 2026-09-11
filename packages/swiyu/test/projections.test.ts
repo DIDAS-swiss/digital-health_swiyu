@@ -12,19 +12,19 @@ import {
 describe('FHIR projection', () => {
   it('turns an insurance card into a Coverage', () => {
     const { resource } = projectToFhir(INSURANCE_CARD, {
-      given_name: 'Helvetia',
-      family_name: 'National',
+      given_name: 'DIDAS',
+      family_name: 'Patient',
       birth_date: '1988-09-12',
       card_number: '80756000000000000001',
       personal_administrative_number: '756.1234.5678.97',
-      insurer_name: 'Helvetia',
+      insurer_name: 'DIDAS',
       insurer_bag_number: '01509',
       coverage: ['KVG', 'VVG'],
       valid_from: '2026-01-01',
       expiry_date: '2026-12-31',
     });
     expect(resource.resourceType).toBe('Coverage');
-    expect((resource.beneficiary as { display: string }).display).toBe('Helvetia National');
+    expect((resource.beneficiary as { display: string }).display).toBe('DIDAS Patient');
     // `coverage` is an array of codes, so each becomes its own coding.
     expect((resource.type as { coding: { code: string }[] }).coding.map((c) => c.code)).toEqual(['KVG', 'VVG']);
     expect((resource.period as { start: string; end: string })).toEqual({
@@ -35,16 +35,16 @@ describe('FHIR projection', () => {
 
   it('only projects what the holder actually released', () => {
     // A partial disclosure is legitimate, not an error.
-    const { resource } = projectToFhir(INSURANCE_CARD, { insurer_name: 'Helvetia', coverage: ['KVG'] });
+    const { resource } = projectToFhir(INSURANCE_CARD, { insurer_name: 'DIDAS', coverage: ['KVG'] });
     expect(resource.beneficiary).toBeUndefined();
-    expect((resource.payor as { display: string }[])[0]?.display).toBe('Helvetia');
+    expect((resource.payor as { display: string }[])[0]?.display).toBe('DIDAS');
   });
 
   it('turns a prescription into a MedicationRequest', () => {
     const { resource } = projectToFhir(PRESCRIPTION, {
       prescription_id: 'RX-1',
-      patient_given_name: 'Helvetia',
-      patient_family_name: 'National',
+      patient_given_name: 'DIDAS',
+      patient_family_name: 'Patient',
       medication: [
         { name: 'Atorvastatin 20 mg', gtin: '7680620930015', dosage: '1 in the evening', quantity: 100, substitution_allowed: true },
       ],
@@ -76,15 +76,15 @@ describe('FHIR projection', () => {
   it('turns lab findings into a DiagnosticReport with one Observation each', () => {
     const { resource } = projectToFhir(LAB_REPORT, {
       report_id: 'LAB-1',
-      patient_given_name: 'Helvetia',
-      patient_family_name: 'National',
+      patient_given_name: 'DIDAS',
+      patient_family_name: 'Patient',
       findings: [
         { loinc_code: '2093-3', analyte: 'Cholesterol', value: '6.4', unit: 'mmol/L', reference_range: '< 5.0', flag: 'HIGH' },
         { loinc_code: '718-7', analyte: 'Haemoglobin', value: '132', unit: 'g/L', reference_range: '120-160', flag: 'NORMAL' },
       ],
       report_date: '2026-09-11',
       specimen_date: '2026-09-10',
-      laboratory_name: 'Praxislabor',
+      laboratory_name: 'DIDAS Praxislabor',
       ordering_physician_gln: '7601000000001',
     });
     const entries = resource.entry as { resource: Record<string, unknown> }[];
@@ -99,11 +99,11 @@ describe('FHIR projection', () => {
 describe('the immunization showcase projects into CH VACD and IPS shapes', () => {
   const dose = {
     immunization_id: 'IMM-1',
-    patient_given_name: 'Helvetia',
-    patient_family_name: 'National',
+    patient_given_name: 'DIDAS',
+    patient_family_name: 'Patient',
     patient_birth_date: '1988-09-12',
     vaccine_code: '871895005',
-    vaccine_name: 'Repevax (dTpa-IPV)',
+    vaccine_name: 'dTpa-IPV combination vaccine',
     target_disease: ['Tetanus', 'Pertussis'],
     occurrence_date: '2026-09-11',
     dose_number: 1,
@@ -112,7 +112,7 @@ describe('the immunization showcase projects into CH VACD and IPS shapes', () =>
     route: 'IM',
     performer_name: 'Dr. Muster',
     performer_gln: '7601000000001',
-    organization_name: 'Praxis Bundesplatz',
+    organization_name: 'DIDAS Hausarztpraxis',
     country: 'CH',
   };
 

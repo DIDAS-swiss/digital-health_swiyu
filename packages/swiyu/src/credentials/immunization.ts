@@ -202,6 +202,10 @@ export const IMMUNIZATION: CredentialDefinition = {
         terminology: { system: 'http://snomed.info/sct', code: 'SNOMED CT', display: 'Vaccine product' },
       },
       label: { 'de-CH': 'Impfstoffcode', 'fr-CH': 'Code du vaccin', 'it-CH': 'Codice del vaccino', 'en-GB': 'Vaccine code' },
+      // Demo data throughout this project uses illustrative SNOMED codes. A
+      // deployment must take the real product concept from SNOMED CT — a
+      // plausible-looking wrong code in a vaccination record is worse than an
+      // obviously missing one.
       schema: { type: 'string', pattern: '^[0-9]{6,18}$' },
     },
     {

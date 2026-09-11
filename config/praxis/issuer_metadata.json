@@ -7,19 +7,19 @@
   "version": "1.0",
   "display": [
     {
-      "name": "Hausarztpraxis Bundesplatz (Demo)",
+      "name": "DIDAS Hausarztpraxis (Demo)",
       "locale": "de-CH"
     },
     {
-      "name": "Cabinet médical Bundesplatz (démo)",
+      "name": "DIDAS Cabinet médical (démo)",
       "locale": "fr-CH"
     },
     {
-      "name": "Studio medico Bundesplatz (demo)",
+      "name": "DIDAS Studio medico (demo)",
       "locale": "it-CH"
     },
     {
-      "name": "Bundesplatz Family Practice (demo)",
+      "name": "DIDAS Family Practice (demo)",
       "locale": "en-GB"
     }
   ],

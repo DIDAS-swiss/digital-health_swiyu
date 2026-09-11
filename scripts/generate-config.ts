@@ -213,10 +213,10 @@ async function main(): Promise<void> {
     externalUrl: insurerUrl,
     display: {
       name: {
-        'de-CH': 'Helvetia Krankenversicherung (Demo)',
-        'fr-CH': 'Helvetia assurance-maladie (démo)',
-        'it-CH': 'Helvetia assicurazione malattia (demo)',
-        'en-GB': 'Helvetia Health Insurance (demo)',
+        'de-CH': 'DIDAS Krankenversicherung (Demo)',
+        'fr-CH': 'DIDAS assurance-maladie (démo)',
+        'it-CH': 'DIDAS assicurazione malattia (demo)',
+        'en-GB': 'DIDAS Health Insurance (demo)',
       },
     },
     issues: [INSURANCE_CARD],
@@ -227,10 +227,10 @@ async function main(): Promise<void> {
     externalUrl: praxisUrl,
     display: {
       name: {
-        'de-CH': 'Hausarztpraxis Bundesplatz (Demo)',
-        'fr-CH': 'Cabinet médical Bundesplatz (démo)',
-        'it-CH': 'Studio medico Bundesplatz (demo)',
-        'en-GB': 'Bundesplatz Family Practice (demo)',
+        'de-CH': 'DIDAS Hausarztpraxis (Demo)',
+        'fr-CH': 'DIDAS Cabinet médical (démo)',
+        'it-CH': 'DIDAS Studio medico (demo)',
+        'en-GB': 'DIDAS Family Practice (demo)',
       },
     },
     // The immunization credential comes first: it is the showcase case, and
@@ -238,10 +238,10 @@ async function main(): Promise<void> {
     issues: [IMMUNIZATION, PRESCRIPTION, LAB_REPORT],
     verifies: {
       clientName: {
-        'de-CH': 'Hausarztpraxis Bundesplatz',
-        'fr-CH': 'Cabinet médical Bundesplatz',
-        'it-CH': 'Studio medico Bundesplatz',
-        'en-GB': 'Bundesplatz Family Practice',
+        'de-CH': 'DIDAS Hausarztpraxis',
+        'fr-CH': 'DIDAS Cabinet médical',
+        'it-CH': 'DIDAS Studio medico',
+        'en-GB': 'DIDAS Family Practice',
       },
     },
   });
@@ -249,14 +249,14 @@ async function main(): Promise<void> {
   await generateActor({
     key: 'pharmacy',
     externalUrl: pharmacyUrl,
-    display: { name: { 'en-GB': 'Bahnhof Pharmacy (demo)' } },
+    display: { name: { 'en-GB': 'DIDAS Pharmacy (demo)' } },
     issues: [],
     verifies: {
       clientName: {
-        'de-CH': 'Bahnhof Apotheke',
-        'fr-CH': 'Pharmacie de la gare',
-        'it-CH': 'Farmacia della stazione',
-        'en-GB': 'Bahnhof Pharmacy',
+        'de-CH': 'DIDAS Apotheke',
+        'fr-CH': 'DIDAS Pharmacie',
+        'it-CH': 'DIDAS Farmacia',
+        'en-GB': 'DIDAS Pharmacy',
       },
     },
   });
@@ -264,14 +264,14 @@ async function main(): Promise<void> {
   await generateActor({
     key: 'travel-clinic',
     externalUrl: travelClinicUrl,
-    display: { name: { 'en-GB': 'Travel Medicine Centre (demo)' } },
+    display: { name: { 'en-GB': 'DIDAS Travel Medicine (demo)' } },
     issues: [],
     verifies: {
       clientName: {
-        'de-CH': 'Reisemedizin Zentrum',
-        'fr-CH': 'Centre de médecine des voyages',
-        'it-CH': 'Centro di medicina di viaggio',
-        'en-GB': 'Travel Medicine Centre',
+        'de-CH': 'DIDAS Reisemedizin',
+        'fr-CH': 'DIDAS Médecine des voyages',
+        'it-CH': 'DIDAS Medicina di viaggio',
+        'en-GB': 'DIDAS Travel Medicine',
       },
     },
   });

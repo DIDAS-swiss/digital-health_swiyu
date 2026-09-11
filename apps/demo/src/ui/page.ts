@@ -64,8 +64,8 @@ export function renderPage(config: AppConfig): string {
         makes cover verifiable later.
       </p>
       <form id="form-insurer" class="grid">
-        <label>Given name <input name="givenName" value="Helvetia" required></label>
-        <label>Surname <input name="familyName" value="National" required></label>
+        <label>Given name <input name="givenName" value="DIDAS" required></label>
+        <label>Surname <input name="familyName" value="Patient" required></label>
         <label>Date of birth <input name="birthDate" type="date" value="1988-09-12" required></label>
         <label>AHV number <input name="administrativeNumber" value="756.1234.5678.97" required></label>
         <label>Card number <input name="cardNumber" value="80756000000000000001" required></label>

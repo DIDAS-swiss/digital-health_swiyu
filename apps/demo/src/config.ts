@@ -122,7 +122,7 @@ export function loadConfig(overrides: ConfigOverrides = {}): AppConfig {
     actors: {
       insurer: {
         key: 'insurer',
-        displayName: env('INSURER_NAME', 'Helvetia Krankenversicherung (Demo)'),
+        displayName: env('INSURER_NAME', 'DIDAS Krankenversicherung (Demo)'),
         role: ROLE.insurer,
         roles: [ROLE.insurer],
         did: env('INSURER_DID', demoDid('insurer')),
@@ -130,7 +130,7 @@ export function loadConfig(overrides: ConfigOverrides = {}): AppConfig {
       },
       praxis: {
         key: 'praxis',
-        displayName: env('PRAXIS_NAME', 'Hausarztpraxis Bundesplatz (Demo)'),
+        displayName: env('PRAXIS_NAME', 'DIDAS Hausarztpraxis (Demo)'),
         role: ROLE.practice,
         // A family practice is also an authorised vaccinator and runs its own
         // practice laboratory, so it is registered for three roles.
@@ -141,7 +141,7 @@ export function loadConfig(overrides: ConfigOverrides = {}): AppConfig {
       },
       pharmacy: {
         key: 'pharmacy',
-        displayName: env('PHARMACY_NAME', 'Bahnhof Apotheke (Demo)'),
+        displayName: env('PHARMACY_NAME', 'DIDAS Apotheke (Demo)'),
         role: ROLE.pharmacy,
         roles: [ROLE.pharmacy, ROLE.vaccinator],
         did: env('PHARMACY_DID', demoDid('pharmacy')),
@@ -152,7 +152,7 @@ export function loadConfig(overrides: ConfigOverrides = {}): AppConfig {
       // difference visible rather than merely arguable.
       travelClinic: {
         key: 'travelClinic',
-        displayName: env('TRAVEL_CLINIC_NAME', 'Reisemedizin Zentrum (Demo)'),
+        displayName: env('TRAVEL_CLINIC_NAME', 'DIDAS Reisemedizin (Demo)'),
         role: ROLE.travelClinic,
         roles: [ROLE.travelClinic],
         did: env('TRAVEL_CLINIC_DID', demoDid('travelclinic')),

@@ -18,8 +18,8 @@ import { createApp, type StartedApp } from '../src/server.js';
 let started: StartedApp;
 
 const PATIENT = {
-  givenName: 'Helvetia',
-  familyName: 'National',
+  givenName: 'DIDAS',
+  familyName: 'Patient',
   birthDate: '1988-09-12',
   administrativeNumber: '756.1234.5678.97',
 };
@@ -96,10 +96,10 @@ describe('check-in', () => {
     const encounterId = await checkedInEncounter();
     const result = await get(`/api/praxis/check-in/${encounterId}`);
     expect(result.body.encounter.patient).toMatchObject({
-      givenName: 'Helvetia',
-      familyName: 'National',
+      givenName: 'DIDAS',
+      familyName: 'Patient',
     });
-    expect(result.body.encounter.cover.insurerName).toContain('Helvetia');
+    expect(result.body.encounter.cover.insurerName).toContain('DIDAS');
     // The practice is entitled to the AHV number, so it receives it.
     expect(result.body.encounter.cover.administrativeNumber).toBe(PATIENT.administrativeNumber);
   });
@@ -128,7 +128,7 @@ describe('immunization showcase', () => {
     const encounterId = await checkedInEncounter();
     const dose = await post(`/api/praxis/${encounterId}/immunization`, {
       vaccine_code: '871895005',
-      vaccine_name: 'Repevax (dTpa-IPV)',
+      vaccine_name: 'dTpa-IPV combination vaccine',
       target_disease: ['Diphtheria', 'Tetanus', 'Pertussis', 'Poliomyelitis'],
       dose_number: 1,
       doses_in_series: 3,
@@ -144,7 +144,7 @@ describe('immunization showcase', () => {
     const encounterId = await checkedInEncounter();
     const dose = await post(`/api/praxis/${encounterId}/immunization`, {
       vaccine_code: '871895005',
-      vaccine_name: 'Repevax (dTpa-IPV)',
+      vaccine_name: 'dTpa-IPV combination vaccine',
       target_disease: ['Tetanus', 'Pertussis'],
       dose_number: 1,
       doses_in_series: 3,
@@ -177,7 +177,7 @@ describe('prescription lifecycle', () => {
   async function issuedPrescription(encounterId: string) {
     const rx = await post(`/api/praxis/${encounterId}/prescription`, {
       medication: [
-        { name: 'Atorvastatin Sandoz 20 mg', gtin: '7680620930015', dosage: '1 in the evening', quantity: 100, substitution_allowed: true },
+        { name: 'Atorvastatin 20 mg', gtin: '7680620930015', dosage: '1 in the evening', quantity: 100, substitution_allowed: true },
       ],
       repeats: 2,
     });
@@ -222,7 +222,7 @@ describe('the governance journal', () => {
     const encounterId = await checkedInEncounter();
     await post(`/api/praxis/${encounterId}/immunization`, {
       vaccine_code: '871895005',
-      vaccine_name: 'Repevax',
+      vaccine_name: 'dTpa-IPV combination vaccine',
       target_disease: ['Tetanus'],
       dose_number: 1,
       doses_in_series: 3,

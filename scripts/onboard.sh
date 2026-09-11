@@ -89,6 +89,59 @@ assert_key_path() {
   printf '%s' "$found"
 }
 
+# Read a JWT's payload without verifying it. We are inspecting our own token
+# to give a better error message, not making a trust decision on it.
+jwt_payload() {
+  local payload="${1#*.}"; payload="${payload%%.*}"
+  payload="$(tr '_-' '/+' <<<"$payload")"
+  while (( ${#payload} % 4 )); do payload+='='; done
+  base64 -d <<<"$payload" 2>/dev/null
+}
+
+# An access token carries the APIs its application is subscribed to. Checking
+# that here turns a mystifying 401 four steps later into a sentence naming the
+# subscription that is missing.
+check_token() {
+  local label="$1" token="$2" needed_api="$3"
+  if [[ -z "$token" ]]; then
+    warn "$label: no token set"
+    return 1
+  fi
+  local payload; payload="$(jwt_payload "$token")"
+  if [[ -z "$payload" ]]; then
+    warn "$label: could not read the token payload — is it a full JWT?"
+    return 1
+  fi
+
+  local exp now
+  exp="$(jq -r '.exp // 0' <<<"$payload")"
+  now="$(date +%s)"
+  if (( exp <= now )); then
+    warn "$label: expired $(( (now - exp) / 3600 ))h ago — mint a new one in the portal"
+    return 1
+  fi
+
+  local subscribed
+  subscribed="$(jq -r '[.subscribedAPIs[]?.name] | join(", ")' <<<"$payload")"
+  if ! jq -e --arg api "$needed_api" 'any(.subscribedAPIs[]?; .name == $api)' <<<"$payload" >/dev/null; then
+    warn "$label: this application is not subscribed to $needed_api"
+    dim "    subscribed to: ${subscribed:-nothing}"
+    dim "    Fix: in the API self-service portal, subscribe this application to"
+    dim "    $needed_api, then refresh its tokens so the new scope is included."
+    return 1
+  fi
+
+  local token_partner
+  token_partner="$(jq -r '.bproles | keys[0] // empty' <<<"$payload")"
+  if [[ -n "$token_partner" && -n "${PARTNER_ID:-}" && "$token_partner" != "$PARTNER_ID" ]]; then
+    warn "$label: token is for business partner $token_partner, but PARTNER_ID is $PARTNER_ID"
+    return 1
+  fi
+
+  ok "$label — $needed_api, valid $(( (exp - now) / 3600 ))h"
+  return 0
+}
+
 state_file() { printf '%s/%s/state.env' "$STATE_DIR" "$1"; }
 
 load_state() {
@@ -113,9 +166,14 @@ cmd_preflight() {
   fi
   if [[ -f "$ENV_FILE" ]]; then
     load_env
-    for v in PARTNER_ID SWIYU_IDENTIFIER_REGISTRY_ACCESS_TOKEN SWIYU_TRUST_REGISTRY_ACCESS_TOKEN; do
-      if [[ -n "${!v:-}" ]]; then ok "$v"; else warn "$v missing from $ENV_FILE"; missing=1; fi
-    done
+    if [[ -n "${PARTNER_ID:-}" ]]; then ok "PARTNER_ID $PARTNER_ID"; else warn "PARTNER_ID missing"; missing=1; fi
+    check_token "identifier token" "${SWIYU_IDENTIFIER_REGISTRY_ACCESS_TOKEN:-}" swiyucorebusiness_identifier || missing=1
+    check_token "trust token"      "${SWIYU_TRUST_REGISTRY_ACCESS_TOKEN:-}"      swiyucorebusiness_trust      || missing=1
+    if [[ -n "${SWIYU_STATUS_REGISTRY_ACCESS_TOKEN:-}" ]]; then
+      check_token "status token"   "${SWIYU_STATUS_REGISTRY_ACCESS_TOKEN}"       swiyucorebusiness_status     || missing=1
+    else
+      dim "    status token not set — only needed once the issuer runs, not for onboarding"
+    fi
   else
     warn "$ENV_FILE not found"
     missing=1

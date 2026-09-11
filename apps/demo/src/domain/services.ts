@@ -506,7 +506,9 @@ export class PraxisService {
       interpretation,
       specimen_date: isoDate(today),
       report_date: isoDate(today),
-      laboratory_name: `${actor.displayName} — Praxislabor`,
+      laboratory_name: `${actor.displayName} — DIDAS Praxislabor`,
+      // Synthetic GLN. A real one comes from the Refdata index and its check
+      // digit is validated by receiving systems.
       ordering_physician_gln: '7601000000001',
     };
 
@@ -547,7 +549,7 @@ export class PraxisService {
       patient_family_name: encounter.patient?.familyName ?? '',
       patient_birth_date: encounter.patient?.birthDate ?? '',
       medication,
-      prescriber_name: `Dr. med. B. Muster, ${actor.displayName}`,
+      prescriber_name: `Dr. med. DIDAS Muster, ${actor.displayName}`,
       prescriber_gln: '7601000000001',
       issued_date: isoDate(today),
       expiry_date: isoDate(validUntil),
@@ -616,7 +618,7 @@ export class PraxisService {
       lot_number: dose.lot_number,
       route: dose.route,
       ...(dose.site ? { site: dose.site } : {}),
-      performer_name: `Dr. med. B. Muster, ${actor.displayName}`,
+      performer_name: `Dr. med. DIDAS Muster, ${actor.displayName}`,
       performer_gln: '7601000000001',
       organization_name: actor.displayName,
       country: 'CH',

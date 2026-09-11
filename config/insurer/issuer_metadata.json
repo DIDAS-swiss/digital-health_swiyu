@@ -7,19 +7,19 @@
   "version": "1.0",
   "display": [
     {
-      "name": "Helvetia Krankenversicherung (Demo)",
+      "name": "DIDAS Krankenversicherung (Demo)",
       "locale": "de-CH"
     },
     {
-      "name": "Helvetia assurance-maladie (démo)",
+      "name": "DIDAS assurance-maladie (démo)",
       "locale": "fr-CH"
     },
     {
-      "name": "Helvetia assicurazione malattia (demo)",
+      "name": "DIDAS assicurazione malattia (demo)",
       "locale": "it-CH"
     },
     {
-      "name": "Helvetia Health Insurance (demo)",
+      "name": "DIDAS Health Insurance (demo)",
       "locale": "en-GB"
     }
   ],

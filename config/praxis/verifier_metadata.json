@@ -1,10 +1,10 @@
 {
   "client_id": "${VERIFIER_DID}",
-  "client_name": "Bundesplatz Family Practice",
-  "client_name#de-CH": "Hausarztpraxis Bundesplatz",
-  "client_name#fr-CH": "Cabinet médical Bundesplatz",
-  "client_name#it-CH": "Studio medico Bundesplatz",
-  "client_name#en": "Bundesplatz Family Practice",
+  "client_name": "DIDAS Family Practice",
+  "client_name#de-CH": "DIDAS Hausarztpraxis",
+  "client_name#fr-CH": "DIDAS Cabinet médical",
+  "client_name#it-CH": "DIDAS Studio medico",
+  "client_name#en": "DIDAS Family Practice",
   "vp_formats_supported": {
     "dc+sd-jwt": {
       "sd-jwt_alg_values": [
