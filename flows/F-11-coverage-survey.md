@@ -65,21 +65,77 @@ sequenceDiagram
     participant P as Population register
     participant H as Household
     participant W as Wallet
-    participant TR as Trust Registry
+    participant BR as Base Registry (status)
 
     S->>P: Draw a random sample of 2-, 8- and 16-year-olds
     P-->>S: Household addresses, age band, canton
     Note over S: The sample is drawn here.<br/>The wallet is a response channel, never a frame.
-    S-->>H: Invitation by post, carrying a one-time link
-    H->>W: Open the link
-    W->>S: Fetch the signed request object
-    S-->>W: JAR naming five claims, and the registered purpose
-    W->>TR: Check the survey's accreditation and its declared purpose
-    W->>W: Show the purpose and the five claims
+    S-->>H: Invitation by post, QR carrying a single-use invitation credential
+    H->>W: Scan the QR, receive the invitation credential
+    Note over W: It carries the stratum — age band, canton,<br/>cycle — and no household identifier.
+    W->>W: Show the purpose and every claim requested
     W-->>W: Consent — or decline, and the paper path stands
-    W->>S: Encrypted response, no identifying claim
-    S->>S: Join to the sampling record by the invitation token
+    W->>S: One combined proof: invitation (stratum) + doses (clinical)
+    Note over S: Nothing in the response names the household.<br/>The stratum arrives in the credential, so there is<br/>nothing to join back to.
+    S->>BR: Revoke the invitation credential
+    Note over BR: Single use. A second response cannot be made,<br/>and no register of who replied is kept.
 ```
+
+## Privacy by design, not by promise
+
+The earlier draft of this flow had the survey join each response to its
+sampling record by an invitation token. That token is a household identifier,
+and holding it would have given the survey a register of who replied and what
+they replied — exactly the thing this architecture exists to avoid. The design
+below removes the need for it.
+
+**The invitation credential carries the stratum.** The QR in the posted letter
+offers a single-use credential issued by the survey, holding the age band, the
+canton and the cycle, and no household identifier. The household's own claims
+travel with it in one combined proof. The survey therefore learns *"a household
+in this canton with an 8-year-old reported these doses"* and has nothing to join
+back to, because there is no key to join on.
+
+**Single use is enforced on the status list.** The invitation is revoked when
+the response is accepted, so a second response cannot be made. This is the F-05
+prescription mechanism applied to a survey ballot: the same two bits, the same
+public list, and no register of who was invited or who replied.
+
+**Three rules follow, and they are governance rather than cryptography:**
+
+1. **Record nothing that could be recorded.** A verifier receives a signed
+   presentation and can keep all of it. The survey must extract the analysis
+   variables and discard the rest, including the presentation transcript, the
+   credential, and the issuer signatures. Technically it could keep them; the
+   rule is that it does not, and an auditor should be able to check that.
+2. **No presentation metadata is retained.** Timing, IP, user agent, wallet
+   version and response ordering are all identifying in a sample this small.
+   Coverage analysis needs none of them.
+3. **The decline is not recorded either.** Non-response is handled by the
+   existing postal follow-up, which knows who was invited. Nothing needs a
+   record that a particular household opened a request and refused.
+
+**What is still technically leaky, and why it needs work.** The survey both
+issues the invitation and revokes it. If it retains the mapping from invitation
+index to posted address, revoking index *n* after a response tells it which
+household replied, and the analysis row arriving at the same moment is
+correlatable by timing. Governance can forbid keeping that mapping; nothing in
+the protocol prevents it.
+
+Closing that properly needs one of two things, and both are open:
+
+- **Batch issuance**, so the invitation presented is not the invitation issued
+  to a known index — the profile supports batches of at least ten, and this
+  project does not use them.
+- **A zero-knowledge presentation**, so the proof reveals eligibility and
+  stratum without revealing which invitation it came from.
+  [Longfellow ZK](https://github.com/DIDAS-swiss/digital-health_swiyu/issues/10)
+  is the candidate, because it proves statements about ES256 signatures without
+  changing the credential.
+
+Until one of them is in place, the unlinkability of this flow rests on the
+survey behaving, which is the weaker kind of guarantee and should be named as
+such.
 
 ## What is disclosed
 
@@ -93,6 +149,16 @@ credential:
 | `dose_number` | Position in the series |
 | `doses_in_series` | What the series was expected to be |
 | `vaccine_code` | Product-level analysis, and combination vaccines |
+
+From the invitation credential, issued by the survey itself:
+
+| Claim | Why the survey needs it |
+| --- | --- |
+| `stratum_age` | The 2 / 8 / 16 cohort the sample was drawn for |
+| `stratum_canton` | Cantonal stratification, which is how the survey reports |
+| `survey_cycle` | Which three-year cycle this response belongs to |
+
+No household identifier appears in either credential.
 
 Not disclosed: `immunization_id`, `patient_given_name`, `patient_family_name`,
 `patient_birth_date`, `vaccine_name`, `next_dose_due`, `lot_number`, `route`,
@@ -114,9 +180,15 @@ identifies a person or a practitioner.
   with a review board and revocable consent. Different legal basis, different
   entitlement, different retention — so a different role rather than a reuse of
   `research`.
-- **Retention is the analysis dataset.** The survey keeps derived records, not
-  credentials. It has no use for a credential after the claims are extracted,
-  and holding one would be holding a signed artefact it did not need.
+- **Retention is the analysis dataset, and nothing beside it.** The survey keeps
+  derived variables. The presentation transcript, the credentials, the issuer
+  signatures and every scrap of request metadata are discarded on receipt. The
+  rule is "record nothing that could be recorded", and it has to be auditable,
+  because a verifier is technically free to keep all of it.
+- **Single use is enforced, and participation is not.** Revoking the invitation
+  on acceptance stops a second response. It must not become a record of who
+  responded: the survey learns that invitation *n* was used, and must not retain
+  what *n* was posted to.
 - **Declining is ordinary and must stay cheap.** Non-response is a fact of
   survey work and the method already handles it with up to three contact
   attempts. A wallet refusal has to route back to the postal path rather than
@@ -155,10 +227,20 @@ identifies a person or a practitioner.
    credential flow needs an explicit "no further doses" attestation, which
    nothing in this project issues. This is the same absence-semantics gap
    [F-08](F-08-patient-summary.md) records, and it bites harder here.
-2. **Linkability across cycles.** The same dose credentials presented in two
-   survey cycles are linkable to each other. The survey has no need to follow
-   individuals over time, so batch issuance or one-time credentials would suit
-   it — and F-03 already records that this project does not use them.
+2. **Unlinkability is designed for and not yet enforced.** The invitation
+   credential removes the household identifier and the status list makes the
+   response single-use, so the survey has no key to join on. Two leaks remain,
+   and both are technical rather than procedural:
+
+   - The survey issues and revokes the invitation, so a retained mapping from
+     invitation index to posted address re-links the response by timing.
+   - The same dose credentials presented in two cycles three years apart are
+     linkable to each other.
+
+   Batch issuance or a zero-knowledge presentation closes both;
+   [issue 10](https://github.com/DIDAS-swiss/digital-health_swiyu/issues/10)
+   tracks the second. Until then this flow is unlinkable by governance and not
+   by construction, which is the weaker guarantee.
 3. **Who accredits a survey.** The statistics role needs the same
    authorisation layer that does not exist for any health role
    ([F-01](F-01-actor-onboarding.md)). A verifier claiming to be a national
@@ -172,8 +254,13 @@ identifies a person or a practitioner.
 
 `roadmap`. The entitlement is defined on the immunization credential and the
 `statistics` role exists in the governance model, so a query built for this role
-is already refused the identifying claims. Nothing else is built: no survey
-actor, no invitation token, no flow in the demo.
+is already refused the identifying claims.
+
+Nothing else is built. The invitation credential type, the combined proof, the
+revoke-on-acceptance step and the survey actor are all specified here and absent
+from the code. The two mechanisms that would make the unlinkability structural —
+batch issuance, or a zero-knowledge presentation — are unused and unavailable
+respectively.
 
 It is the most concrete public-interest use of this architecture, and the
 cheapest to pilot, because the counterfactual is a photocopy in an envelope.
