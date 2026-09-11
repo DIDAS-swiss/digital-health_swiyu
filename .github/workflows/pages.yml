@@ -4,6 +4,13 @@
 # so that it versions with the credential definitions and the flows it
 # describes, and so the prose can be reviewed in a pull request like any other
 # part of the repository.
+#
+# One-time setup, which only a repository admin can do: Settings → Pages →
+# Source: GitHub Actions. The workflow token can read whether Pages is
+# configured but cannot create the site — creating one needs admin rights that
+# the `permissions:` block below cannot grant. Until someone does it, the
+# publish steps are skipped and this workflow reports success, so a setting
+# nobody has flipped yet does not show up as a broken build on main.
 name: portal
 
 on:
@@ -29,14 +36,38 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      # enablement creates the Pages site on first run. Without it the job
-      # fails with "Get Pages site failed … Not Found" until someone turns
-      # Pages on by hand in the repository settings.
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - uses: actions/upload-pages-artifact@v3
+
+      - id: pages_site
+        name: Check whether Pages is configured
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          status=$(curl -sS -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pages")
+          if [ "$status" = "200" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Portal not published"
+              echo
+              echo "GitHub Pages is not enabled for this repository (the Pages API returned $status)."
+              echo "A repository admin enables it once under **Settings → Pages**, with the source"
+              echo "set to **GitHub Actions**. The next push that touches \`site/\` then publishes."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - if: steps.pages_site.outputs.configured == 'true'
+        uses: actions/configure-pages@v5
+
+      - if: steps.pages_site.outputs.configured == 'true'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: site
-      - id: deployment
+
+      - if: steps.pages_site.outputs.configured == 'true'
+        id: deployment
         uses: actions/deploy-pages@v4
