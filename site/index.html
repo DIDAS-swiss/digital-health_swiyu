@@ -256,6 +256,13 @@
     display: grid; grid-template-columns: 58px 1fr auto; gap: 16px;
     align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--rule-soft);
   }
+  a.flow { text-decoration: none; color: inherit; transition: background 0.12s ease; }
+  a.flow:hover { background: var(--surface); }
+  a.flow .ftitle::after {
+    content: ' →'; color: var(--accent); font-family: var(--mono); font-size: 0.8rem;
+    opacity: 0; transition: opacity 0.12s ease;
+  }
+  a.flow:hover .ftitle::after { opacity: 1; }
   .flow .fid { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); }
   .flow .ftitle { font-size: 0.93rem; }
   .flow .ftitle span { display: block; font-size: 0.83rem; color: var(--ink-3); margin-top: 2px; }
@@ -656,15 +663,17 @@
       <a href="https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/">DIDAS reference
       flow</a> is modelled, so they can move there without being redrawn. Every step carries the
       protocol, the format and the eHealth Suisse rule behind it in its notes.
-      <a class="cta" href="flows/">Open the interactive diagrams →</a>
+      The six flows below with a diagram link straight to it; F-07 to F-10 are specified and not
+      yet modelled.
+      <a class="cta" href="flows/">Open all the diagrams →</a>
     </p>
     <div class="flows">
-      <div class="flow"><span class="fid">F-01</span><span class="ftitle">Becoming an actor<span>DID, trust statement, role grant</span></span><span class="status partial">Partial</span></div>
-      <div class="flow"><span class="fid">F-02</span><span class="ftitle">Recording an administered dose<span>One credential per dose, issued by whoever vaccinated</span></span><span class="status built">Built</span></div>
-      <div class="flow"><span class="fid">F-03</span><span class="ftitle">Proving protection, and nothing else<span>Four claims of eighteen</span></span><span class="status built">Built</span></div>
-      <div class="flow"><span class="fid">F-04</span><span class="ftitle">Check-in at the practice<span>Two issuers, one presentation, a name that must match</span></span><span class="status built">Built</span></div>
-      <div class="flow"><span class="fid">F-05</span><span class="ftitle">Prescription and its redemption<span>Single use, without a register of who was prescribed what</span></span><span class="status built">Built</span></div>
-      <div class="flow"><span class="fid">F-06</span><span class="ftitle">Correction, suspension and revocation<span>Why business expiry and technical expiry must stay apart</span></span><span class="status partial">Partial</span></div>
+      <a class="flow" href="flows/#/view/actorOnboarding/"><span class="fid">F-01</span><span class="ftitle">Becoming an actor<span>DID, trust statement, role grant</span></span><span class="status partial">Partial</span></a>
+      <a class="flow" href="flows/#/view/immunizationIssuance/"><span class="fid">F-02</span><span class="ftitle">Recording an administered dose<span>One credential per dose, issued by whoever vaccinated</span></span><span class="status built">Built</span></a>
+      <a class="flow" href="flows/#/view/protectionCheck/"><span class="fid">F-03</span><span class="ftitle">Proving protection, and nothing else<span>Four claims of eighteen</span></span><span class="status built">Built</span></a>
+      <a class="flow" href="flows/#/view/practiceCheckIn/"><span class="fid">F-04</span><span class="ftitle">Check-in at the practice<span>Two issuers, one presentation, a name that must match</span></span><span class="status built">Built</span></a>
+      <a class="flow" href="flows/#/view/prescriptionRedemption/"><span class="fid">F-05</span><span class="ftitle">Prescription and its redemption<span>Single use, without a register of who was prescribed what</span></span><span class="status built">Built</span></a>
+      <a class="flow" href="flows/#/view/correction/"><span class="fid">F-06</span><span class="ftitle">Correction, suspension and revocation<span>Why business expiry and technical expiry must stay apart</span></span><span class="status partial">Partial</span></a>
       <div class="flow"><span class="fid">F-07</span><span class="ftitle">Projecting into FHIR and openEHR<span>Models without the repository</span></span><span class="status built">Built</span></div>
       <div class="flow"><span class="fid">F-08</span><span class="ftitle">Assembling an International Patient Summary<span>Allergies, problems, medication statements</span></span><span class="status later">Step 2</span></div>
       <div class="flow"><span class="fid">F-09</span><span class="ftitle">Secondary use under revocable consent<span>Identifying claims excluded by construction</span></span><span class="status later">Step 2</span></div>
