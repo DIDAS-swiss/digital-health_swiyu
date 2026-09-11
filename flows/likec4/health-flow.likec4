@@ -1,0 +1,623 @@
+// Swiss digital health on the swiyu trust infrastructure — LikeC4 model
+//
+// Models the health trust domain: who holds which role, what each may issue
+// or ask for, and how a vaccination record moves from the practice that
+// administered it to the travel clinic that needs to know the series is
+// complete — without a repository in the middle.
+//
+// This model is a DOMAIN model. The generic mechanics of registration,
+// issuance and verification live in the DIDAS Trust Flow Diagram Repository's
+// basic-flow, and the convention there is that domain flows abstract those
+// steps and point back to it:
+//
+//   https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/
+//
+// What this model adds is everything the generic flow has no shape for: roles
+// granted per credential type, a domain governance body that can read the
+// Swiss health registers, protected fields, and the eHealth Suisse exchange
+// formats the claims are bound to. flows/trust-flow-basis.md records the
+// step-by-step mapping, including the three gaps raised as issues there.
+//
+// Render the dynamic views as SEQUENCE diagrams:
+//   - Playground (playground.likec4.dev): paste this file, open a view,
+//     toggle the "Sequence" variant
+//   - CLI: likec4 export png --sequence -f "actorOnboarding|immunizationIssuance|protectionCheck|practiceCheckIn|prescriptionRedemption|correction" .
+//   - VS Code: install the LikeC4 extension, open Preview, switch variant
+//
+// Standards referenced in the notes were read from the published sources:
+// CH Core, CH VACD and CH EPR Term (github.com/hl7ch), and the swiyu Swiss
+// Profiles 1.0. docs/ehealth-suisse-alignment.md says which are reused as-is,
+// which are repurposed, and where this design diverges.
+
+specification {
+  element actor {
+    style {
+      shape person
+      color green
+    }
+  }
+  element system {
+    style {
+      shape rectangle
+    }
+  }
+  element database {
+    style {
+      shape cylinder
+      color indigo
+    }
+  }
+  element governance {
+    style {
+      shape rectangle
+      color muted
+    }
+  }
+}
+
+model {
+
+  patient = actor 'Patient' 'Holds an e-ID and their own health credentials in the swiyu Wallet' {
+    style {
+      color green
+    }
+  }
+
+  // ---- Care providers -------------------------------------------------
+  //
+  // Each is an organisation holding one or more ROLES. A family practice is
+  // usually also an authorised vaccinator and often runs its own laboratory,
+  // which is why the roles and not the organisations are what carry
+  // issuance rights and request entitlements.
+
+  practice = system 'DIDAS Arztpraxis' 'Practice — holds the practice, vaccinator and laboratory roles' {
+    style {
+      color amber
+    }
+  }
+
+  travelClinic = system 'DIDAS Reisemedizin' 'Travel clinic — holds the travel-clinic role' {
+    style {
+      color secondary
+    }
+  }
+
+  pharmacy = system 'DIDAS Apotheke' 'Pharmacy — holds the pharmacy role, and may hold the vaccinator role' {
+    style {
+      color secondary
+    }
+  }
+
+  insurer = system 'DIDAS Krankenversicherung' 'Health insurer — holds the insurer role' {
+    style {
+      color amber
+    }
+  }
+
+  // ---- Governance -----------------------------------------------------
+  //
+  // The layer that does not exist yet. Everything else in this model is
+  // deployable on the swiyu Sandbox today; this box is the reason none of
+  // it can go live.
+
+  healthGovernance = governance 'Health domain governance body' 'Grants health roles against the Swiss registers — does not exist yet' {
+    style {
+      border dashed
+      opacity 20%
+    }
+  }
+
+  // ---- Federal trust infrastructure -----------------------------------
+
+  confederation = system 'Federal Trust Infrastructure' 'Operated by FOITT — the only shared infrastructure in this design' {
+    style {
+      color indigo
+      opacity 10%
+      border solid
+      icon bootstrap:bank
+    }
+
+    baseRegistry = database 'Base Registry' 'DIDs, public keys, DID Documents, Token Status Lists' {
+      style {
+        icon bootstrap:key
+      }
+    }
+
+    trustRegistry = database 'Trust Registry' 'Trust statements, trust markers, verification query public statements' {
+      style {
+        icon bootstrap:patch-check
+      }
+    }
+  }
+
+  // ---- The incumbent --------------------------------------------------
+
+  epd = system 'EPD / DEP' 'The Swiss electronic patient record — one issuer among others in this design' {
+    style {
+      color muted
+      opacity 15%
+      border dashed
+    }
+  }
+
+  // ---- Baseline relationships, for the landscape view -----------------
+
+  practice -> patient 'issues immunization, laboratory and prescription credentials' {
+    navigateTo immunizationIssuance
+  }
+  insurer -> patient 'issues the insurance card credential'
+  patient -> practice 'presents e-ID and cover at check-in' {
+    navigateTo practiceCheckIn
+  }
+  patient -> travelClinic 'proves protection, and nothing else' {
+    navigateTo protectionCheck
+  }
+  patient -> pharmacy 'presents a prescription, once' {
+    navigateTo prescriptionRedemption
+  }
+
+  practice -> healthGovernance 'applies for the vaccinator role' {
+    navigateTo actorOnboarding
+  }
+  travelClinic -> healthGovernance 'applies for the travel-clinic role'
+  pharmacy -> healthGovernance 'applies for the pharmacy role'
+  insurer -> healthGovernance 'applies for the insurer role'
+  healthGovernance -> trustRegistry 'publishes role-scoped trust statements'
+
+  practice -> baseRegistry 'publishes its DID, publishes and updates status lists'
+  insurer -> baseRegistry 'publishes its DID and status lists'
+  travelClinic -> trustRegistry 'publishes its verification query and purpose'
+  pharmacy -> trustRegistry 'publishes its verification query and purpose'
+  travelClinic -> baseRegistry 'resolves issuer DIDs, checks credential status'
+  pharmacy -> baseRegistry 'resolves issuer DIDs, checks credential status'
+
+  epd -> patient 'could issue credentials for records it already holds'
+  patient -> epd 'could contribute a presented credential back'
+}
+
+views {
+
+  view index {
+    title 'Swiss digital health on swiyu — landscape'
+    include *
+  }
+
+  view trustInfrastructureDetail of confederation {
+    title 'Federal Trust Infrastructure — Base Registry and Trust Registry'
+    include baseRegistry, trustRegistry, confederation, practice, patient, travelClinic
+  }
+
+  // =====================================================================
+  // F-01 · Becoming an actor in the health trust domain
+  // =====================================================================
+
+  dynamic view actorOnboarding {
+    title 'F-01 · Becoming an actor in the health trust domain — Sequence'
+
+    practice -> baseRegistry 'Publish the practice DID' {
+      notes '''
+        **Protocol:** HTTPS, swiyu Base Registry API v1
+        **Format:** did:webvh 1.0 log file
+
+        Generic step. The reference model's `registration` view covers what
+        happens inside it: a keypair is generated and a DID published, and
+        the registry records that the DID exists without yet knowing who
+        stands behind it.
+
+        Swiss Profile detail: ES256 on P-256, and the DID log carries three
+        verification methods — two assertion keys and one authentication key
+        — so an assertion key can be rotated without re-onboarding.
+      '''
+    }
+
+    practice -> trustRegistry 'Prove possession of the DID' {
+      notes '''
+        **Protocol:** swiyu Trust Registry API v1 (Trust Protocol 2.0)
+        **Format:** JWT signed with the assertion key
+
+        Yields the **Verified Identity trust marker (viTM)**: this DID belongs
+        to a business partner whose legal identity the Confederation checked.
+
+        This is as far as self-service goes, and it is the same statement the
+        reference model's Trust Authority issues.
+      '''
+    }
+
+    practice -> healthGovernance 'Apply for the vaccinator role' {
+      notes '''
+        **Protocol:** none — no such body exists
+        **Would check:** the cantonal authorisation to vaccinate, the MedReg
+        entry of the responsible practitioner, and the organisation's GLN
+        (`urn:oid:2.51.1.3`, CH Core `GLNIdentifier`)
+
+        This is the step the reference model has no shape for, raised as
+        Trust-Flow-Diagram-Repository issue 3.
+
+        The registers already exist and are authoritative. What is missing is
+        a body mandated to read them and publish the result as a trust
+        statement. Until one exists, verifiers fall back to explicitly listed
+        issuer DIDs — adequate for a pilot, inadequate at scale.
+      '''
+    }
+
+    healthGovernance -> trustRegistry 'Publish a role-scoped trust statement' {
+      notes '''
+        **Format:** Trust statement naming the role and the credential types
+        it authorises
+
+        Yields the **Governed Use Case Authorization trust marker (gucaTM)**
+        for `urn:vct:ch.didas.health.immunization:1.0`.
+
+        Roles are scoped per credential type. An insurer is a legitimately
+        onboarded issuer and is still refused when it tries to record a
+        vaccination, because it holds no vaccinator role. One organisation
+        holds several roles: a practice that also runs a laboratory carries
+        both, and each carries its own issuance rights and its own
+        entitlement to ask.
+      '''
+    }
+
+    travelClinic -> trustRegistry 'Publish the verification query and its purpose' {
+      notes '''
+        **Protocol:** swiyu Trust Registry API v1
+        **Format:** Verification Query Public Statement (vqPS)
+
+        The verifier declares, in public and in advance, which claims it will
+        request and why. A wallet checks the incoming request against this
+        declaration before showing anything to the holder.
+
+        `purpose_name` is capped at 40 characters here. The verifier
+        management API allows 50; the Trust Registry caps the vqPS entry at
+        40, and the stricter limit is the one that has to hold.
+
+        This is the reference model's "defines what data he will request for
+        which purpose", and it is self-service today.
+      '''
+    }
+
+    include practice, travelClinic, baseRegistry, trustRegistry, healthGovernance, confederation
+  }
+
+  // =====================================================================
+  // F-02 · Recording an administered dose
+  // =====================================================================
+
+  dynamic view immunizationIssuance {
+    title 'F-02 · Recording an administered dose — Sequence'
+
+    practice -> baseRegistry 'Create and publish a status list' {
+      notes '''
+        **Protocol:** swiyu issuer management API
+        **Format:** Token Status List draft-20, 2 bits per entry
+
+        Happens **before** the credential that references it. The reference
+        model publishes the status entry after issuance; the Swiss Profile
+        requires the list to exist first, because the credential carries a
+        reference to its own slot at creation.
+
+        A status list is immutable in type, configuration and length once
+        initialised. It carries no patient data — two bits and an index.
+      '''
+    }
+
+    practice -> practice 'Check the vaccinator role before offering' {
+      notes '''
+        **Governance gate:** `reviewIssuance()`
+
+        The role is checked before a credential offer exists. An insurer
+        asking to record a vaccination is refused here, and the refusal is
+        journalled with its reason.
+
+        The journal records claim **names** and never claim values.
+      '''
+    }
+
+    practice -> patient 'Send the credential offer' {
+      notes '''
+        **Protocol:** OpenID4VCI 1.0, pre-authorized code flow
+        **Format:** `swiyu://?credential_offer=…` as a QR code
+
+        The authorization code flow is NOT SUPPORTED by
+        `swiss-profile-issuance:1.0.0`. Pre-authorized is the only flow.
+
+        One credential per administered dose. A dose is an event with a
+        single author, so each issuer revokes only its own
+        assertion and the patient's history is assembled in the wallet.
+      '''
+    }
+
+    patient -> practice 'Fetch metadata, Type Metadata and the OCA bundle' {
+      notes '''
+        **Protocol:** HTTPS
+        **Format:** signed issuer metadata; SD-JWT VC Type Metadata; OCA 1.0
+
+        Three requests with no counterpart in the reference model, raised as
+        Trust-Flow-Diagram-Repository issue 4.
+
+        `vct_metadata_uri` carries an SRI integrity hash over the exact bytes
+        served, so this is a verified fetch and a real trust step: a
+        wallet that cannot verify the hash cannot render the credential. It
+        also means changing a deployment's external URL requires
+        regenerating and re-signing.
+      '''
+    }
+
+    patient -> practice 'Request a nonce, a token, then the credential' {
+      notes '''
+        **Protocol:** OpenID4VCI 1.0 with DPoP (RFC 9449)
+        **Format:** SD-JWT VC draft-15, `dc+sd-jwt`
+
+        Token and credential requests are DPoP-bound, request and response
+        encryption are both required, and hardware-bound credentials carry a
+        key attestation. ISO mdoc and W3C VCDM are NOT SUPPORTED.
+
+        Each disclosable claim is replaced in the signed body by a salted
+        hash; the wallet keeps the `(salt, name, value)` triples and chooses
+        later which to send.
+      '''
+    }
+
+    practice -> patient 'Issue the immunization credential' {
+      notes '''
+        **Format:** SD-JWT VC, 18 claims
+        **Model:** CH VACD `ch-vacd-immunization`, and openEHR
+        `openEHR-EHR-ACTION.medication.v1` with `CLUSTER.medication.v2`
+
+        Claims carry their CH VACD element path and their openEHR archetype
+        and CKM node name, so a receiver rebuilds either representation
+        locally. The credential is the record; no repository holds a copy.
+
+        `vaccineCode` is SNOMED CT here. CH EPR Term maintains concept maps
+        between SNOMED CT, Swissmedic authorisation numbers, NUVA and legacy
+        Swiss codes — a deployment picks one and carries the map.
+
+        No expiry on the event: a vaccination that happened stays happened,
+        so `exp` is set far out and the credential is not refreshable.
+      '''
+    }
+
+    include practice, patient, baseRegistry, confederation
+  }
+
+  // =====================================================================
+  // F-03 · Proving protection, and nothing else
+  // =====================================================================
+
+  dynamic view protectionCheck {
+    title 'F-03 · Proving protection, and nothing else — Sequence'
+
+    travelClinic -> travelClinic 'Check the entitlement before building the query' {
+      notes '''
+        **Governance gate:** `reviewRequest()`
+
+        The travel clinic's role entitles it to four of the credential's
+        eighteen claims: target disease, occurrence date, dose number and
+        doses in series.
+
+        The check happens where the query is **built**. After the wallet has
+        answered, the data is out, and a check at the verifier is only a
+        promise. A pharmacy asking for the AHV number is refused here.
+      '''
+    }
+
+    travelClinic -> patient 'Request proof of protection' {
+      notes '''
+        **Protocol:** OpenID4VP 1.0 with DCQL, request object per JAR (RFC 9101)
+        **Format:** signed `oauth-authz-req+jwt`, ES256
+
+        The DCQL query names exactly the four claim paths. DCQL `multiple` is
+        NOT SUPPORTED, so one credential is requested per query.
+
+        This is the reference model's "is this person over 18?" with a
+        different claim name. The mechanics are identical.
+      '''
+    }
+
+    patient -> trustRegistry 'Check the verifier and its declared purpose' {
+      notes '''
+        **Protocol:** HTTPS
+
+        The wallet resolves the verifier DID, checks the request signature,
+        and compares what is being asked against the vqPS the verifier
+        published in advance. A request for claims outside the declared
+        purpose is a request the wallet can show as such.
+      '''
+    }
+
+    patient -> patient 'Show the purpose, then consent — or decline' {
+      notes '''
+        **Outcome:** consent, or `client_rejected`
+
+        Declining is a first-class outcome of OpenID4VP and an ordinary thing
+        for a patient to do: the travel clinic falls back to the paper
+        booklet, and care continues.
+
+        The reference model has no branch for this, raised as
+        Trust-Flow-Diagram-Repository issue 5.
+      '''
+    }
+
+    patient -> travelClinic 'Send four claims of eighteen' {
+      notes '''
+        **Protocol:** `direct_post.jwt` — encrypted, ECDH-ES
+        **Format:** `vp_token` plus a Key Binding JWT
+
+        The other fourteen claims are never transmitted. They are not
+        redacted afterwards and not filtered by the verifier's good
+        behaviour: the wallet releases only the claim paths the query names,
+        and the query was built from the entitlement.
+
+        Cleartext `direct_post` is not an option under the profile.
+      '''
+    }
+
+    travelClinic -> baseRegistry 'Check status, then the issuer trust markers' {
+      notes '''
+        **Governance gate:** `reviewPresentation()` — status first, then markers
+
+        Status is checked at the Base Registry, so
+        the issuer never learns that a check happened.
+
+        The policy keeps the profile's MUST rules under every configuration
+        and records its waived SHOULDs with their reasons. A governed use
+        case presented without authorisation is refused under every policy.
+      '''
+    }
+
+    include travelClinic, patient, baseRegistry, trustRegistry, confederation
+  }
+
+  // =====================================================================
+  // F-04 · Check-in at the practice
+  // =====================================================================
+
+  dynamic view practiceCheckIn {
+    title 'F-04 · Check-in at the practice — Sequence'
+
+    practice -> patient 'Request the e-ID and the insurance card together' {
+      notes '''
+        **Protocol:** OpenID4VP 1.0, two DCQL queries in one request
+        **Credentials:** Beta-ID (Confederation) and the insurance card
+        (`urn:vct:ch.didas.health.insurance-card:1.0`)
+
+        DCQL `multiple` is NOT SUPPORTED, so this is two queries inside one
+        presentation request, each naming its own credential type and claim
+        paths. The patient consents once.
+
+        Two issuers in one presentation, crossing organisational boundaries,
+        is the configuration in which "verifiable" means something.
+      '''
+    }
+
+    patient -> practice 'Present identity and cover' {
+      notes '''
+        **Claims released:** name and date of birth from the e-ID; card
+        number, insurer, cover and validity from the insurance card
+
+        **Protected field:** `personal_administrative_number` — the AHV
+        number, `urn:oid:2.16.756.5.32` — needs an explicit authorization
+        marker under `swiss-profile-trust:1.0`, whatever credential carries
+        it. The practice holds that entitlement because it bills with the
+        number.
+
+        CH Core points the same way from the other side: `CHCorePatientEPR`
+        sets both `EPR-SPID` and `AHVN13` to `0..0`, forbidding them outright
+        in documents shared through the EPR.
+      '''
+    }
+
+    practice -> practice 'Reconcile the two, and flag mismatches to a person' {
+      notes '''
+        A name that differs between the e-ID and the insurance card is
+        flagged to a human. Code does not resolve it.
+
+        **Retention** follows the billing record.
+        The practice keeps what it needs to bill; the credential goes back in
+        the wallet.
+      '''
+    }
+
+    include practice, patient
+  }
+
+  // =====================================================================
+  // F-05 · Redeeming a prescription
+  // =====================================================================
+
+  dynamic view prescriptionRedemption {
+    title 'F-05 · Redeeming a prescription, exactly once — Sequence'
+
+    patient -> pharmacy 'Present the prescription' {
+      notes '''
+        **Protocol:** OpenID4VP 1.0
+        **Model:** CH EMED `MedicationRequest`, and openEHR
+        `openEHR-EHR-INSTRUCTION.medication_order.v3`
+
+        The product is coded by GTIN (`urn:oid:2.51.1.1`, the naming system
+        CH EPR Term publishes), because a pharmacy dispenses against a
+        package. CH EMED carries ATC alongside it.
+
+        The pharmacy's entitlement does not include the AHV number. It is
+        refused when the query is built.
+      '''
+    }
+
+    pharmacy -> practice 'Ask the issuing practice to revoke' {
+      notes '''
+        **Protocol:** swiyu issuer management API, on the practice's side
+
+        Only the issuer can revoke, so redemption is a request between two
+        accountable parties. Single use without a central register of who was
+        prescribed what.
+
+        Revocation here means "used up" and not "withdrawn". The status list
+        cannot tell the two apart — only the issuer's journal separates them,
+        which is what makes the journal a governance control.
+      '''
+    }
+
+    practice -> baseRegistry 'Flip the status bit' {
+      notes '''
+        **Format:** Token Status List, `REVOKED`
+
+        There is a window between presentation and revocation that the status
+        list cannot close. Recorded as a gap.
+
+        Status list contents are public, so a suspension is itself a
+        disclosure.
+      '''
+    }
+
+    include patient, pharmacy, practice, baseRegistry, confederation
+  }
+
+  // =====================================================================
+  // F-06 · Correcting a record
+  // =====================================================================
+
+  dynamic view correction {
+    title 'F-06 · Correcting a recorded dose — Sequence'
+
+    practice -> baseRegistry 'Revoke the incorrect credential' {
+      notes '''
+        **Format:** Token Status List, `REVOKED`
+
+        Revoking a dose credential does not undo the dose. It withdraws an
+        assertion the issuer should not have made.
+
+        "Recorded in error", "used up" and "we no longer recognise this" all
+        produce the same bit.
+      '''
+    }
+
+    practice -> patient 'Issue the corrected credential' {
+      notes '''
+        **Reused from CH VACD:** `EntryResourceCrossReferences` — the
+        `relatesTo` extension on `ch-vacd-immunization`, which identifies the
+        replaced or corrected entry in another document.
+
+        CH VACD already models supersession, and this project does not yet
+        carry it. Adopting the same reference shape is the fix: the corrected
+        credential names what it replaces, so a verifier holding both can
+        tell which one stands.
+
+        CH VACD also defines `CHVACDExtensionMergingConflictEntryReference`
+        for merge conflicts, which is the shape this project needs for the
+        immunization-series reconciliation it records as an open question.
+      '''
+    }
+
+    practice -> patient 'Notify the holder — not yet built' {
+      notes '''
+        **Gap.** Revocation reaches the verifier and never the holder. The
+        superseded credential stays in the wallet, looking exactly as it did
+        before, and the patient learns nothing.
+
+        A wallet notification channel is the missing piece, and it belongs to
+        the Confederation's wallet.
+      '''
+    }
+
+    include practice, patient, baseRegistry, confederation
+  }
+}

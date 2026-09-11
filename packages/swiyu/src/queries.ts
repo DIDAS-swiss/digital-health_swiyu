@@ -66,7 +66,7 @@ export const CHECK_IN: VerificationQuerySpec = {
         'birth_date',
         'card_number',
         'insurer_name',
-        'insurer_bag_number',
+        'insurer_ber_number',
         'insurance_model',
         'coverage',
         'expiry_date',

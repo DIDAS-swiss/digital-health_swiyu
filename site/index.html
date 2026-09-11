@@ -286,6 +286,13 @@
   }
   .rmnote { font-size: 0.87rem; color: var(--ink-2); margin-top: 14px; }
 
+  .c4link { margin-top: 18px; font-size: 0.9rem; color: var(--ink-2); }
+  .c4link .cta {
+    display: inline-block; margin-top: 8px; font-family: var(--mono); font-size: 0.78rem;
+    letter-spacing: 0.04em; color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid currentColor; padding-bottom: 1px;
+  }
+
   /* ---- code sample ------------------------------------------------- */
   .projections { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 24px; }
   .projection { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
@@ -643,6 +650,13 @@
       governance constraints, its standardisation constraints, and its open questions — written for
       transfer into a trust flows repository, where it will sit beside flows from sectors that have
       nothing to do with this codebase.
+    </p>
+    <p class="c4link">
+      Six of them are also modelled in <a href="https://likec4.dev">LikeC4</a>, the same way the
+      <a href="https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/">DIDAS reference
+      flow</a> is modelled, so they can move there without being redrawn. Every step carries the
+      protocol, the format and the eHealth Suisse rule behind it in its notes.
+      <a class="cta" href="flows/">Open the interactive diagrams →</a>
     </p>
     <div class="flows">
       <div class="flow"><span class="fid">F-01</span><span class="ftitle">Becoming an actor<span>DID, trust statement, role grant</span></span><span class="status partial">Partial</span></div>

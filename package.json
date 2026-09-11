@@ -23,10 +23,14 @@
     "generate:config": "tsx scripts/generate-config.ts",
     "build:browser": "esbuild packages/swiyu/src/browser.ts --bundle --format=iife --global-name=SWIYU --target=es2022 --minify --outfile=dist/swiyu.browser.js",
     "vqps": "tsx scripts/vqps.ts",
-    "generate:docs": "tsx scripts/generate-docs.ts"
+    "generate:docs": "tsx scripts/generate-docs.ts",
+    "flows:check": "likec4 validate flows/likec4 && likec4 export json -o /tmp/likec4-views.json flows/likec4",
+    "flows:build": "likec4 build -o site/flows --base /digital-health_swiyu/flows/ flows/likec4",
+    "flows:dev": "likec4 start flows/likec4"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
+    "likec4": "^1.59.3",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"

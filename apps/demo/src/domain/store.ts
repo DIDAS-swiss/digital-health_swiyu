@@ -32,7 +32,7 @@ export interface Encounter {
   };
   cover?: {
     insurerName?: string;
-    insurerBagNumber?: string;
+    insurerBerNumber?: string;
     cardNumber?: string;
     coverage?: string[];
     insuranceModel?: string;

@@ -65,7 +65,7 @@
       "credential_refresh_disabled": false,
       "vct": "urn:vct:ch.didas.health.insurance-card:1.0",
       "vct_metadata_uri": "http://localhost:8080/oid4vci/vct/health-insurance-card-sd-jwt",
-      "vct_metadata_uri#integrity": "sha256-I3K+WwsS3hsocsPy93nN9tAx1sVlo4a5Rd9SUo4BUTI=",
+      "vct_metadata_uri#integrity": "sha256-zBpSS4ioJir/42sFucLBVHLSlVdWqXgbA5HTFW/gpQY=",
       "credential_metadata": {
         "display": [
           {
@@ -234,24 +234,24 @@
           },
           {
             "path": [
-              "insurer_bag_number"
+              "insurer_ber_number"
             ],
             "display": [
               {
                 "locale": "de-CH",
-                "name": "BAG-Nummer"
+                "name": "Unternehmens-Identifikation"
               },
               {
                 "locale": "fr-CH",
-                "name": "Numéro OFSP"
+                "name": "Identification de l'entreprise"
               },
               {
                 "locale": "it-CH",
-                "name": "Numero UFSP"
+                "name": "Identificazione dell'impresa"
               },
               {
                 "locale": "en-GB",
-                "name": "Insurer registration number"
+                "name": "Enterprise register number"
               }
             ]
           },
@@ -357,7 +357,7 @@
         "insurance_model",
         "coverage",
         "card_number",
-        "insurer_bag_number",
+        "insurer_ber_number",
         "valid_from",
         "expiry_date",
         "personal_administrative_number"

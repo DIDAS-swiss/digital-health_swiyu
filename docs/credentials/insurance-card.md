@@ -63,10 +63,10 @@ presentation of an eighteen-claim credential possible.
 | `given_name` | Given name(s) | Text | string, ≤ 200 chars | — | required |
 | `family_name` | Surname | Text | string, ≤ 200 chars | — | required |
 | `birth_date` | Date of birth | DateTime | string, date | — | required |
-| `card_number` | Card number | Text | string, `^807[0-9]{17}$` | FHIR `Coverage.identifier.value` | required |
+| `card_number` | Card number | Text | string, `^807560[0-9]{14}$` | FHIR `Coverage.identifier.value`<br>VEKA (`urn:oid:2.16.756.5.30.1.123.100.1.1.1`) | required |
 | `personal_administrative_number` | Social security number | Text | string, `^756\.[0-9]{4}\.[0-9]{4}\.[0-9]{2}$` | FHIR `Coverage.beneficiary.identifier.value`<br>AHVN13 (`urn:oid:2.16.756.5.32`) | required, **protected field**, masked in the wallet |
 | `insurer_name` | Insurer | Text | string, ≤ 200 chars | FHIR `Coverage.payor.display` | required |
-| `insurer_bag_number` | Insurer registration number | Text | string, `^[0-9]{4,5}$` | FHIR `Coverage.payor.identifier.value`<br>BAG-Nummer (`urn:oid:2.16.756.5.45`) | required |
+| `insurer_ber_number` | Enterprise register number | Text | string, ≤ 32 chars | FHIR `Coverage.payor.identifier.value`<br>BER (`urn:oid:2.16.756.5.45`) | required |
 | `insurance_model` | Model | Text | string, one of STANDARD, HMO, HAUSARZT, TELMED | — | required |
 | `coverage` | Coverage | Array[Text] | array | FHIR `Coverage.type.coding.code` | required |
 | `valid_from` | Valid from | DateTime | string, date | FHIR `Coverage.period.start` | required |

@@ -275,7 +275,7 @@ export class InsurerService {
       card_number: input.cardNumber,
       personal_administrative_number: input.administrativeNumber,
       insurer_name: actor.displayName,
-      insurer_bag_number: '01509',
+      insurer_ber_number: '01509',
       insurance_model: input.insuranceModel,
       coverage: input.coverage,
       valid_from: isoDate(new Date()),
@@ -441,7 +441,7 @@ export class PraxisService {
     };
     encounter.cover = {
       insurerName: cover.insurer_name as string | undefined,
-      insurerBagNumber: cover.insurer_bag_number as string | undefined,
+      insurerBerNumber: cover.insurer_ber_number as string | undefined,
       cardNumber: cover.card_number as string | undefined,
       coverage: cover.coverage as string[] | undefined,
       insuranceModel: cover.insurance_model as string | undefined,

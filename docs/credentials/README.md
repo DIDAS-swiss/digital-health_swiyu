@@ -52,7 +52,7 @@ refused when the query is built, so the claim is never transmitted.
 | `card_number` | ● | · |
 | `personal_administrative_number` ⚑ | ● | · |
 | `insurer_name` | ● | ● |
-| `insurer_bag_number` | ● | ● |
+| `insurer_ber_number` | ● | ● |
 | `insurance_model` | ● | · |
 | `coverage` | ● | ● |
 | `valid_from` | · | · |

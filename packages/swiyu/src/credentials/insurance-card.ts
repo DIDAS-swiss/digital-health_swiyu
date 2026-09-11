@@ -39,7 +39,7 @@ export const INSURANCE_CARD: CredentialDefinition = {
     'insurance_model',
     'coverage',
     'card_number',
-    'insurer_bag_number',
+    'insurer_ber_number',
     'valid_from',
     'expiry_date',
     'personal_administrative_number',
@@ -71,7 +71,7 @@ export const INSURANCE_CARD: CredentialDefinition = {
           'birth_date',
           'card_number',
           'insurer_name',
-          'insurer_bag_number',
+          'insurer_ber_number',
           'insurance_model',
           'coverage',
           'expiry_date',
@@ -85,7 +85,7 @@ export const INSURANCE_CARD: CredentialDefinition = {
       {
         role: 'ch.didas.health.role.pharmacy',
         purpose: 'Confirm cover before dispensing a reimbursed medication',
-        claims: ['insurer_name', 'insurer_bag_number', 'coverage', 'expiry_date'],
+        claims: ['insurer_name', 'insurer_ber_number', 'coverage', 'expiry_date'],
       },
     ],
   },
@@ -125,14 +125,17 @@ export const INSURANCE_CARD: CredentialDefinition = {
       name: 'card_number',
       type: 'Text',
       required: true,
-      semantics: { fhir: { path: 'Coverage.identifier.value' } },
+      semantics: {
+        fhir: { path: 'Coverage.identifier.value' },
+        terminology: { system: 'urn:oid:2.16.756.5.30.1.123.100.1.1.1', code: 'VEKA', display: 'Insurance card number (SASIS)' },
+      },
       label: {
         'de-CH': 'Kartennummer',
         'fr-CH': 'Numéro de carte',
         'it-CH': 'Numero della tessera',
         'en-GB': 'Card number',
       },
-      schema: { type: 'string', pattern: '^807[0-9]{17}$' },
+      schema: { type: 'string', pattern: '^807560[0-9]{14}$' },
     },
     {
       /**
@@ -168,21 +171,28 @@ export const INSURANCE_CARD: CredentialDefinition = {
       schema: { type: 'string', minLength: 1, maxLength: 200 },
     },
     {
-      /** The insurer's five-digit BAG/OFSP registration number. */
-      name: 'insurer_bag_number',
+      /**
+       * The insurer's entry in the Business and Enterprise Register, which CH
+       * Core calls BER and binds to `urn:oid:2.16.756.5.45` on
+       * `Organization.identifier`. An earlier revision labelled this OID
+       * "BAG-Nummer"; the five-digit BAG insurer number is a different
+       * identifier and CH Core publishes no naming system for it, so the
+       * register that CH Core does define is what this claim carries.
+       */
+      name: 'insurer_ber_number',
       type: 'Text',
       required: true,
       semantics: {
         fhir: { path: 'Coverage.payor.identifier.value' },
-        terminology: { system: 'urn:oid:2.16.756.5.45', code: 'BAG-Nummer' },
+        terminology: { system: 'urn:oid:2.16.756.5.45', code: 'BER', display: 'Business and Enterprise Register' },
       },
       label: {
-        'de-CH': 'BAG-Nummer',
-        'fr-CH': 'Numéro OFSP',
-        'it-CH': 'Numero UFSP',
-        'en-GB': 'Insurer registration number',
+        'de-CH': 'Unternehmens-Identifikation',
+        'fr-CH': "Identification de l'entreprise",
+        'it-CH': "Identificazione dell'impresa",
+        'en-GB': 'Enterprise register number',
       },
-      schema: { type: 'string', pattern: '^[0-9]{4,5}$' },
+      schema: { type: 'string', minLength: 1, maxLength: 32 },
     },
     {
       name: 'insurance_model',

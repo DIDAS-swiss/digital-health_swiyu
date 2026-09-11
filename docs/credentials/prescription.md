@@ -79,7 +79,7 @@ A selectively disclosable array of objects, using array-element and recursive di
 | Claim | Label | Type | Constraint | Semantic binding | Notes |
 | --- | --- | --- | --- | --- | --- |
 | `name` | Product | Text | string, ≤ 300 chars | FHIR `MedicationRequest.medicationCodeableConcept.text`<br>openEHR `medication_order/order/medication_item`<br>&nbsp;&nbsp;↳ `Medication item` in `openEHR-EHR-INSTRUCTION.medication_order.v3` | required |
-| `gtin` | GTIN | Text | string, `^[0-9]{13,14}$` | FHIR `MedicationRequest.medicationCodeableConcept.coding.code`<br>openEHR `medication_order/order/medication_details/name`<br>&nbsp;&nbsp;↳ `Name` in `openEHR-EHR-CLUSTER.medication.v2`<br>GTIN (`https://www.gs1.org/gtin`) | — |
+| `gtin` | GTIN | Text | string, `^[0-9]{13,14}$` | FHIR `MedicationRequest.medicationCodeableConcept.coding.code`<br>openEHR `medication_order/order/medication_details/name`<br>&nbsp;&nbsp;↳ `Name` in `openEHR-EHR-CLUSTER.medication.v2`<br>GTIN (`urn:oid:2.51.1.1`) | — |
 | `dosage` | Dosage | Text | string, ≤ 300 chars | FHIR `MedicationRequest.dosageInstruction.text`<br>openEHR `medication_order/order/overall_directions_description`<br>&nbsp;&nbsp;↳ `Overall directions description` in `openEHR-EHR-INSTRUCTION.medication_order.v3` | required |
 | `quantity` | Quantity | Numeric | integer, 1–1000 | FHIR `MedicationRequest.dispenseRequest.quantity.value`<br>openEHR `medication_order/order/dispense_directions/dispense_amount`<br>&nbsp;&nbsp;↳ `Dispense amount` in `openEHR-EHR-INSTRUCTION.medication_order.v3` | required |
 | `substitution_allowed` | Substitution allowed | Boolean | boolean | FHIR `MedicationRequest.substitution.allowedBoolean` | required |
