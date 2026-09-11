@@ -54,6 +54,14 @@ export interface SemanticBinding {
   openehr?: {
     /** Archetype the node belongs to, e.g. `openEHR-EHR-OBSERVATION.laboratory_test_result.v1`. */
     archetypeId?: string;
+    /**
+     * The node's name as published in the openEHR Clinical Knowledge Manager,
+     * e.g. `Batch ID`. The flat path below is template-specific and this
+     * repository publishes no operational template, so the archetype and the
+     * node name are the part a receiver can actually resolve: they identify a
+     * governed model in CKM, which the flat path alone does not.
+     */
+    element?: string;
     /** Flat-format path within the operational template. */
     path: string;
   };

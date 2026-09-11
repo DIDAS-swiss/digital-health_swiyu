@@ -107,6 +107,19 @@ At presentation time, a verifier rebuilds a FHIR resource or an openEHR flat
 composition from the disclosed claims, locally. Derived, never authoritative;
 legitimately partial. See [F-07](../flows/F-07-model-projection.md).
 
+Claim bindings name the FHIR element path, the openEHR archetype and the node
+name as published in the Clinical Knowledge Manager. The flat path alone would
+not be enough: it is specific to an operational template this project does not
+publish, so it cannot be checked, and six of them were in fact wrong until they
+were checked against CKM ([source verification](source-verification.md)).
+
+Declining the repository is the project's central bet, and it has a strong
+argument against it — that a vaccination record has to stay clinically usable
+for a lifetime, which a point-in-time document is not. That argument, the
+openEHR clinical data repository showcase it comes from, and the two directions
+in which the two designs compose rather than compete, are in
+[positioning](positioning.md).
+
 ## Why four separate actors
 
 Collapsing them into one service would be simpler and would destroy the point.

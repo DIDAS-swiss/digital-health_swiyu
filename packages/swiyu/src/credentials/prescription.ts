@@ -156,7 +156,11 @@ export const PRESCRIPTION: CredentialDefinition = {
           type: 'Text',
           required: true,
           semantics: {
-            openehr: { path: 'medication_order/order/medication_item' },
+            openehr: {
+              archetypeId: 'openEHR-EHR-INSTRUCTION.medication_order.v3',
+              element: 'Medication item',
+              path: 'medication_order/order/medication_item',
+            },
             fhir: { path: 'MedicationRequest.medicationCodeableConcept.text' },
           },
           label: {
@@ -172,7 +176,11 @@ export const PRESCRIPTION: CredentialDefinition = {
           name: 'gtin',
           type: 'Text',
           semantics: {
-            openehr: { path: 'medication_order/order/medication_item/code' },
+            openehr: {
+              archetypeId: 'openEHR-EHR-CLUSTER.medication.v2',
+              element: 'Name',
+              path: 'medication_order/order/medication_details/name',
+            },
             fhir: { path: 'MedicationRequest.medicationCodeableConcept.coding.code' },
             terminology: { system: 'https://www.gs1.org/gtin', code: 'GTIN' },
           },
@@ -184,7 +192,11 @@ export const PRESCRIPTION: CredentialDefinition = {
           type: 'Text',
           required: true,
           semantics: {
-            openehr: { path: 'medication_order/order/directions/dosage/dose_description' },
+            openehr: {
+              archetypeId: 'openEHR-EHR-INSTRUCTION.medication_order.v3',
+              element: 'Overall directions description',
+              path: 'medication_order/order/overall_directions_description',
+            },
             fhir: { path: 'MedicationRequest.dosageInstruction.text' },
           },
           label: {
@@ -200,7 +212,11 @@ export const PRESCRIPTION: CredentialDefinition = {
           type: 'Numeric',
           required: true,
           semantics: {
-            openehr: { path: 'medication_order/order/amount' },
+            openehr: {
+              archetypeId: 'openEHR-EHR-INSTRUCTION.medication_order.v3',
+              element: 'Dispense amount',
+              path: 'medication_order/order/dispense_directions/dispense_amount',
+            },
             fhir: { path: 'MedicationRequest.dispenseRequest.quantity.value' },
           },
           label: { 'de-CH': 'Menge', 'fr-CH': 'Quantité', 'it-CH': 'Quantità', 'en-GB': 'Quantity' },

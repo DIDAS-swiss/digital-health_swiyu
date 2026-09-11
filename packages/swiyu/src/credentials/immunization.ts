@@ -197,7 +197,11 @@ export const IMMUNIZATION: CredentialDefinition = {
       type: 'Text',
       required: true,
       semantics: {
-        openehr: { path: 'immunisation/medication_management/medication_item/code' },
+        openehr: {
+          archetypeId: 'openEHR-EHR-CLUSTER.medication.v2',
+          element: 'Name',
+          path: 'immunisation/medication_management/medication_item/medication_details/name',
+        },
         fhir: { path: 'Immunization.vaccineCode.coding.code' },
         terminology: { system: 'http://snomed.info/sct', code: 'SNOMED CT', display: 'Vaccine product' },
       },
@@ -213,7 +217,11 @@ export const IMMUNIZATION: CredentialDefinition = {
       type: 'Text',
       required: true,
       semantics: {
-        openehr: { path: 'immunisation/medication_management/medication_item' },
+        openehr: {
+          archetypeId: 'openEHR-EHR-ACTION.medication.v1',
+          element: 'Medication item',
+          path: 'immunisation/medication_management/medication_item',
+        },
         fhir: { path: 'Immunization.vaccineCode.text' },
       },
       label: { 'de-CH': 'Impfstoff', 'fr-CH': 'Vaccin', 'it-CH': 'Vaccino', 'en-GB': 'Vaccine' },
@@ -247,7 +255,11 @@ export const IMMUNIZATION: CredentialDefinition = {
       required: true,
       format: 'YYYY-MM-DD',
       semantics: {
-        openehr: { path: 'immunisation/medication_management/time' },
+        openehr: {
+          archetypeId: 'openEHR-EHR-ACTION.medication.v1',
+          element: 'Medication management',
+          path: 'immunisation/medication_management/time',
+        },
         fhir: { path: 'Immunization.occurrenceDateTime' },
       },
       label: { 'de-CH': 'Impfdatum', 'fr-CH': 'Date de vaccination', 'it-CH': 'Data di vaccinazione', 'en-GB': 'Date given' },
@@ -293,7 +305,11 @@ export const IMMUNIZATION: CredentialDefinition = {
       type: 'Text',
       required: true,
       semantics: {
-        openehr: { path: 'immunisation/medication_management/batch_id' },
+        openehr: {
+          archetypeId: 'openEHR-EHR-CLUSTER.medication.v2',
+          element: 'Batch ID',
+          path: 'immunisation/medication_management/medication_item/medication_details/batch_id',
+        },
         fhir: { path: 'Immunization.lotNumber' },
       },
       label: { 'de-CH': 'Chargennummer', 'fr-CH': 'Numéro de lot', 'it-CH': 'Numero di lotto', 'en-GB': 'Lot number' },
@@ -304,7 +320,11 @@ export const IMMUNIZATION: CredentialDefinition = {
       type: 'Text',
       required: true,
       semantics: {
-        openehr: { path: 'immunisation/medication_management/route' },
+        openehr: {
+          archetypeId: 'openEHR-EHR-ACTION.medication.v1',
+          element: 'Route',
+          path: 'immunisation/medication_management/route',
+        },
         fhir: { path: 'Immunization.route.coding.code' },
       },
       label: { 'de-CH': 'Applikationsart', 'fr-CH': "Voie d'administration", 'it-CH': 'Via di somministrazione', 'en-GB': 'Route' },
