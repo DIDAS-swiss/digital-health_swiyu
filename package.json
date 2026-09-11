@@ -2,7 +2,7 @@
   "name": "digital-health-swiyu",
   "version": "1.0.0",
   "private": true,
-  "description": "Digital Health on the swiyu Swiss Trust Infrastructure (E-ID) — GovTech Hackathon project 1103",
+  "description": "Digital Health on the swiyu Swiss Trust Infrastructure (E-ID) \u2014 GovTech Hackathon project 1103",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -25,7 +25,7 @@
     "vqps": "tsx scripts/vqps.ts",
     "generate:docs": "tsx scripts/generate-docs.ts",
     "flows:check": "likec4 validate flows/likec4 && likec4 export json -o /tmp/likec4-views.json flows/likec4",
-    "flows:build": "likec4 build -o site/flows --base /digital-health_swiyu/flows/ flows/likec4",
+    "flows:build": "likec4 build -o site/flows --base /digital-health_swiyu/flows/ --use-hash-history --title \"Swiss digital health trust flows\" flows/likec4",
     "flows:dev": "likec4 start flows/likec4"
   },
   "devDependencies": {

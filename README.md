@@ -1,5 +1,8 @@
 # digital-health_swiyu
 
+**📍 [Immunization Showcase — the portal](https://didas-swiss.github.io/digital-health_swiyu/)**
+· [Flow diagrams](https://didas-swiss.github.io/digital-health_swiyu/flows/)
+
 Digital health on the **swiyu** Swiss trust infrastructure — the ecosystem
 behind the Swiss e-ID. An end-to-end, runnable implementation of
 [GovTech Hackathon project 1103](https://hack.opendata.ch/project/1103),
@@ -25,7 +28,9 @@ No registry sits in the middle of any of it.
 
 ## The portal
 
-[`site/index.html`](site/index.html) is the Immunization Showcase: a single page
+The portal is published at
+**<https://didas-swiss.github.io/digital-health_swiyu/>**.
+[`site/index.html`](site/index.html) is its source: a single page
 that walks the full journey — issuance, minimal disclosure at the travel clinic,
 the governance gates, the FHIR and openEHR projections, and the roadmap. It is
 published by the `portal` workflow on every push to `main` that touches it, and
@@ -34,7 +39,9 @@ the flows it describes.
 
 Open it locally with `open site/index.html`; it has no build step and no runtime
 dependencies. The interactive flow diagrams are built alongside it from
-[`flows/likec4/`](flows/likec4/README.md) and published under `/flows/`.
+[`flows/likec4/`](flows/likec4/README.md) and published under
+[`/flows/`](https://didas-swiss.github.io/digital-health_swiyu/flows/). Each of
+the six modelled flows is linked from its row on the showcase.
 
 ## Why the record lives in the wallet
 
