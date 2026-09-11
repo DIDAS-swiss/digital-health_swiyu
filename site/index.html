@@ -83,6 +83,20 @@
     font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px;
   }
+  .topbar {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    justify-content: space-between; gap: 8px 24px;
+  }
+  .repolink {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em;
+    color: var(--ink-3); text-decoration: none; margin-bottom: 18px;
+    white-space: nowrap;
+  }
+  .repolink svg { flex: none; }
+  .repolink span { border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+  .repolink:hover { color: var(--accent); }
+  .repolink:hover span { border-bottom-color: currentColor; }
   h1 {
     font-family: var(--display); font-weight: 500;
     font-size: clamp(2.3rem, 6.2vw, 3.7rem); line-height: 1.04;
@@ -346,7 +360,13 @@
 <body>
 <header class="masthead">
   <div class="wrap">
-    <p class="eyebrow">DIDAS · GovTech Hackathon · roadmap step 1 · 2026</p>
+    <div class="topbar">
+      <p class="eyebrow">DIDAS · GovTech Hackathon · roadmap step 1 · 2026</p>
+      <a class="repolink" href="https://github.com/DIDAS-swiss/digital-health_swiyu">
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <span>Source on GitHub</span>
+      </a>
+    </div>
     <h1>Vaccination records in the patient's wallet</h1>
     <p class="lede">
       Built on <strong>swiyu</strong>, Switzerland's e-ID trust infrastructure. A practice records an
