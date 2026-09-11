@@ -617,13 +617,19 @@ views {
       '''
     }
 
-    survey -> patient 'Invite by post, with a one-time link' {
+    survey -> patient 'Post an invitation carrying a single-use credential' {
       notes '''
-        **Protocol:** the existing postal invitation
+        **Protocol:** the existing postal invitation, with a QR
+        **Format:** OpenID4VCI offer for a single-use invitation credential
 
-        Unchanged from the current method, which contacts a household up to
-        three times by post and telephone. What changes is what the household
-        does next: today it photocopies a vaccination booklet and posts it back.
+        The credential carries the **stratum** — age band, canton, cycle — and
+        no household identifier.
+
+        This is what removes the join. An earlier draft had the survey match
+        each response to its sampling record by an invitation token, which is a
+        household identifier, and would have given the survey a register of who
+        replied and what they replied. Carrying the stratum in the credential
+        means there is nothing to join on.
       '''
     }
 
@@ -641,7 +647,7 @@ views {
       '''
     }
 
-    patient -> survey 'Send five claims, and no identifier' {
+    patient -> survey 'Send one combined proof: stratum and doses' {
       notes '''
         **Protocol:** OpenID4VP 1.0, DCQL, `direct_post.jwt`
         **Entitlement:** `ch.didas.health.role.statistics`
@@ -657,26 +663,42 @@ views {
         A photocopied booklet discloses all of it. This flow is the one case in
         the set where selective disclosure reduces disclosure below what the
         paper process already required.
+
+        The invitation credential travels in the same proof, contributing the
+        stratum. The survey learns "a household in this canton with an
+        8-year-old reported these doses" and holds no key that would let it say
+        which household.
       '''
     }
 
-    survey -> survey 'Join to the sampling record, and analyse' {
+    survey -> baseRegistry 'Revoke the invitation, and record only the variables' {
       notes '''
-        The contribution joins the sampling record by the invitation token, so
-        the survey keeps its stratification without the credential carrying any
-        demographic claim.
+        **Format:** Token Status List, `REVOKED`
 
-        **Retention** is the analysis dataset. The survey has no use for a
-        credential once the claims are extracted.
+        Single use, enforced the same way F-05 makes a prescription single-use:
+        two bits on a public list. A second response cannot be made, and no
+        register of who replied is kept.
 
-        **Unsolved:** a missing credential may mean no dose, a dose given
-        before credentials existed, or an issuer who never issued one. Reading
-        absence as "unvaccinated" biases the estimate, and nothing here issues
-        the "no further doses" attestation that would settle it.
+        **Record nothing that could be recorded.** A verifier receives a signed
+        presentation and is technically free to keep all of it. The survey
+        extracts the analysis variables and discards the transcript, the
+        credentials, the signatures and every scrap of request metadata —
+        timing, IP, user agent, response ordering, all identifying in a sample
+        this small. That is a governance rule, and it has to be auditable.
+
+        **The residual leak.** The survey issues and revokes the invitation, so
+        a retained mapping from invitation index to posted address would
+        re-link the response by timing. Batch issuance or a zero-knowledge
+        presentation closes it; neither is available here, so the unlinkability
+        of this flow currently rests on the survey behaving.
+
+        **Unsolved separately:** a missing credential may mean no dose, a dose
+        given before credentials existed, or an issuer who never issued one.
+        Reading absence as "unvaccinated" biases the estimate.
       '''
     }
 
-    include survey, populationRegister, patient, trustRegistry, confederation
+    include survey, populationRegister, patient, trustRegistry, baseRegistry, confederation
   }
 
   // =====================================================================

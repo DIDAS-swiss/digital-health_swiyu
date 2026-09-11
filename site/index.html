@@ -859,6 +859,38 @@
       sampling frame. A survey that let holders volunteer their credentials would measure the people who
       volunteer, and that bias cannot be corrected from inside the sample. EBPI draws the sample; the
       wallet only answers.
+    </p>
+
+    <h3 class="rmsub">Unlinkable by design, and the part that is not yet</h3>
+    <p>
+      A survey response that can be traced to a household is a register of who replied and what they
+      replied. The posted invitation therefore carries a <strong>single-use credential holding the
+      stratum</strong> — age band, canton, cycle — and no household identifier. It travels with the dose
+      claims in <strong>one combined proof</strong>, and is <strong>revoked on acceptance</strong>, the
+      same two bits on a public list that make a prescription single-use in F-05.
+    </p>
+    <p>
+      So the survey learns <em>"a household in this canton with an 8-year-old reported these doses"</em>
+      and holds no key that would let it say which household. There is nothing to join on, because the
+      stratum arrived inside the credential.
+    </p>
+    <div class="survey">
+      <div>
+        <h3>Record nothing that could be recorded</h3>
+        <p>A verifier receives a signed presentation and is technically free to keep all of it. The
+          analysis variables are extracted and the rest — transcript, credentials, signatures, timing,
+          IP, user agent, response ordering — is discarded. All of it is identifying in a sample this
+          small.</p>
+      </div>
+      <div>
+        <h3>What is still leaky</h3>
+        <p>The survey both issues and revokes the invitation, so a retained mapping from invitation to
+          posted address would re-link a response by timing. Closing that needs batch issuance or a
+          zero-knowledge presentation. Neither is in place, so this is unlinkable <em>by governance</em>
+          and not yet by construction.</p>
+      </div>
+    </div>
+    <p class="prose-note">
       <a class="cta" href="flows/#/view/coverageSurvey/">Open the F-11 diagram →</a>
     </p>
   </section>
