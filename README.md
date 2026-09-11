@@ -119,12 +119,13 @@ generate the configuration, start the generic components, set
 
 | Path | What it is |
 | --- | --- |
-| `flows/` | The blueprint. Ten documented flows, transferable. |
+| [`docs/`](docs/README.md) | Business case, governance framework, architecture, integration guide, conformance mapping, onboarding runbook, glossary. |
+| [`docs/credentials/`](docs/credentials/README.md) | **Generated.** One page per credential type, plus the who-may-ask-for-what matrix. |
+| [`flows/`](flows/README.md) | The blueprint. Ten documented flows, transferable. |
 | `packages/swiyu/` | Swiss Profile constants, management API clients, DCQL builder, credential definitions, conformance checks, governance engine, FHIR/openEHR projections. |
 | `apps/demo/` | The four actors, the patient journey UI, and the offline mock. |
 | `config/` | **Generated.** Issuer metadata, VCT metadata, JSON Schemas, OCA bundles. |
-| `scripts/generate-config.ts` | Generates `config/` from the credential definitions. |
-| `docs/` | Architecture, conformance mapping, onboarding runbook, roadmap. |
+| `scripts/` | `generate-config.ts`, `generate-docs.ts`, `vqps.ts`, `onboard.sh`. |
 
 ## One source of truth per credential type
 
@@ -159,6 +160,17 @@ Pinned to Swiss Profiles 1.0 as published for the swiyu Sandbox:
 
 [`docs/spec-conformance.md`](docs/spec-conformance.md) maps each rule this
 project enforces to the section it comes from.
+
+## Where to start
+
+| You are | Read |
+| --- | --- |
+| Deciding whether this is worth doing | [Business case](docs/business-case.md), then the [roadmap](docs/roadmap.md) |
+| Reviewing the governance model | [Governance framework](docs/governance-framework.md) and the [disclosure matrix](docs/credentials/README.md) |
+| Integrating a practice or pharmacy system | [Integration guide](docs/integration-guide.md) |
+| Standing it up on the Sandbox | [Onboarding runbook](docs/onboarding-sandbox.md) |
+| Taking the flows somewhere else | [`flows/`](flows/README.md) |
+| Lost in the vocabulary | [Glossary](docs/glossary.md) |
 
 ## Licence
 

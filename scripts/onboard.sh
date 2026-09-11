@@ -52,8 +52,10 @@ dim()  { printf '%s\n' "${c_dim}$*${c_off}"; }
 
 load_env() {
   [[ -f "$ENV_FILE" ]] || die "$ENV_FILE not found. Copy .env.onboard.example and fill it in."
-  # shellcheck disable=SC1090
-  set -a; source "$ENV_FILE"; set +a
+  set -a
+  # shellcheck disable=SC1090  # the env file path is configurable by design
+  source "$ENV_FILE"
+  set +a
 }
 
 require_var() {
@@ -181,8 +183,10 @@ state_file() { printf '%s/%s/state.env' "$STATE_DIR" "$1"; }
 load_state() {
   local file; file="$(state_file "$1")"
   [[ -f "$file" ]] || die "no state for actor '$1' — run: $0 did $1"
-  # shellcheck disable=SC1090
-  set -a; source "$file"; set +a
+  set -a
+  # shellcheck disable=SC1090  # one state file per actor, resolved at runtime
+  source "$file"
+  set +a
 }
 
 cmd_preflight() {

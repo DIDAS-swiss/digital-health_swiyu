@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      # The generated issuer metadata carries SRI hashes over the exact bytes of
+      # the Type Metadata, schema and OCA documents. If a credential definition
+      # changes and config/ is not regenerated, the hashes describe documents
+      # that are no longer served and every wallet rejects the metadata. Catch
+      # that here rather than in front of a phone.
+      - name: config/ is in sync with the credential definitions
+        run: |
+          npm run generate:config
+          if ! git diff --quiet --exit-code config/; then
+            echo "::error::config/ is stale. Run 'npm run generate:config' and commit the result."
+            git diff --stat config/
+            exit 1
+          fi
+
+      # The credential reference pages are generated from the definitions. If
+      # they drift, the documentation starts describing a system that is not
+      # the one in the repository — which is worse than having no reference.
+      - name: docs/credentials/ is in sync with the credential definitions
+        run: |
+          npm run generate:docs
+          if ! git diff --quiet --exit-code docs/credentials/; then
+            echo "::error::docs/credentials/ is stale. Run 'npm run generate:docs' and commit."
+            git diff --stat docs/credentials/
+            exit 1
+          fi
+
+      - name: Browser bundle builds
+        run: npm run build:browser
+
+      - name: Verification queries are publishable as vqPS
+        env:
+          PRAXIS_DID: did:webvh:ci:praxis
+          PHARMACY_DID: did:webvh:ci:pharmacy
+          TRAVEL_CLINIC_DID: did:webvh:ci:travel
+        run: npm run vqps
+
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck the onboarding script
+        run: |
+          sudo apt-get update && sudo apt-get install -y shellcheck
+          shellcheck --severity=warning scripts/onboard.sh
