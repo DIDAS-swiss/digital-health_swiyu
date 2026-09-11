@@ -148,6 +148,18 @@ export const IMMUNIZATION: CredentialDefinition = {
         purpose: 'Secondary use under explicit, revocable patient consent',
         claims: ['vaccine_code', 'target_disease', 'occurrence_date', 'dose_number'],
       },
+      {
+        /**
+         * A national coverage survey. It samples households from the
+         * population register, so it already knows the age and the canton of
+         * the person it invited — which is why this entitlement carries no
+         * identifying claim and no demographic one. What it cannot get from
+         * its own frame is the clinical fact, and that is all it asks for.
+         */
+        role: 'ch.didas.health.role.statistics',
+        purpose: 'National vaccination coverage monitoring',
+        claims: ['target_disease', 'occurrence_date', 'dose_number', 'doses_in_series', 'vaccine_code'],
+      },
     ],
   },
   claims: [

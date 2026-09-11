@@ -49,7 +49,7 @@ consequences follow that no amount of integration work delivers otherwise:
 | **Pharmacy** | A prescription that can be verified and used up exactly once, without a central e-prescription register | A verifier deployment; a DID |
 | **Insurer** | Card data that can be revoked the day cover ends, in place of a plastic card that stays in circulation for years | An issuer deployment; a DID |
 | **Laboratory** | Results delivered to the patient without operating a portal | An issuer deployment |
-| **Public health** | Vaccination coverage that is at least *knowable* per encounter, and a credential format that carries SNOMED codes | Loses the automatic population view a central register would give (see below) |
+| **Public health** | A coverage survey that reads structured, signed, already-coded records instead of photocopied booklets | Loses the ability to enumerate susceptible individuals for outbreak response or recall (see below) |
 | **Confederation / cantons** | A health use case on infrastructure already being built for the e-ID; no new register to fund, secure or defend | Standing up a health-domain governance body — the real cost, and the real blocker |
 
 ## What it costs to run
@@ -106,10 +106,12 @@ usually lack.
 
 ## What this does not solve, and should not claim to
 
-- **Population-level surveillance.** A decentralised record does not produce
-  coverage statistics as a side effect. Consent-based secondary use is sketched
-  in [F-09](../flows/F-09-secondary-use.md), and it substitutes for neither.
-  Claiming otherwise would be the weakest argument in this project.
+- **Targeting named individuals.** Coverage *measurement* survives: the Swiss
+  National Vaccination Coverage Survey samples households and reads the record
+  the family holds, so it never depended on a central register. What a
+  decentralised record removes is the ability to enumerate the susceptible —
+  outbreak response, recall and catch-up campaigns. See
+  [the public health view](public-health.md).
 - **Patients without a smartphone.** Every flow must degrade to the existing
   paper or plastic path without making those patients second-class. That is a
   service-design problem this repository does not answer.

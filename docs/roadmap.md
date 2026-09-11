@@ -62,7 +62,14 @@ What has to be built:
 5. **EPD/DEP integration.** The Swiss electronic patient record is the
    incumbent. The coherent position for a decentralised design is that it
    becomes one issuer among others. That position has to be argued for.
-6. **Composition with the openEHR/HL7 blueprint.** The joint working group of
+6. **The national coverage survey** ([F-11](../flows/F-11-coverage-survey.md)).
+   EBPI's Swiss National Vaccination Coverage Survey already reads the record
+   the family holds, by asking for a photocopy. Replacing that photocopy with a
+   presentation discloses less, arrives structured and signed, and needs no
+   identifying claim, because the sampling frame already carries the age and the
+   canton. The cheapest pilot in this list, because the counterfactual is an
+   envelope.
+7. **Composition with the openEHR/HL7 blueprint.** The joint working group of
    openEHR Switzerland and HL7 Switzerland is turning the other 2026 showcase —
    FHIR intake into an openEHR clinical data repository — into a reusable
    blueprint. Both directions of composition are already specified here (a
@@ -71,7 +78,7 @@ What has to be built:
    been built. This is the highest-value item on this list, because it is the
    one that makes a wallet credential useful to a longitudinal record rather
    than a competitor to it. See [positioning](positioning.md).
-7. **Emergency access.** The hardest question in the architecture: a patient who
+8. **Emergency access.** The hardest question in the architecture: a patient who
    is unconscious cannot consent, and any break-glass mechanism reintroduces a
    party that can read the record without them.
 
