@@ -147,10 +147,14 @@ sequenceDiagram
    same credential; batch issuance mitigates this but is not used here, because
    with a series of dose credentials the claim values themselves are close to
    identifying. This flow is linkable, and stating so is part of the record.
-3. **Herd-level reporting.** Public health needs coverage statistics that a
-   fully decentralised record does not produce as a side effect. F-09 sketches
-   consent-based secondary use; it is not a substitute for surveillance, and
-   pretending otherwise would be the weakest claim in this blueprint.
+3. **Enumerating the susceptible.** Coverage *measurement* is less affected
+   than it looks: the Swiss National Vaccination Coverage Survey samples
+   households and reads the record the family holds, so it never queried a
+   register. What a decentralised record removes is the ability to find the
+   individuals who are behind — outbreak response and catch-up campaigns. F-09
+   sketches consent-based secondary use, which is research with consent rather
+   than surveillance, because a self-selected sample is biased in ways a
+   prevalence estimate cannot correct for. See `docs/public-health.md`.
 
 ## Implementation status
 

@@ -8,6 +8,7 @@ Start wherever your question is.
 | --- | --- |
 | [**Business case**](business-case.md) | The problem, what each party gets, what it costs, why 2026, and what this deliberately does not solve. |
 | [**Roadmap**](roadmap.md) | Immunization Showcase (2026, delivered) → International Patient Summary (2027) → Swiss Health App (2028). |
+| [**The public health view**](public-health.md) | What a population-health reader should take from this: coverage measurement survives, targeting individuals does not, and equity is the question the design has not answered. |
 | [**Positioning**](positioning.md) | Two showcases at one hackathon: this one and the openEHR clinical data repository. The objection to wallet-held records, stated at full strength, and where the two compose. |
 
 ## How it is governed
