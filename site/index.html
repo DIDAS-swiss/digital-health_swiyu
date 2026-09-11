@@ -1,0 +1,880 @@
+<title>Immunization Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+<style>
+  /* ---- tokens: complete light palette on bare :root ---------------- */
+  :root {
+    --paper:      #F1F4F2;
+    --surface:    #FFFFFF;
+    --surface-2:  #E7EBE8;
+    --ink:        #12211F;
+    --ink-2:      #41504C;
+    --ink-3:      #77827E;
+    --rule:       #D4DBD7;
+    --rule-soft:  #E3E8E5;
+    --accent:     #0B6E5F;
+    --accent-ink: #FFFFFF;
+    --accent-wash:#DDEDE8;
+    --withheld:   #A2442F;
+    --withheld-wash: #F3E3DF;
+
+    --display: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+    --body: "Archivo", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --measure: 68ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #0E1513;
+      --surface:    #151E1B;
+      --surface-2:  #1D2724;
+      --ink:        #E4EAE7;
+      --ink-2:      #AFBAB6;
+      --ink-3:      #7F8B87;
+      --rule:       #2A3532;
+      --rule-soft:  #202b28;
+      --accent:     #3FAE97;
+      --accent-ink: #07110F;
+      --accent-wash:#16302A;
+      --withheld:   #DD8873;
+      --withheld-wash: #2E1C17;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #0E1513;
+    --surface:    #151E1B;
+    --surface-2:  #1D2724;
+    --ink:        #E4EAE7;
+    --ink-2:      #AFBAB6;
+    --ink-3:      #7F8B87;
+    --rule:       #2A3532;
+    --rule-soft:  #202b28;
+    --accent:     #3FAE97;
+    --accent-ink: #07110F;
+    --accent-wash:#16302A;
+    --withheld:   #DD8873;
+    --withheld-wash: #2E1C17;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16.5px;
+    line-height: 1.6;
+    font-synthesis-weight: none;
+  }
+  .wrap { max-width: 1020px; margin-inline: auto; padding-inline: 22px; }
+
+  /* ---- masthead ---------------------------------------------------- */
+  .masthead { border-bottom: 1px solid var(--rule); padding-block: 46px 34px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px;
+  }
+  h1 {
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(2.3rem, 6.2vw, 3.7rem); line-height: 1.04;
+    letter-spacing: -0.018em; margin: 0 0 20px; text-wrap: balance;
+    max-width: 17ch;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede {
+    font-size: 1.12rem; line-height: 1.62; color: var(--ink-2);
+    max-width: var(--measure); margin: 0;
+  }
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  .facts {
+    display: flex; flex-wrap: wrap; gap: 0;
+    margin-top: 34px; border-top: 1px solid var(--rule);
+  }
+  .fact {
+    flex: 1 1 168px; padding: 16px 20px 14px 0; border-right: 1px solid var(--rule-soft);
+  }
+  .fact:last-child { border-right: 0; }
+  .fact b {
+    display: block; font-family: var(--display); font-weight: 600;
+    font-size: 1.85rem; line-height: 1; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .fact span {
+    display: block; margin-top: 7px; font-size: 0.82rem; color: var(--ink-3);
+    line-height: 1.4;
+  }
+
+  /* ---- sections ---------------------------------------------------- */
+  main { padding-block: 8px 64px; }
+  section { padding-block: 42px; border-bottom: 1px solid var(--rule-soft); }
+  section:last-of-type { border-bottom: 0; }
+  .kicker {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.11em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 10px;
+  }
+  h2 {
+    font-family: var(--display); font-weight: 500; letter-spacing: -0.014em;
+    font-size: clamp(1.5rem, 3.2vw, 1.95rem); line-height: 1.16;
+    margin: 0 0 16px; text-wrap: balance; max-width: 24ch;
+  }
+  h3 {
+    font-family: var(--body); font-weight: 600; font-size: 0.94rem;
+    letter-spacing: 0.005em; margin: 0 0 8px;
+  }
+  p { max-width: var(--measure); margin: 0 0 15px; }
+  p:last-child { margin-bottom: 0; }
+  .prose-note {
+    color: var(--ink-2); font-size: 0.95rem;
+  }
+  code, .mono { font-family: var(--mono); font-size: 0.86em; }
+  code { background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px;
+  }
+
+  /* pull-quote used once, for the failure this project is a response to */
+  .pull {
+    max-width: var(--measure);
+    border-left: 2px solid var(--withheld);
+    padding: 2px 0 2px 20px; margin: 24px 0;
+  }
+  .pull p {
+    font-family: var(--display); font-size: 1.2rem; line-height: 1.42;
+    font-weight: 400; color: var(--ink); margin: 0;
+  }
+  .pull cite {
+    display: block; margin-top: 10px; font-family: var(--mono); font-style: normal;
+    font-size: 0.72rem; letter-spacing: 0.05em; color: var(--ink-3);
+    text-transform: uppercase;
+  }
+
+  /* ---- figure ------------------------------------------------------ */
+  figure { margin: 26px 0 0; }
+  .figbox {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 4px; padding: 22px 20px; overflow-x: auto;
+  }
+  figure svg { display: block; width: 100%; min-width: 660px; height: auto; }
+  figcaption {
+    margin-top: 12px; font-size: 0.84rem; color: var(--ink-3);
+    max-width: var(--measure); line-height: 1.5;
+  }
+
+  /* ---- disclosure explorer ----------------------------------------- */
+  .explorer {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 4px;
+    margin-top: 26px;
+  }
+  .roles {
+    display: flex; flex-wrap: wrap; gap: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .roles button {
+    flex: 1 1 150px; appearance: none; background: transparent; border: 0;
+    border-right: 1px solid var(--rule-soft); border-bottom: 3px solid transparent;
+    padding: 13px 14px 11px; text-align: left; cursor: pointer;
+    font-family: var(--body); font-size: 0.86rem; font-weight: 500; color: var(--ink-2);
+    transition: background 120ms ease, color 120ms ease;
+  }
+  .roles button:last-child { border-right: 0; }
+  .roles button:hover { background: var(--surface-2); color: var(--ink); }
+  .roles button[aria-selected="true"] {
+    color: var(--ink); border-bottom-color: var(--accent); background: var(--accent-wash);
+  }
+  .roles button .rid {
+    display: block; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.05em;
+    color: var(--ink-3); margin-top: 4px; text-transform: lowercase;
+  }
+  .purpose {
+    padding: 16px 20px 4px; display: flex; flex-wrap: wrap; gap: 14px 26px;
+    align-items: baseline;
+  }
+  .purpose .why { flex: 1 1 300px; font-size: 0.92rem; color: var(--ink-2); margin: 0; }
+  .tally {
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.03em;
+    white-space: nowrap; color: var(--ink-3);
+  }
+  .tally b { color: var(--accent); font-size: 1.5rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .claimgrid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+    gap: 5px; padding: 14px 20px 20px;
+  }
+  .claim {
+    font-family: var(--mono); font-size: 0.755rem; line-height: 1.35;
+    padding: 6px 9px; border-radius: 3px; border: 1px solid var(--rule-soft);
+    color: var(--ink-3); background: transparent;
+    display: flex; align-items: center; gap: 7px;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .claim .mark { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--rule); }
+  .claim.released {
+    color: var(--ink); background: var(--accent-wash);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  .claim.released .mark { background: var(--accent); }
+  .claim.withheld { text-decoration: line-through; text-decoration-color: var(--rule); }
+  .claim.protected { border-style: dashed; }
+  .explorer-foot {
+    border-top: 1px solid var(--rule-soft); padding: 13px 20px;
+    font-size: 0.85rem; color: var(--ink-3);
+  }
+  .explorer-foot strong { color: var(--ink-2); font-weight: 500; }
+  @media (prefers-reduced-motion: reduce) {
+    .claim, .roles button { transition: none; }
+  }
+
+  /* ---- gates ------------------------------------------------------- */
+  .gates { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px;
+           background: var(--rule); border: 1px solid var(--rule); border-radius: 4px;
+           margin-top: 24px; overflow: hidden; }
+  .gate { background: var(--surface); padding: 18px 18px 20px; }
+  .gate .fn {
+    font-family: var(--mono); font-size: 0.74rem; color: var(--accent);
+    display: block; margin-bottom: 9px;
+  }
+  .gate p { font-size: 0.89rem; color: var(--ink-2); margin: 0; }
+
+  /* ---- tables ------------------------------------------------------ */
+  .tablewrap { overflow-x: auto; margin-top: 22px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.87rem; min-width: 520px; }
+  caption { caption-side: top; text-align: left; font-size: 0.8rem; color: var(--ink-3); padding-bottom: 10px; }
+  th, td { text-align: left; padding: 9px 14px 9px 0; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  thead th {
+    font-family: var(--mono); font-weight: 500; font-size: 0.7rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3); border-bottom-color: var(--rule);
+  }
+  td .mono { color: var(--ink-2); }
+
+  /* ---- flow list with real ids as the rail ------------------------- */
+  .flows { margin-top: 22px; border-top: 1px solid var(--rule); }
+  .flow {
+    display: grid; grid-template-columns: 58px 1fr auto; gap: 16px;
+    align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--rule-soft);
+  }
+  .flow .fid { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); }
+  .flow .ftitle { font-size: 0.93rem; }
+  .flow .ftitle span { display: block; font-size: 0.83rem; color: var(--ink-3); margin-top: 2px; }
+  .status {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 2px; white-space: nowrap;
+  }
+  .status.built { background: var(--accent-wash); color: var(--accent); }
+  .status.partial { background: var(--surface-2); color: var(--ink-2); }
+  .status.later { background: transparent; color: var(--ink-3); border: 1px solid var(--rule); }
+
+  /* ---- roadmap ----------------------------------------------------- */
+  .roadmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(238px, 1fr)); gap: 18px; margin-top: 24px; }
+  .stage { border-top: 2px solid var(--rule); padding-top: 14px; }
+  .stage.now { border-top-color: var(--accent); }
+  .stage .yr {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--ink-3);
+    display: block; margin-bottom: 6px;
+  }
+  .stage.now .yr { color: var(--accent); }
+  .stage h3 { font-family: var(--display); font-weight: 500; font-size: 1.12rem; margin-bottom: 8px; }
+  .stage ul { margin: 0; padding-left: 17px; font-size: 0.87rem; color: var(--ink-2); line-height: 1.5; }
+  .stage li { margin-bottom: 4px; }
+
+  .rmsub {
+    font-family: var(--display); font-weight: 500; font-size: 1.02rem;
+    margin: 34px 0 10px; padding-top: 20px; border-top: 1px solid var(--rule-soft);
+  }
+  .rmnote { font-size: 0.87rem; color: var(--ink-2); margin-top: 14px; }
+
+  /* ---- code sample ------------------------------------------------- */
+  .projections { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 24px; }
+  .projection { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+  .projection h3 {
+    padding: 11px 15px; margin: 0; border-bottom: 1px solid var(--rule-soft);
+    font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 500;
+  }
+  .projection pre {
+    margin: 0; padding: 14px 15px; overflow-x: auto;
+    font-family: var(--mono); font-size: 0.72rem; line-height: 1.55; color: var(--ink-2);
+  }
+  .projection .k { color: var(--accent); }
+
+  /* ---- open questions --------------------------------------------- */
+  .oq { margin-top: 22px; display: grid; gap: 1px; background: var(--rule);
+        border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+  .oq > div { background: var(--surface); padding: 16px 18px; }
+  .oq h3 { margin-bottom: 6px; }
+  .oq p { font-size: 0.89rem; color: var(--ink-2); margin: 0; max-width: none; }
+  .oq .blocker { background: var(--withheld-wash); }
+  .oq .blocker h3 { color: var(--withheld); }
+
+  footer {
+    border-top: 1px solid var(--rule); padding-block: 26px 46px;
+    font-size: 0.85rem; color: var(--ink-3);
+  }
+  footer p { max-width: var(--measure); }
+  footer .repo { font-family: var(--mono); font-size: 0.82rem; }
+
+  @media (max-width: 620px) {
+    .fact { border-right: 0; border-bottom: 1px solid var(--rule-soft); padding-right: 0; }
+    .flow { grid-template-columns: 46px 1fr; }
+    .flow .status { grid-column: 2; justify-self: start; }
+  }
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">DIDAS · GovTech Hackathon · roadmap step 1 · 2026</p>
+    <h1>A vaccination record that <em>no one has to operate</em></h1>
+    <p class="lede">
+      Switzerland's e-ID trust infrastructure, <strong>swiyu</strong>, is built for credentials the
+      holder keeps. This is what happens when you point it at health data: a practice records an
+      administered dose into the patient's wallet, and a travel clinic later confirms protection —
+      receiving <strong>four of the eighteen claims</strong> the credential holds, because the other
+      fourteen never leave the phone. Running code against the swiyu Sandbox and Swiss Profiles 1.0.
+    </p>
+    <div class="facts">
+      <div class="fact"><b>4 / 18</b><span>claims released when a travel clinic asks about protection</span></div>
+      <div class="fact"><b>5</b><span>credential types, each generating its own metadata, schema and wallet rendering</span></div>
+      <div class="fact"><b>10</b><span>documented flows with governance and standardisation constraints</span></div>
+      <div class="fact"><b>0</b><span>registries, repositories or patient indexes operated by anyone</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <p class="kicker">The problem this answers</p>
+    <h2>Switzerland already ran the centralised version</h2>
+    <p>
+      <code>meineimpfungen.ch</code> held the national electronic vaccination record until 2021, when
+      it was shut down after serious security failures. Several hundred thousand people lost access to
+      their own vaccination history at once.
+    </p>
+    <p>
+      The conclusion usually drawn is that the platform was badly built. The more useful one is
+      structural: a design in which one database holds everyone's record has a failure mode that
+      careful engineering does not remove. It can be breached, defunded, or simply switched off — and
+      when it is, everyone loses simultaneously.
+    </p>
+    <div class="pull">
+      <p>The paper vaccination booklet has one property the platform never had: it survives the
+        organisation that issued it.</p>
+      <cite>The design constraint this project starts from</cite>
+    </div>
+    <p>
+      So the record here is a set of credentials in the patient's wallet. Each administered dose is
+      its own credential, signed by whoever administered it. A practice that closes cannot take the
+      record with it; neither can a platform that is wound up.
+    </p>
+  </section>
+
+  <section>
+    <p class="kicker">The mechanism</p>
+    <h2>Four organisations, one wallet, no shared database</h2>
+    <p>
+      Credentials flow into the wallet from whoever is entitled to assert them, and out of it only in
+      answer to a specific question. The one piece of shared infrastructure is the status list — a bit
+      array published by the Confederation's Base Registry that says whether a credential is still
+      valid, and nothing else about it.
+    </p>
+
+    <figure>
+      <div class="figbox">
+        <svg viewBox="0 0 900 436" role="img" aria-label="Issuers write credentials into the patient's wallet over OpenID4VCI; verifiers ask the wallet for specific claims over OpenID4VP; both sides touch only a status list on the Base Registry, which carries no patient data.">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="ar-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#0B6E5F"></path>
+            </marker>
+          </defs>
+
+          <!-- column headings -->
+          <text x="16" y="18" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity="0.55" letter-spacing="1">ISSUERS</text>
+          <text x="352" y="18" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity="0.55" letter-spacing="1">HOLDER</text>
+          <text x="712" y="18" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity="0.55" letter-spacing="1">VERIFIERS</text>
+
+          <!-- issuers -->
+          <g font-family="Archivo, sans-serif" font-size="12.5" fill="currentColor">
+            <rect x="16" y="34" width="196" height="56" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.35"></rect>
+            <text x="30" y="55">Confederation · BCS</text>
+            <text x="30" y="74" font-size="11" opacity="0.62">Beta-ID → e-ID from 2026</text>
+
+            <rect x="16" y="104" width="196" height="56" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.35"></rect>
+            <text x="30" y="125">Health insurer</text>
+            <text x="30" y="144" font-size="11" opacity="0.62">Insurance card</text>
+
+            <rect x="16" y="174" width="196" height="76" rx="3" fill="none" stroke="#0B6E5F" stroke-width="1.6"></rect>
+            <text x="30" y="195" fill="#0B6E5F">Practice · vaccinator</text>
+            <text x="30" y="214" font-size="11" opacity="0.62">Immunization, one per dose</text>
+            <text x="30" y="231" font-size="11" opacity="0.62">Lab report · prescription</text>
+          </g>
+
+          <!-- wallet -->
+          <rect x="352" y="34" width="196" height="216" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.6"></rect>
+          <text x="366" y="55" font-family="Archivo, sans-serif" font-size="13" font-weight="600" fill="currentColor">Patient wallet</text>
+          <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.72">
+            <text x="366" y="82">betaid-sdjwt</text>
+            <text x="366" y="104">insurance-card:1.0</text>
+            <text x="366" y="126">immunization:1.0  ×3</text>
+            <text x="366" y="148">lab-report:1.0</text>
+            <text x="366" y="170">prescription:1.0</text>
+          </g>
+          <text x="366" y="204" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.6">SD-JWT VC · every claim</text>
+          <text x="366" y="220" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.6">selectively disclosable</text>
+
+          <!-- verifiers -->
+          <g font-family="Archivo, sans-serif" font-size="12.5" fill="currentColor">
+            <rect x="688" y="34" width="196" height="56" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.35"></rect>
+            <text x="702" y="55">Practice reception</text>
+            <text x="702" y="74" font-size="11" opacity="0.62">13 claims · identity + cover</text>
+
+            <rect x="688" y="104" width="196" height="56" rx="3" fill="none" stroke="#0B6E5F" stroke-width="1.6"></rect>
+            <text x="702" y="125" fill="#0B6E5F">Travel clinic</text>
+            <text x="702" y="144" font-size="11" opacity="0.62">4 claims · protection only</text>
+
+            <rect x="688" y="174" width="196" height="56" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.35"></rect>
+            <text x="702" y="195">Pharmacy</text>
+            <text x="702" y="214" font-size="11" opacity="0.62">10 claims · to dispense</text>
+          </g>
+
+          <!-- issue arrows -->
+          <g stroke="currentColor" stroke-opacity="0.5" fill="none">
+            <path d="M 212 62 L 344 90" marker-end="url(#ar)"></path>
+            <path d="M 212 132 L 344 124" marker-end="url(#ar)"></path>
+          </g>
+          <path d="M 212 212 L 344 160" stroke="#0B6E5F" stroke-width="1.6" fill="none" marker-end="url(#ar-acc)"></path>
+          <text x="238" y="108" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">OpenID4VCI</text>
+          <text x="238" y="122" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.55">issues</text>
+
+          <!-- present arrows -->
+          <g stroke="currentColor" stroke-opacity="0.5" fill="none">
+            <path d="M 548 84 L 680 62" marker-end="url(#ar)"></path>
+            <path d="M 548 178 L 680 202" marker-end="url(#ar)"></path>
+          </g>
+          <path d="M 548 132 L 680 132" stroke="#0B6E5F" stroke-width="1.6" fill="none" marker-end="url(#ar-acc)"></path>
+          <text x="572" y="112" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">OpenID4VP</text>
+          <text x="572" y="126" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.55">asks for n claims</text>
+
+          <!-- base registry -->
+          <rect x="212" y="332" width="476" height="62" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="5 4"></rect>
+          <text x="232" y="356" font-family="Archivo, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">Base Registry · status lists</text>
+          <text x="232" y="376" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.62">2 bits per credential. No patient, no medication, no pharmacy.</text>
+
+          <!-- status arrows -->
+          <g stroke="currentColor" stroke-opacity="0.45" fill="none" stroke-dasharray="4 4">
+            <path d="M 114 252 L 114 362 L 204 362" marker-end="url(#ar)"></path>
+            <path d="M 786 232 L 786 362 L 696 362" marker-end="url(#ar)"></path>
+          </g>
+          <text x="126" y="290" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">publishes ·</text>
+          <text x="126" y="304" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">revokes</text>
+          <text x="700" y="290" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">checks</text>
+          <text x="700" y="304" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">validity</text>
+
+          <!-- redemption edge -->
+          <path d="M 786 232 L 786 268 L 114 268 L 114 258" stroke="currentColor" stroke-opacity="0.35" fill="none" marker-end="url(#ar)"></path>
+          <text x="286" y="262" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.62">pharmacy asks the prescriber to revoke — only the issuer can</text>
+          <text x="16" y="424" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.55">Green marks the immunization showcase path.</text>
+        </svg>
+      </div>
+      <figcaption>
+        The status list is the only thing both sides touch, and it carries two bits per credential —
+        which is why a prescription can be made single-use without anyone keeping a register of who
+        was prescribed what.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <p class="kicker">The thesis, made operable</p>
+    <h2>Pick who is asking. Watch what they get.</h2>
+    <p>
+      The immunization credential carries eighteen claims. What a verifier receives is not decided by
+      their good behaviour, and not filtered after the fact — it is decided by an entitlement attached
+      to their registered role, and the request is refused when the query is <em>built</em>. Once the
+      wallet has answered, the data is out, and a check any later is only a promise.
+    </p>
+
+    <div class="explorer">
+      <div class="roles" role="tablist" aria-label="Verifier role">
+        <button role="tab" data-role="travel" aria-selected="true">Travel clinic<span class="rid">role.travel-clinic</span></button>
+        <button role="tab" data-role="pharmacy" aria-selected="false">Pharmacy<span class="rid">role.pharmacy</span></button>
+        <button role="tab" data-role="practice" aria-selected="false">Practice<span class="rid">role.practice</span></button>
+        <button role="tab" data-role="research" aria-selected="false">Research<span class="rid">role.research</span></button>
+      </div>
+      <div class="purpose">
+        <p class="why" id="purpose-text"></p>
+        <p class="tally"><b id="tally-n">4</b> / 18 claims released</p>
+      </div>
+      <div class="claimgrid" id="claimgrid"></div>
+      <div class="explorer-foot" id="explorer-foot"></div>
+    </div>
+
+    <p class="prose-note" style="margin-top:22px">
+      A paper vaccination booklet handed across a counter discloses everything on the page. A PDF from
+      a portal discloses everything in the file. A registry lookup discloses everything the registry
+      holds, plus the fact that the lookup happened.
+    </p>
+  </section>
+
+  <section>
+    <p class="kicker">Governance</p>
+    <h2>Three gates, enforced in the flow</h2>
+    <p>
+      The technical profile answers "can this message be validated". It does not answer the questions
+      that actually decide whether health data should change hands. Those live in code, run in order,
+      and record their reasons either way.
+    </p>
+    <div class="gates">
+      <div class="gate">
+        <span class="fn">reviewIssuance()</span>
+        <h3>Who may assert this?</h3>
+        <p>A practice may issue an immunization because it holds the vaccinator role. An insurer may
+          not. Refused before the request reaches the issuer.</p>
+      </div>
+      <div class="gate">
+        <span class="fn">reviewRequest()</span>
+        <h3>Who may ask, and for what?</h3>
+        <p>Claims outside the role's entitlement are refused at query construction. Protected fields —
+          the AHV number — need their own grant, whatever credential carries them.</p>
+      </div>
+      <div class="gate">
+        <span class="fn">reviewPresentation()</span>
+        <h3>Should this be accepted?</h3>
+        <p>Status list first, then Trust Protocol 2.0 markers. A governed use case without
+          authorisation is refused under every policy, because that rule is a MUST.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:26px">
+      One detail demonstrators usually get wrong. The Swiss Profile's
+      <em>SHOULD</em>-level trust rules cannot be satisfied in the Sandbox, where actors have no
+      identity onboarding. Rather than deleting them, the Sandbox policy <strong>records them as
+      waived</strong> — the journal shows which rule was relaxed and why. A demo that silently drops
+      rules teaches that the rules are optional.
+    </p>
+    <p>
+      And the journal itself holds claim <em>names</em>, never claim values. It proves an interaction
+      stayed within the rules without quietly becoming a second copy of the patient's data. A test
+      asserts that no AHV number and no vaccine lot number ever reaches it.
+    </p>
+  </section>
+
+  <section>
+    <p class="kicker">Standards</p>
+    <h2>Reuse the clinical models. Decline the repository.</h2>
+    <p>
+      openEHR and HL7 FHIR are normally adopted as a package: shared information models <em>and</em> a
+      shared repository someone operates, governs, and the patient does not control. This project takes
+      the first and declines the second.
+    </p>
+    <p>
+      Every claim carries its FHIR element path and, where one exists, its openEHR archetype path. At
+      the moment of presentation the receiving system rebuilds the representation it already
+      understands — locally, from what the holder released, with no CDR and no FHIR server on either
+      side.
+    </p>
+    <div class="projections">
+      <div class="projection">
+        <h3>HL7 FHIR · CH VACD</h3>
+<pre><span class="k">"resourceType"</span>: "Immunization",
+<span class="k">"status"</span>: "completed",
+<span class="k">"vaccineCode"</span>: {
+  "coding": [{
+    "system": "http://snomed.info/sct",
+    "code": "871895005" }],
+  "text": "dTpa-IPV combination vaccine" },
+<span class="k">"occurrenceDateTime"</span>: "2026-09-11",
+<span class="k">"lotNumber"</span>: "S4021-B",
+<span class="k">"protocolApplied"</span>: [{
+  "targetDisease": [ … ],
+  "doseNumberPositiveInt": 1,
+  "seriesDosesPositiveInt": 3 }]</pre>
+      </div>
+      <div class="projection">
+        <h3>openEHR · flat composition</h3>
+<pre><span class="k">immunisation/</span>medication_management/
+  medication_item:      "dTpa-IPV combination vaccine"
+<span class="k">immunisation/</span>medication_management/
+  medication_item/code: "871895005"
+<span class="k">immunisation/</span>medication_management/
+  time:                 "2026-09-11"
+<span class="k">immunisation/</span>medication_management/
+  batch_id:             "S4021-B"
+<span class="k">immunisation/</span>medication_management/
+  route:                "IM"
+<span class="k">immunisation/</span>territory|code:    "CH"</pre>
+      </div>
+    </div>
+    <p class="prose-note" style="margin-top:18px">
+      Two properties are load-bearing and are stated wherever the code does it. A projection is
+      <strong>derived, never authoritative</strong> — the signed credential stays the evidence. And it
+      is <strong>legitimately partial</strong>: after selective disclosure a resource may have findings
+      and no patient name, and receiving systems have to accept a missing element as a
+      legitimate outcome. That is the real integration cost of this approach.
+    </p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Pinned to Swiss Profiles 1.0 as published for the swiyu Sandbox.</caption>
+        <thead>
+          <tr><th>Profile</th><th>Carries</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">swiss-profile-anchor:1.0.0</td><td>DID Core 1.0, <code>did:webvh</code> 1.0</td></tr>
+          <tr><td class="mono">swiss-profile-issuance:1.0.0</td><td>OpenID4VCI 1.0, OAuth 2.0 DPoP (RFC 9449)</td></tr>
+          <tr><td class="mono">swiss-profile-verification:1.0.0</td><td>OpenID4VP 1.0 with DCQL, JAR (RFC 9101)</td></tr>
+          <tr><td class="mono">swiss-profile-vc:1.0.0</td><td>SD-JWT (RFC 9901), SD-JWT VC draft-15, Token Status List draft-20, OCA 1.0</td></tr>
+          <tr><td class="mono">Trust Protocol 2.0</td><td>Trust markers, trust registry, protected fields</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">The blueprint</p>
+    <h2>Ten flows, written to be handed to someone else</h2>
+    <p>
+      Each flow is a self-contained file with machine-readable front matter, a sequence diagram, its
+      governance constraints, its standardisation constraints, and its open questions — written for
+      transfer into a trust flows repository, where it will sit beside flows from sectors that have
+      nothing to do with this codebase.
+    </p>
+    <div class="flows">
+      <div class="flow"><span class="fid">F-01</span><span class="ftitle">Becoming an actor<span>DID, trust statement, role grant</span></span><span class="status partial">Partial</span></div>
+      <div class="flow"><span class="fid">F-02</span><span class="ftitle">Recording an administered dose<span>One credential per dose, issued by whoever vaccinated</span></span><span class="status built">Built</span></div>
+      <div class="flow"><span class="fid">F-03</span><span class="ftitle">Proving protection, and nothing else<span>Four claims of eighteen</span></span><span class="status built">Built</span></div>
+      <div class="flow"><span class="fid">F-04</span><span class="ftitle">Check-in at the practice<span>Two issuers, one presentation, a name that must match</span></span><span class="status built">Built</span></div>
+      <div class="flow"><span class="fid">F-05</span><span class="ftitle">Prescription and its redemption<span>Single use, without a register of who was prescribed what</span></span><span class="status built">Built</span></div>
+      <div class="flow"><span class="fid">F-06</span><span class="ftitle">Correction, suspension and revocation<span>Why business expiry and technical expiry must stay apart</span></span><span class="status partial">Partial</span></div>
+      <div class="flow"><span class="fid">F-07</span><span class="ftitle">Projecting into FHIR and openEHR<span>Models without the repository</span></span><span class="status built">Built</span></div>
+      <div class="flow"><span class="fid">F-08</span><span class="ftitle">Assembling an International Patient Summary<span>Allergies, problems, medication statements</span></span><span class="status later">Step 2</span></div>
+      <div class="flow"><span class="fid">F-09</span><span class="ftitle">Secondary use under revocable consent<span>Identifying claims excluded by construction</span></span><span class="status later">Step 2</span></div>
+      <div class="flow"><span class="fid">F-10</span><span class="ftitle">Wearables and continuous data<span>Where the event model stops working</span></span><span class="status later">Step 3</span></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="kicker">Mid-term ambition</p>
+    <h2>Where this goes</h2>
+    <div class="roadmap">
+      <div class="stage now">
+        <span class="yr">2026 · delivered</span>
+        <h3>Immunization Showcase</h3>
+        <ul>
+          <li>FHIR / openEHR interplay</li>
+          <li>End-to-end prototype, runnable offline</li>
+          <li>Blueprint — the ten flows</li>
+          <li>Governance model with real refusals</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <span class="yr">2027 · specified</span>
+        <h3>International Patient Summary</h3>
+        <ul>
+          <li>Allergies, problems, medication statements</li>
+          <li>Multi-credential presentation at scale</li>
+          <li>Absence semantics — "none known" vs "none held"</li>
+          <li>EPD / DEP as one issuer among others</li>
+          <li>Composition with the openEHR / HL7 blueprint</li>
+        </ul>
+      </div>
+      <div class="stage">
+        <span class="yr">2028 · sketched</span>
+        <h3>Swiss Health App</h3>
+        <ul>
+          <li>Wearable and continuous data</li>
+          <li>Summary credentials with accountable computation</li>
+          <li>Measurement provenance, standing consent</li>
+          <li>User experience optimised</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="rmsub">Step 1, item by item</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Deliverable</th><th>Status</th><th>Where</th></tr></thead>
+        <tbody>
+          <tr><td>End-to-end prototype</td><td>Done</td><td class="mono">apps/demo</td></tr>
+          <tr><td>Immunization credential, issuance and verification</td><td>Done</td><td class="mono">F-02, F-03</td></tr>
+          <tr><td>FHIR / openEHR interplay</td><td>Done</td><td class="mono">F-07, projections.ts</td></tr>
+          <tr><td>Blueprint</td><td>Done</td><td class="mono">flows/ — ten flows</td></tr>
+          <tr><td>Governance model</td><td>Done</td><td class="mono">governance.ts</td></tr>
+          <tr><td>Supporting consultation flows</td><td>Done</td><td class="mono">F-04, F-05</td></tr>
+          <tr><td>Lifecycle and correction</td><td>Partial</td><td class="mono">F-06 — supersession missing</td></tr>
+          <tr><td>Actor onboarding</td><td>Partial</td><td class="mono">F-01 — no governance body</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="rmsub">The IPS sections step 2 has to cover</h3>
+    <p>
+      Step 1 covers Immunizations, and reaches partway into Medications and Results. The remaining
+      sections are the natural unit of work for 2027, with the LOINC codes the IPS uses:
+    </p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Section</th><th>LOINC</th><th>Status here</th></tr></thead>
+        <tbody>
+          <tr><td>Immunizations</td><td class="mono">11369-6</td><td>Covered — the showcase credential</td></tr>
+          <tr><td>Medications</td><td class="mono">10160-0</td><td>Partial — prescriptions, without medication statements</td></tr>
+          <tr><td>Results</td><td class="mono">30954-2</td><td>Partial — laboratory reports</td></tr>
+          <tr><td>Allergies</td><td class="mono">48765-2</td><td>Gap — the 2024 project carried these</td></tr>
+          <tr><td>Problems</td><td class="mono">11450-4</td><td>Step 2</td></tr>
+          <tr><td>Procedures</td><td class="mono">47519-4</td><td>Step 2</td></tr>
+          <tr><td>Devices</td><td class="mono">46264-8</td><td>Step 2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="rmnote">
+      Allergies are the one gap here against the project this work continues: the 2024 wallet carried
+      allergies and the practice asked for them at check-in. Everything else in this table is an
+      extension of what step 1 built.
+    </p>
+
+    <h3 class="rmsub">The other 2026 showcase</h3>
+    <p>
+      openEHR Switzerland brought a second vaccination showcase to the same hackathon: FHIR intake in
+      CH VACD format, persisted as an openEHR composition in a clinical data repository. openEHR
+      Switzerland and HL7 Switzerland have since formed a joint working group to turn it into a
+      reusable implementation blueprint. Their objection to the design on this page is the strongest
+      one available — a vaccination record has to stay clinically usable for a lifetime, and a
+      document exchanged at one moment is a different object from a record maintained over decades.
+    </p>
+    <p class="rmnote">
+      The 2024 project's own staging is where the two meet: document-oriented "EPD 1.0", structured
+      and server-based "EPD 2.0", structured and wallet-based "EPD 3.0". The openEHR showcase is a
+      working stage 2 and this one is a working stage 3, and both directions of composition are
+      already specified — a repository issuing credentials from records it holds, and a presented
+      credential projecting into the ingestion path that blueprint defines. Building that composition
+      is the highest-value item on the 2027 list.
+    </p>
+  </section>
+
+  <section>
+    <p class="kicker">Open questions</p>
+    <h2>What is not solved</h2>
+    <div class="oq">
+      <div class="blocker">
+        <h3>No one can grant the roles yet</h3>
+        <p>
+          Nothing here deploys until some body can issue the trust statement that says "this DID is a
+          practice authorised to vaccinate". The Confederation's onboarding verifies <em>who</em> an
+          organisation is; it does not say what it may do in healthcare. No health-domain governance
+          body exists to say that. The technology is ready some distance ahead of the institutional
+          arrangements — that is the headline finding of step 1, and no amount of code closes it.
+        </p>
+      </div>
+      <div>
+        <h3>Series across issuers</h3>
+        <p>Dose 2 is given by a pharmacy that cannot see dose 1. Today the administering party asserts
+          the dose number, so a wallet holding two "dose 1 of 3" credentials is possible. Resolving it
+          needs a presentation at administration time or a shared series identifier.</p>
+      </div>
+      <div>
+        <h3>The double-dispensing window</h3>
+        <p>Between a prescription being presented and being revoked there is a window in which a second
+          pharmacy could accept it. Paper has the same window and closes it physically.</p>
+      </div>
+      <div>
+        <h3>"Protected against X" is an inference</h3>
+        <p>The credential says which diseases a dose targets and when. Whether that amounts to
+          protection depends on the schedule and elapsed time. Who is accountable for that inference is
+          a clinical-safety question for the sector to settle.</p>
+      </div>
+      <div>
+        <h3>Presentations are not unlinkable</h3>
+        <p>A credential presented twice is the same credential. Batch issuance mitigates this but is
+          not used here, because with a dose series the claim values are themselves close to
+          identifying.</p>
+      </div>
+      <div>
+        <h3>Public health still needs numbers</h3>
+        <p>A fully decentralised record does not produce coverage statistics as a side effect.
+          Consent-based secondary use is sketched in F-09; it is not a substitute for surveillance, and
+          saying otherwise would be the weakest claim in this blueprint.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>
+    Implementation of <a href="https://hack.opendata.ch/project/1103">hack.opendata.ch project 1103</a>,
+    "Digital Health mit der neuen E-ID Trust-Infrastruktur". Built against the swiyu Sandbox — the
+    environment renamed from Public Beta and separated from production by change dossier CD-001 — using
+    the Confederation's generic issuer and verifier components.
+  </p>
+  <p class="repo" style="margin-top:14px">
+    <a href="https://github.com/DIDAS-swiss/digital-health_swiyu">github.com/DIDAS-swiss/digital-health_swiyu</a>
+  </p>
+</footer>
+
+<script>
+  // The eighteen claims of urn:vct:ch.didas.health.immunization:1.0, in the
+  // order the credential card displays them.
+  const CLAIMS = [
+    'vaccine_name', 'target_disease', 'occurrence_date', 'dose_number',
+    'doses_in_series', 'next_dose_due', 'patient_given_name', 'patient_family_name',
+    'patient_birth_date', 'performer_name', 'performer_gln', 'organization_name',
+    'vaccine_code', 'lot_number', 'route', 'site', 'country', 'immunization_id'
+  ];
+
+  // Entitlements exactly as declared on the credential type in
+  // packages/swiyu/src/credentials/immunization.ts.
+  const ROLES = {
+    travel: {
+      purpose: 'Confirm protection against a specific disease for travel advice. It cannot obtain the vaccine brand, the batch, the clinic or your name — even if its software asks.',
+      claims: ['target_disease', 'occurrence_date', 'dose_number', 'doses_in_series'],
+      foot: 'Fourteen claims stay in the wallet. Not redacted afterwards — <strong>never disclosed</strong>, because the wallet releases only the claim paths the query names.'
+    },
+    pharmacy: {
+      purpose: 'Check the series before administering the next dose. A pharmacy with a vaccination permit needs the product and where you are in the schedule.',
+      claims: ['vaccine_code', 'vaccine_name', 'target_disease', 'occurrence_date', 'dose_number', 'doses_in_series', 'next_dose_due'],
+      foot: 'The same credential, a different question. Identity claims are outside this role&rsquo;s entitlement, so <strong>a request for them is refused before it is sent</strong>.'
+    },
+    practice: {
+      purpose: 'Establish vaccination status before advising or vaccinating. The treating practice is the one role entitled to the whole record — and it still has to ask.',
+      claims: CLAIMS.slice(),
+      foot: 'Entitlement to everything is not the same as access to everything: <strong>the holder still consents, per presentation</strong>, and can decline.'
+    },
+    research: {
+      purpose: 'Secondary use under explicit, revocable patient consent. The entitlement excludes every identifying claim by construction.',
+      claims: ['vaccine_code', 'target_disease', 'occurrence_date', 'dose_number'],
+      foot: 'Four coded claims with dates are <strong>not anonymous</strong>. A minimisation envelope is not de-identification, and treating it as one would be this blueprint&rsquo;s weakest claim.'
+    }
+  };
+
+  const grid = document.getElementById('claimgrid');
+  const tally = document.getElementById('tally-n');
+  const purpose = document.getElementById('purpose-text');
+  const foot = document.getElementById('explorer-foot');
+  const buttons = Array.from(document.querySelectorAll('.roles button'));
+
+  function render(roleKey) {
+    const role = ROLES[roleKey];
+    const released = new Set(role.claims);
+    grid.innerHTML = CLAIMS.map(function (claim) {
+      const on = released.has(claim);
+      return '<div class="claim ' + (on ? 'released' : 'withheld') + '">' +
+             '<span class="mark"></span>' + claim + '</div>';
+    }).join('');
+    tally.textContent = role.claims.length;
+    purpose.textContent = role.purpose;
+    foot.innerHTML = role.foot;
+    buttons.forEach(function (b) {
+      b.setAttribute('aria-selected', String(b.dataset.role === roleKey));
+    });
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { render(b.dataset.role); });
+  });
+
+  render('travel');
+</script>

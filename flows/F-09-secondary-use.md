@@ -30,7 +30,7 @@ it is not built.
 Research access to health data is normally a negotiation between institutions
 about a dataset the patient is not party to. Selective disclosure changes the
 shape of that: a research entitlement can be defined so that the identifying
-claims are *unobtainable* rather than merely undertaken not to be used.
+claims are *unobtainable*, where an undertaking is a promise to leave them unused.
 
 In `LAB_REPORT`, the research role's entitlement is `findings`, `specimen_date`
 and `report_date` — and nothing else. `reviewRequest()` refuses a request from
@@ -41,7 +41,7 @@ built, before the patient is ever asked.
 ## What step 2 has to solve
 
 - **Consent as a credential.** A consent that can be withdrawn needs to be an
-  object with a lifecycle, not a checkbox in a study database. A consent
+  object with a lifecycle, held in the wallet and revocable there. A consent
   credential issued by the holder to the researcher, revocable through the same
   status list mechanism as everything else, is the obvious shape — and it inverts
   the usual direction of issuance, which the trust infrastructure does not
@@ -56,7 +56,8 @@ built, before the patient is ever asked.
   coarsening or aggregate-only queries belong here.
 - **HFG/LRH compliance.** The Swiss Human Research Act governs this whole area
   and has its own consent requirements, which a technical consent mechanism must
-  satisfy rather than replace.
+  satisfy: the consent object and the minimisation envelope are evidence a
+  review board can inspect, and the board still has to approve the study.
 - **Aggregation without a collector.** If the point is to avoid a central
   repository, the destination of a research contribution needs thought: a study
   database is a central repository. Federated analysis or local computation over

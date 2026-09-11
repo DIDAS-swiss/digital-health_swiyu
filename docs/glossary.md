@@ -122,7 +122,7 @@ credentials it appears as `personal_administrative_number`.
 cover; **UVG** is accident insurance.
 
 **VeKa** — the insurance card, and the 20-digit number printed on it. Identifies
-the card, not the person.
+the card. The person is identified separately.
 
 **BAG / OFSP** — the Federal Office of Public Health. Insurers carry a BAG
 registration number.
@@ -138,8 +138,9 @@ professionals and organisations, held in the Refdata index.
 may prescribe.
 
 **EPD / DEP** — the Swiss electronic patient record. The incumbent. In a
-decentralised design it becomes one issuer among others rather than the
-destination.
+decentralised design it becomes one issuer among others: it can issue a
+credential for a record it already holds, and a patient can present that
+credential anywhere, without the EPD being involved in the presentation.
 
 **`meineimpfungen.ch`** — the national electronic vaccination record, shut down
 in 2021 after serious security failures. The failure this project is a response

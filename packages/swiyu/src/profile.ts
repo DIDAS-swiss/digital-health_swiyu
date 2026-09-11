@@ -4,7 +4,7 @@
  * Sandbox (the environment formerly called "Public Beta", renamed by change
  * dossier CD-001 and separated from production).
  *
- * Every value here is a *specification* value, not a preference. If the profile
+ * Every value here is a *specification* value. If the profile
  * moves, this file is the single place that changes.
  */
 
@@ -90,7 +90,8 @@ export const SANDBOX = {
 /**
  * Root trust anchors of the Sandbox, from swiss-profile-trust 1.0.
  * Used as `trust_anchors` when a verification should accept any issuer that
- * carries a trust statement from the anchor rather than a hard-coded DID list.
+ * carries a trust statement from the anchor, which a hard-coded DID list would
+ * have to be maintained by hand.
  */
 export const SANDBOX_TRUST_ANCHOR = {
   trustStatementIssuer:

@@ -3,7 +3,7 @@
 Every rule this project enforces, and where it comes from. Rules marked
 **checked** are asserted by `packages/swiyu/src/conformance.ts` and covered by
 `packages/swiyu/test/conformance.test.ts`; a violation fails the build or the
-request rather than surfacing later as a wallet that silently refuses to connect.
+request, ahead of a wallet that would silently refuse to connect.
 
 Profiles are pinned in `packages/swiyu/src/profile.ts` — one file to change when
 the profile moves.

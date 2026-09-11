@@ -8,7 +8,7 @@
  * against files on disk.
  *
  * This entry exists so a browser demo can exercise the real decision code
- * rather than a reimplementation of it. A demo that reimplements the rules it
+ * itself. A demo that reimplements the rules it
  * is demonstrating proves nothing about the rules.
  *
  * Deliberately excluded: `credential-definition.js` (the generators),

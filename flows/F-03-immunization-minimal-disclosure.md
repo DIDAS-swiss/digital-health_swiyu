@@ -16,6 +16,7 @@ trust_markers:
   - viTM
   - caTM
   - gucTM / gucaTM on the issuer
+basis: basic-flow/verification
 preconditions:
   - F-02
 produces:
@@ -28,6 +29,15 @@ The flow that justifies the architecture. A travel clinic needs to know whether
 the person in front of them is protected against a disease. It does not need to
 know the vaccine brand, the batch number, the vaccinating physician, the clinic,
 or — arguably — the patient's name, which it already has from the appointment.
+
+This is the `verification` view of the reference model with a different claim
+name: the reference flow's "is this person over 18?" and this flow's "is this
+person protected against diphtheria?" are the same exchange. The mechanics are
+therefore left to the [reference
+diagram](https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/)
+and what follows is about what a travel clinic may ask for. One step here has no
+counterpart there — the holder declining
+([#5](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository/issues/5)).
 
 ## What is actually different here
 
@@ -88,16 +98,16 @@ sequenceDiagram
   entitlement, so an over-broad request never reaches the patient. Enforcing
   minimisation at the wallet or at the verifier's conscience is too late: once
   the holder has answered, the data is out.
-- **The purpose is registered, not free text.** `verification_purpose` carries a
+- **The purpose is registered.** `verification_purpose` carries a
   stable scope plus localised name and description, shown to the holder before
   they consent and registered at the transparency service. A verifier that wants
   to ask a different question has to say so under a different scope.
 - **Declining is a first-class outcome.** `client_rejected` is a normal answer,
   not an error, and the flow must work when the patient says no — which for a
-  travel clinic means falling back to the paper booklet, not refusing care.
-- **The verifier keeps the conclusion, not the credential.** The retention rule
+  travel clinic means falling back to the paper booklet, and care continues.
+- **The verifier keeps the conclusion.** The retention rule
   on this credential type is explicit: a travel clinic needs to record that the
-  series was confirmed, not to keep a copy of every dose. The governance journal
+  series was confirmed. The governance journal
   records claim *names*, never values.
 - **Trust runs both ways.** The holder's wallet checks the verifier's trust
   statement before showing the consent screen. A verifier without `viTM` asking
@@ -121,22 +131,22 @@ sequenceDiagram
   wallet must first satisfy itself that the `client_id` belongs to the entity
   that signed the JAR. This is the anti-impersonation check; skipping it makes
   every other control decorative.
-- **Status is checked at the Base Registry, not at the issuer.** The profile
+- **Status is checked at the Base Registry.** The profile
   forces the status provider to be the registry precisely so that presenting a
   credential does not tell its issuer where it was used.
 
 ## Open questions
 
-1. **"Protected against X" is an inference, not a claim.** The credential says
+1. **"Protected against X" is an inference.** The credential says
    which diseases a dose targets and when it was given. Whether that amounts to
    protection depends on the schedule, the number of doses and elapsed time. Who
    is accountable for that inference — the verifier's software, a published rule
    set, or the clinician — is unresolved, and it is a clinical-safety question
-   rather than a technical one.
+   for the sector to settle.
 2. **Unlinkability across presentations.** A credential presented twice is the
    same credential; batch issuance mitigates this but is not used here, because
    with a series of dose credentials the claim values themselves are close to
-   identifying. Honest position: this flow is not unlinkable.
+   identifying. This flow is linkable, and stating so is part of the record.
 3. **Herd-level reporting.** Public health needs coverage statistics that a
    fully decentralised record does not produce as a side effect. F-09 sketches
    consent-based secondary use; it is not a substitute for surveillance, and

@@ -34,7 +34,7 @@ describe('FHIR projection', () => {
   });
 
   it('only projects what the holder actually released', () => {
-    // A partial disclosure is legitimate, not an error.
+    // A partial disclosure is legitimate and projects cleanly.
     const { resource } = projectToFhir(INSURANCE_CARD, { insurer_name: 'DIDAS', coverage: ['KVG'] });
     expect(resource.beneficiary).toBeUndefined();
     expect((resource.payor as { display: string }[])[0]?.display).toBe('DIDAS');
@@ -116,7 +116,7 @@ describe('the immunization showcase projects into CH VACD and IPS shapes', () =>
     country: 'CH',
   };
 
-  it('assembles protocolApplied rather than scattering dose, series and disease', () => {
+  it('assembles dose, series and disease into one protocolApplied entry', () => {
     const { resource } = projectToFhir(IMMUNIZATION, dose);
     expect(resource.resourceType).toBe('Immunization');
     expect(resource.status).toBe('completed');
@@ -159,7 +159,7 @@ describe('the immunization showcase projects into CH VACD and IPS shapes', () =>
     const { composition, templateId } = projectToOpenEhr(IMMUNIZATION, dose);
     expect(templateId).toBe('DIDAS.immunisation.v0');
     expect(composition['immunisation/medication_management/medication_item']).toBe(dose.vaccine_name);
-    expect(composition['immunisation/medication_management/batch_id']).toBe('S4021-B');
+    expect(composition['immunisation/medication_management/medication_item/medication_details/batch_id']).toBe('S4021-B');
     expect(composition['immunisation/territory|code']).toBe('CH');
   });
 });
@@ -176,8 +176,8 @@ describe('openEHR projection', () => {
     });
     expect(templateId).toBe('DIDAS.laboratory_report.v0');
     expect(archetypeId).toBe('openEHR-EHR-OBSERVATION.laboratory_test_result.v1');
-    expect(composition['laboratory_report/laboratory_test_result/any_event/analyte_result:0/result_value']).toBe('6.4');
-    expect(composition['laboratory_report/laboratory_test_result/any_event/analyte_result:1/result_value']).toBe('132');
+    expect(composition['laboratory_report/laboratory_test_result/any_event/laboratory_analyte_result:0/analyte_result']).toBe('6.4');
+    expect(composition['laboratory_report/laboratory_test_result/any_event/laboratory_analyte_result:1/analyte_result']).toBe('132');
     expect(composition['laboratory_report/laboratory_test_result/any_event/conclusion']).toBe('Elevated LDL.');
     // Context every composition needs to be well formed.
     expect(composition['laboratory_report/territory|code']).toBe('CH');
@@ -192,7 +192,7 @@ describe('openEHR projection', () => {
     expect(unmapped).toContain('medication[0].substitution_allowed');
   });
 
-  it('refuses a credential type with no openEHR model rather than inventing one', () => {
+  it('refuses a credential type that has no openEHR model', () => {
     expect(() => projectToOpenEhr(INSURANCE_CARD, {})).toThrow(/no openEHR template/);
   });
 });

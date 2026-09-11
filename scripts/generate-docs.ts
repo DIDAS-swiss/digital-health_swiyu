@@ -71,11 +71,24 @@ function claimNotes(claim: ClaimDefinition): string {
 function claimsTable(claims: ClaimDefinition[]): string {
   const rows = claims.map((claim) => {
     const fhir = claim.semantics?.fhir?.path;
-    const openehr = claim.semantics?.openehr?.path;
+    const openehr = claim.semantics?.openehr;
     const terminology = claim.semantics?.terminology;
+    // Name the archetype and the CKM node alongside the flat path: the path is
+    // specific to an operational template this project does not publish, while
+    // the archetype and node name resolve in the Clinical Knowledge Manager.
+    const openehrCell = openehr
+      ? [
+          `openEHR \`${openehr.path}\``,
+          openehr.archetypeId && openehr.element
+            ? `&nbsp;&nbsp;↳ \`${openehr.element}\` in \`${openehr.archetypeId}\``
+            : undefined,
+        ]
+          .filter(Boolean)
+          .join('<br>')
+      : undefined;
     const semantics = [
       fhir ? `FHIR \`${fhir}\`` : undefined,
-      openehr ? `openEHR \`${openehr}\`` : undefined,
+      openehrCell,
       terminology ? `${terminology.code} (\`${terminology.system}\`)` : undefined,
     ]
       .filter(Boolean)
@@ -297,7 +310,7 @@ function indexPage(): string {
     '## Who may ask for what',
     '',
     'The whole governance model in one place. A request for a claim marked `·` is',
-    'refused when the query is built, not filtered out afterwards.',
+    'refused when the query is built, so the claim is never transmitted.',
     '',
     ...CREDENTIAL_DEFINITIONS.map(disclosureMatrix),
     '## Registered verification queries',

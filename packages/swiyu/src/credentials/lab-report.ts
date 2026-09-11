@@ -3,7 +3,8 @@
  *
  * This is the "examination results" half of the hackathon scenario: after the
  * consultation the practice hands the patient their own results as a credential
- * they hold, rather than a PDF in a portal the practice controls. Analytes are
+ * they hold. The alternative in use today is a PDF in a portal the practice
+ * controls. Analytes are
  * identified by LOINC so a downstream system can read them.
  */
 
@@ -151,7 +152,11 @@ export const LAB_REPORT: CredentialDefinition = {
           type: 'Text',
           required: true,
           semantics: {
-            openehr: { path: 'laboratory_report/laboratory_test_result/any_event/test_name' },
+            openehr: {
+              archetypeId: 'openEHR-EHR-OBSERVATION.laboratory_test_result.v1',
+              element: 'Test name',
+              path: 'laboratory_report/laboratory_test_result/any_event/test_name',
+            },
             fhir: { path: 'Observation.code.coding.code' },
             terminology: { system: 'http://loinc.org', code: 'LOINC' },
           },
@@ -163,7 +168,11 @@ export const LAB_REPORT: CredentialDefinition = {
           type: 'Text',
           required: true,
           semantics: {
-            openehr: { path: 'laboratory_report/laboratory_test_result/any_event/analyte_result/analyte_name' },
+            openehr: {
+              archetypeId: 'openEHR-EHR-CLUSTER.laboratory_test_analyte.v1',
+              element: 'Analyte name',
+              path: 'laboratory_report/laboratory_test_result/any_event/laboratory_analyte_result/analyte_name',
+            },
             fhir: { path: 'Observation.code.text' },
           },
           label: { 'de-CH': 'Analyt', 'fr-CH': 'Analyte', 'it-CH': 'Analita', 'en-GB': 'Analyte' },
@@ -174,7 +183,11 @@ export const LAB_REPORT: CredentialDefinition = {
           type: 'Text',
           required: true,
           semantics: {
-            openehr: { path: 'laboratory_report/laboratory_test_result/any_event/analyte_result/result_value' },
+            openehr: {
+              archetypeId: 'openEHR-EHR-CLUSTER.laboratory_test_analyte.v1',
+              element: 'Analyte result',
+              path: 'laboratory_report/laboratory_test_result/any_event/laboratory_analyte_result/analyte_result',
+            },
             fhir: { path: 'Observation.valueQuantity.value' },
           },
           label: { 'de-CH': 'Wert', 'fr-CH': 'Valeur', 'it-CH': 'Valore', 'en-GB': 'Value' },
@@ -196,7 +209,11 @@ export const LAB_REPORT: CredentialDefinition = {
           type: 'Text',
           required: true,
           semantics: {
-            openehr: { path: 'laboratory_report/laboratory_test_result/any_event/analyte_result/reference_range_guidance' },
+            openehr: {
+              archetypeId: 'openEHR-EHR-CLUSTER.laboratory_test_analyte.v1',
+              element: 'Reference range guidance',
+              path: 'laboratory_report/laboratory_test_result/any_event/laboratory_analyte_result/reference_range_guidance',
+            },
             fhir: { path: 'Observation.referenceRange.text' },
           },
           label: {
@@ -233,7 +250,11 @@ export const LAB_REPORT: CredentialDefinition = {
       type: 'Text',
       required: false,
       semantics: {
-        openehr: { path: 'laboratory_report/laboratory_test_result/any_event/conclusion' },
+        openehr: {
+          archetypeId: 'openEHR-EHR-OBSERVATION.laboratory_test_result.v1',
+          element: 'Conclusion',
+          path: 'laboratory_report/laboratory_test_result/any_event/conclusion',
+        },
         fhir: { path: 'DiagnosticReport.conclusion' },
       },
       sensitive: true,
@@ -250,7 +271,11 @@ export const LAB_REPORT: CredentialDefinition = {
       type: 'DateTime',
       required: true,
       semantics: {
-        openehr: { path: 'laboratory_report/laboratory_test_result/any_event/specimen/collection/time' },
+        openehr: {
+          archetypeId: 'openEHR-EHR-CLUSTER.specimen.v1',
+          element: 'Collection date/time',
+          path: 'laboratory_report/laboratory_test_result/any_event/specimen/collection_date_time',
+        },
         fhir: { path: 'Specimen.collection.collectedDateTime' },
       },
       format: 'YYYY-MM-DD',

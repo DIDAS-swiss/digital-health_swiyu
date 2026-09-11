@@ -1,7 +1,7 @@
 # Roadmap
 
 The mid-term ambition has three steps. This repository is step 1, delivered in
-full, with steps 2 and 3 specified rather than started.
+full, with steps 2 and 3 specified and not yet started.
 
 ```mermaid
 flowchart LR
@@ -27,8 +27,8 @@ flowchart LR
 
 **The gap that matters.** Nothing here can be deployed until someone can issue
 the trust statement that says "this DID is a practice authorised to vaccinate".
-That is a governance question, not an engineering one, and it is the honest
-headline of step 1: the technology is ready some distance ahead of the
+That is a governance question, and it is the headline of step 1: the
+technology is ready some distance ahead of the
 institutional arrangements. See F-01, open question 1.
 
 ## Step 2 — International Patient Summary (2027)
@@ -41,6 +41,17 @@ What has to be built:
 1. **Three further credential types** — allergies and intolerances, active
    problems, medication statements as distinct from prescriptions. Each needs
    the F-02 treatment: a model, an issuer role, an entitlement, an OCA bundle.
+
+   Allergies are a gap here, and the other two are extensions: the 2024
+   project this repository continues carried allergies in the wallet and
+   requested them at check-in, and this repository does not. See
+   [positioning](positioning.md).
+
+   The IPS sections, with the LOINC codes the DIDAS lineage's own IPS wallet
+   uses, are the natural unit of work: Allergies `48765-2`, Medications
+   `10160-0`, Problems `11450-4`, Procedures `47519-4`, Immunizations `11369-6`,
+   Results `30954-2`, Devices `46264-8`. Step 1 covers Immunizations, and
+   partially Medications and Results.
 2. **Multi-credential presentation at scale.** An IPS spans many credentials,
    and the profile allows one credential per DCQL query with no `multiple`.
 3. **Absence semantics.** "No known allergies" must be distinguishable from "no
@@ -50,9 +61,17 @@ What has to be built:
    trustworthy immunization section.
 5. **EPD/DEP integration.** The Swiss electronic patient record is the
    incumbent. The coherent position for a decentralised design is that it
-   becomes one issuer among others, not the destination — but that is a position
-   to argue for, not to assume.
-6. **Emergency access.** The hardest question in the architecture: a patient who
+   becomes one issuer among others. That position has to be argued for.
+6. **Composition with the openEHR/HL7 blueprint.** The joint working group of
+   openEHR Switzerland and HL7 Switzerland is turning the other 2026 showcase —
+   FHIR intake into an openEHR clinical data repository — into a reusable
+   blueprint. Both directions of composition are already specified here (a
+   repository issuing credentials from its own records; a presented credential
+   projecting into the ingestion path that blueprint defines), and neither has
+   been built. This is the highest-value item on this list, because it is the
+   one that makes a wallet credential useful to a longitudinal record rather
+   than a competitor to it. See [positioning](positioning.md).
+7. **Emergency access.** The hardest question in the architecture: a patient who
    is unconscious cannot consent, and any break-glass mechanism reintroduces a
    party that can read the record without them.
 

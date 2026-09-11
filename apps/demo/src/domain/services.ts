@@ -161,7 +161,7 @@ async function requestPresentation(options: {
 
   const request: CreateVerificationRequest = {
     dcql_query: dcqlQuery(...queries),
-    // Both are MUSTs of swiss-profile-verification, not options.
+    // Both are MUSTs of swiss-profile-verification.
     jwt_secured_authorization_request: true,
     response_mode: 'direct_post.jwt',
     accepted_issuer_dids: [...new Set(plans.flatMap((plan) => plan.acceptedIssuerDids))].filter(Boolean),
@@ -171,7 +171,7 @@ async function requestPresentation(options: {
       purpose_description: options.purposeDescription,
     },
   };
-  // Catch a profile violation here rather than as an unexplained wallet refusal.
+  // Catch a profile violation here, ahead of an unexplained wallet refusal.
   assertVerificationRequest(request);
 
   const verification = await verifierClient(actor).createVerification(request);
@@ -213,7 +213,7 @@ function authoriseIssuance(
 /**
  * Send one of the project's declared verification queries.
  *
- * The claim lists live in `VERIFICATION_QUERIES`, not here, because the same
+ * The claim lists live in `VERIFICATION_QUERIES`, because the same
  * objects generate the Verification Query Public Statements published to the
  * Trust Registry. A query that drifts from its published statement makes the
  * statement a false claim, so there is only one copy.
@@ -539,7 +539,7 @@ export class PraxisService {
     const today = new Date();
     // A Swiss prescription is valid for a year unless the prescriber says
     // otherwise; `exp` is set to the same date so an expired prescription
-    // cannot be presented at all rather than merely warned about.
+    // cannot be presented at all.
     const validUntil = new Date(today);
     validUntil.setFullYear(validUntil.getFullYear() + 1);
 
@@ -574,7 +574,7 @@ export class PraxisService {
    * One dose, one credential. The practice attests what it did — which vaccine,
    * which lot, on which day, by whom — and then has no further hold over the
    * record. The patient's vaccination history is the set of dose credentials
-   * they hold, assembled in the wallet rather than in anyone's registry.
+   * they hold, assembled in the wallet under their own control.
    */
   async issueImmunization(
     encounterId: string,
@@ -598,7 +598,7 @@ export class PraxisService {
 
     const today = new Date();
     // A vaccination record has no natural expiry — the event does not stop
-    // having happened — so `exp` is set far out rather than left unset, which
+    // having happened — so `exp` is set far out, which
     // the profile would otherwise leave to the wallet to interpret.
     const validUntil = new Date(today);
     validUntil.setFullYear(validUntil.getFullYear() + 50);

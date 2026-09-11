@@ -28,7 +28,7 @@ export interface CredentialQueryOptions {
    * Set only when this verifier holds an authorization for the protected
    * claims it is requesting. Requesting a protected field without one is
    * something an ecosystem actor is expected to refuse, so it has to be
-   * deliberate rather than accidental.
+   * deliberate.
    */
   protectedClaimsAuthorized?: boolean;
 }

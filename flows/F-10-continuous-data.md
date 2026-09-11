@@ -21,7 +21,7 @@ produces:
 
 # F-10 · Wearables and continuous data (roadmap, 2028)
 
-Roadmap step 3, the Swiss Health App. Sketched to record why it is hard, not to
+Roadmap step 3, the Swiss Health App. Sketched to record why it is hard, and not to
 suggest it is close.
 
 Everything in steps 1 and 2 shares a shape: discrete, low-frequency, authored

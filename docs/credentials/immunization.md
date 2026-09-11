@@ -42,7 +42,7 @@ built, before it reaches the holder. See `reviewRequest()`.
 
 **Revocation** — Only the issuer may revoke, and only to correct a recording error — never to withdraw a vaccination that took place. Revoking a dose credential does not undo the dose; it withdraws an assertion the issuer should not have made.
 
-**Retention** — A verifier checking vaccination status retains the outcome its own record requires and not the credential. A travel clinic needs to know the series is complete, not to keep a copy of every dose.
+**Retention** — A verifier checking vaccination status retains the outcome its own record requires and discards the credential. A travel clinic needs to know the series is complete, and keeps that conclusion alone.
 
 ## Clinical models
 
@@ -67,15 +67,15 @@ presentation of an eighteen-claim credential possible.
 | `patient_given_name` | Given name(s) | Text | string, ≤ 200 chars | — | required |
 | `patient_family_name` | Surname | Text | string, ≤ 200 chars | — | required |
 | `patient_birth_date` | Date of birth | DateTime | string, date | — | required |
-| `vaccine_code` | Vaccine code | Text | string, `^[0-9]{6,18}$` | FHIR `Immunization.vaccineCode.coding.code`<br>openEHR `immunisation/medication_management/medication_item/code`<br>SNOMED CT (`http://snomed.info/sct`) | required |
-| `vaccine_name` | Vaccine | Text | string, ≤ 300 chars | FHIR `Immunization.vaccineCode.text`<br>openEHR `immunisation/medication_management/medication_item` | required |
+| `vaccine_code` | Vaccine code | Text | string, `^[0-9]{6,18}$` | FHIR `Immunization.vaccineCode.coding.code`<br>openEHR `immunisation/medication_management/medication_item/medication_details/name`<br>&nbsp;&nbsp;↳ `Name` in `openEHR-EHR-CLUSTER.medication.v2`<br>SNOMED CT (`http://snomed.info/sct`) | required |
+| `vaccine_name` | Vaccine | Text | string, ≤ 300 chars | FHIR `Immunization.vaccineCode.text`<br>openEHR `immunisation/medication_management/medication_item`<br>&nbsp;&nbsp;↳ `Medication item` in `openEHR-EHR-ACTION.medication.v1` | required |
 | `target_disease` | Protects against | Array[Text] | array | FHIR `Immunization.protocolApplied.targetDisease.coding.code`<br>SNOMED CT (`http://snomed.info/sct`) | required |
-| `occurrence_date` | Date given | DateTime | string, date | FHIR `Immunization.occurrenceDateTime`<br>openEHR `immunisation/medication_management/time` | required |
+| `occurrence_date` | Date given | DateTime | string, date | FHIR `Immunization.occurrenceDateTime`<br>openEHR `immunisation/medication_management/time`<br>&nbsp;&nbsp;↳ `Medication management` in `openEHR-EHR-ACTION.medication.v1` | required |
 | `dose_number` | Dose number | Numeric | integer, 1–20 | FHIR `Immunization.protocolApplied.doseNumberPositiveInt` | required |
 | `doses_in_series` | Doses in series | Numeric | integer, 1–20 | FHIR `Immunization.protocolApplied.seriesDosesPositiveInt` | required |
 | `next_dose_due` | Next dose due | DateTime | string, date | FHIR `Immunization.protocolApplied.series` | — |
-| `lot_number` | Lot number | Text | string, ≤ 64 chars | FHIR `Immunization.lotNumber`<br>openEHR `immunisation/medication_management/batch_id` | required |
-| `route` | Route | Text | string, one of IM, SC, ID, PO, NASINHL | FHIR `Immunization.route.coding.code`<br>openEHR `immunisation/medication_management/route` | required |
+| `lot_number` | Lot number | Text | string, ≤ 64 chars | FHIR `Immunization.lotNumber`<br>openEHR `immunisation/medication_management/medication_item/medication_details/batch_id`<br>&nbsp;&nbsp;↳ `Batch ID` in `openEHR-EHR-CLUSTER.medication.v2` | required |
+| `route` | Route | Text | string, one of IM, SC, ID, PO, NASINHL | FHIR `Immunization.route.coding.code`<br>openEHR `immunisation/medication_management/route`<br>&nbsp;&nbsp;↳ `Route` in `openEHR-EHR-ACTION.medication.v1` | required |
 | `site` | Site | Text | string, ≤ 100 chars | FHIR `Immunization.site.text` | — |
 | `performer_name` | Administered by | Text | string, ≤ 200 chars | FHIR `Immunization.performer.actor.display` | required |
 | `performer_gln` | GLN | Text | string, `^[0-9]{13}$` | FHIR `Immunization.performer.actor.identifier.value`<br>GLN (`urn:oid:2.51.1.3`) | required |

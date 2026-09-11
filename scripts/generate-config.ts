@@ -7,7 +7,7 @@
  * and the file-key mapping that binds them to URLs — is derived here from one
  * TypeScript definition per credential type.
  *
- * The external URL is baked in at generation time rather than left as the
+ * The external URL is baked in at generation time, where leaving it as the
  * issuer's `${external-url}` placeholder. It has to be: the issuer metadata
  * carries `vct_metadata_uri#integrity`, an SRI hash over the *exact bytes* of
  * the Type Metadata document. If the document were templated and substituted at
@@ -147,7 +147,7 @@ async function generateActor(actor: ActorSpec): Promise<void> {
         return document;
       },
     });
-    // Fail the build rather than deploy metadata a wallet will reject.
+    // Fail the build, ahead of deploying metadata a wallet will reject.
     assertIssuerMetadata(issuerMetadata);
     await writeJson(join(actorDir, 'issuer_metadata.json'), issuerMetadata);
 

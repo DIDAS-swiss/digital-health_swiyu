@@ -104,7 +104,7 @@ describe('check-in', () => {
     expect(result.body.encounter.cover.administrativeNumber).toBe(PATIENT.administrativeNumber);
   });
 
-  it('treats a declined request as a refusal, not an error', async () => {
+  it('treats a declined request as a refusal with its own outcome', async () => {
     await post('/api/wallet/beta-id', PATIENT);
     const checkIn = await post('/api/praxis/check-in');
     await present(checkIn.body.deeplink, false);
@@ -196,7 +196,7 @@ describe('prescription lifecycle', () => {
     expect(firstResult.body.decision.outcome).toBe('allow');
     expect(firstResult.body.prescription.medication[0].name).toContain('Atorvastatin');
 
-    // Handing over revokes: redemption is a status change, not a local flag.
+    // Handing over revokes: redemption is a status change on the status list.
     const confirmed = await post('/api/pharmacy/confirm', { prescriptionId: prescription.managementId });
     expect(confirmed.body.ok).toBe(true);
 

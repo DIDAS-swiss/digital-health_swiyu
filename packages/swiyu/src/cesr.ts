@@ -4,7 +4,7 @@
  * OCA identifies every Capture Base by a self-addressing digest: the digest is
  * computed over the object *with the digest field replaced by placeholder
  * characters of the same length*, then written back into that field. The
- * encoding is CESR, not plain base64 — see the swiyu OCA 1.0 specification,
+ * encoding is CESR — see the swiyu OCA 1.0 specification,
  * "CESR encoding".
  */
 

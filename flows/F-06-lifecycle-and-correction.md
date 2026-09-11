@@ -55,9 +55,9 @@ stateDiagram-v2
   teach the wrong lesson.
 - **The motive is not in the mechanism.** "Recorded in error", "used up" and "we
   no longer recognise this" produce the same bit. Only the issuer's journal
-  distinguishes them, which makes the journal a governance control rather than a
+  distinguishes them, which makes the journal a governance control and the
   convenience.
-- **Revocation reaches the verifier, not the holder.** The credential stays in
+- **Revocation reaches the verifier.** The credential stays in
   the wallet and stops working. Whether the holder is told, and by whom, is
   unspecified by the standards and needs a policy: silently dead credentials are
   a poor experience and, for a vaccination record, potentially a clinical risk.
@@ -78,7 +78,8 @@ stateDiagram-v2
   republished regularly even when nothing changes.
 - The status provider must be the registry, never the issuer. This is what
   prevents an issuer from learning where its credentials are presented, and it
-  is a requirement rather than a deployment choice.
+  is a requirement: any deployment that omits it loses the only record of why
+  a credential was revoked.
 
 ## Open questions
 

@@ -15,6 +15,7 @@ protocols:
   - Token Status List draft-20
 trust_markers:
   - gucaTM  # the issuer must be authorised for this credential type
+basis: basic-flow/issuance
 preconditions:
   - F-01
 produces:
@@ -25,6 +26,14 @@ produces:
 
 The showcase flow. A vaccination is administered; the vaccinator attests what
 they did; the attestation goes into the patient's wallet and stays there.
+
+The offer, the token exchange and the credential request are the `issuance` view
+of the reference model. Two things here depart from it, both because of the
+Swiss Profile: the status list exists before the credential that references it,
+and the wallet fetches signed metadata, Type Metadata and an OCA bundle between
+the offer and the token request
+([#4](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository/issues/4)).
+See [`trust-flow-basis.md`](trust-flow-basis.md).
 
 ## Why this shape
 
@@ -37,13 +46,13 @@ which one database holds everyone's record has a failure mode that no amount of
 careful engineering removes: the database can be breached, defunded, or simply
 switched off, and when it is, everyone loses at once.
 
-Three design decisions follow, and each is a decision rather than an obvious
+Three design decisions follow, each weighed against an obvious
 choice:
 
-- **One credential per dose, not one per person.** A dose is an event with a
+- **One credential per dose.** A dose is an event with a
   single author — whoever administered it. Issuing one credential per dose keeps
   authorship intact, lets each issuer revoke only their own assertion, and means
-  the patient's history is assembled in the wallet rather than owned by anyone.
+  the patient's history is assembled in the wallet, under the patient's control.
   The cost is that "is this series complete?" becomes a question about several
   credentials instead of a lookup, which F-03 and F-08 have to handle.
 - **The credential outlives its issuer.** A practice that closes cannot take the
@@ -51,7 +60,7 @@ choice:
   vaccination booklet can — the architecture is closer to the booklet than to
   the platform, deliberately.
 - **No expiry on the event.** A vaccination that happened stays happened, so
-  `exp` is set far out rather than left unset, and the credential is not
+  `exp` is set far out, and the credential is not
   refreshable: there is nothing for a refresh to fetch.
 
 ## Sequence
@@ -120,7 +129,7 @@ a practice management system.
   non-disclosable business claims outright, which is what makes F-03 possible.
 - **Encryption is mandatory in both directions**, and
   `encryption_required` must be `true` in the metadata.
-- **Batch size ≥ 10** where batch issuance is used — a privacy floor, not a
+- **Batch size ≥ 10** where batch issuance is used — a privacy floor, and a
   tuning parameter: a small batch forces frequent refreshes and hands the issuer
   telemetry about when the credential is used.
 - **Model reuse without a repository.** Claims carry FHIR element paths (CH VACD
@@ -128,7 +137,7 @@ a practice management system.
   (`openEHR-EHR-ACTION.medication.v1`). Vaccine products are SNOMED CT coded;
   target diseases separately so that F-03 can ask about the disease without the
   brand.
-- **The `vct` is a URN, not a URL.** `urn:vct:ch.didas.health.immunization:1.0`
+- **The `vct` is a URN.** `urn:vct:ch.didas.health.immunization:1.0`
   does not change when a deployment moves host, so issued credentials and DCQL
   queries keep their meaning; resolution goes through `vct_metadata_uri`, which
   the profile gives precedence anyway.

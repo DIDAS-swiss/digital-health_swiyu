@@ -120,7 +120,7 @@ export const INSURANCE_CARD: CredentialDefinition = {
     {
       /**
        * The 20-digit VeKa card number (`80756...`), printed on the physical
-       * card. It identifies the card, not the person.
+       * card. It identifies the card; the AHV number identifies the person.
        */
       name: 'card_number',
       type: 'Text',
@@ -141,7 +141,7 @@ export const INSURANCE_CARD: CredentialDefinition = {
        * needs a Governed Use Case Authorization Trust Marker to request it,
        * whatever credential type carries it. Treating the Swiss social security
        * number this way is the whole point of the protected-field mechanism, so
-       * the demo uses the profile's claim name rather than inventing one.
+       * the demo uses the profile's claim name.
        */
       name: 'personal_administrative_number',
       type: 'Text',

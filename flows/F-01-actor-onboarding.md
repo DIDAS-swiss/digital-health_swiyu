@@ -20,6 +20,7 @@ trust_markers:
   - caTM   # Compliant Actor
   - gucTM  # Governed Use Case
   - gucaTM # Governed Use Case Authorization
+basis: basic-flow/registration
 preconditions: []
 produces:
   - A did:webvh identifier on the Base Registry
@@ -33,6 +34,16 @@ should anyone believe that the entity behind this DID is a medical practice?*
 This flow is that answer. It is listed first because it is the flow most often
 skipped in prototypes, and the one whose absence makes every later flow
 decorative.
+
+The key publication, the accreditation request and the trust statement that
+comes back are the `registration` view of the reference model, and this flow
+takes them as given — see the [reference
+diagram](https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/)
+for what happens inside each. What it adds is the layer above: a health
+governance body granting role-scoped authorisation, which the reference model
+has no shape for
+([#3](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository/issues/3)).
+The full mapping is in [`trust-flow-basis.md`](trust-flow-basis.md).
 
 ## Sequence
 
@@ -77,14 +88,14 @@ listed `accepted_issuer_dids`, which is what this project does.
 
 ## Governance constraints
 
-- **A role is granted by someone, not claimed.** The health domain needs a
+- **A role is granted by someone.** The health domain needs a
   governance body that decides which organisations hold which roles and issues
   the corresponding trust statement. This project models the roles
   (`ROLE` in `@didas/swiyu`) and the entitlements attached to them, and assumes
   such a body exists. **It does not exist yet.** That is the single largest gap
   between this blueprint and a deployable system, and no amount of code closes
   it.
-- **Role grants must be checkable against existing registers**, not invented for
+- **Role grants must be checkable against existing registers.** Inventing a register for
   this ecosystem: the cantonal authorisation to practise, the MedReg entry, the
   GLN in the Refdata index, the BAG number for insurers. A trust statement that
   is not traceable to one of these is a new register in disguise.
@@ -95,7 +106,7 @@ listed `accepted_issuer_dids`, which is what this project does.
   `personal_administrative_number` — the AHV number — requires an explicit
   authorization marker regardless of which credential carries it. A practice
   needs it to bill; a pharmacy does not; both are health actors. The grant is
-  per claim, not per sector.
+  per claim.
 - **Revocation of a role must propagate.** When an authorisation to practise is
   withdrawn, the trust statement has to be withdrawn too, or credentials issued
   afterwards will still verify. Nothing in the technical stack notices this on

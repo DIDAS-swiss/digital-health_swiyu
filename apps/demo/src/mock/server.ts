@@ -3,12 +3,12 @@
  *
  * It exists so the whole patient journey can be run, tested and demonstrated
  * without a business partner onboarding, a registered DID or a phone. Two rules
- * keep it honest:
+ * keep its limits visible:
  *
  *   1. The management endpoints reproduce the real contract of `swiyu-issuer`
  *      and `swiyu-verifier` exactly — same paths, same request and response
  *      shapes. Switching `SWIYU_MODE` to `sandbox` changes URLs, nothing else.
- *   2. Everything that only a real deployment can do is *absent*, not faked
+ *   2. Everything that only a real deployment can do is *absent*
  *      into looking real. There is no signing here, no DPoP, no encryption, no
  *      DID resolution, no did:webvh log. The mock exercises the business flow
  *      and the governance rules; it does not exercise the cryptography, and
@@ -330,7 +330,7 @@ export function registerMockRoutes(app: FastifyInstance, context: RouteContext):
       const verification = state.verifications.get(request.params.verificationId);
       if (!verification) return reply.code(404).send({ message: 'verification not found' });
       // A real verifier returns a signed JAR (`application/oauth-authz-req+jwt`).
-      // The mock returns the claims unsigned and says so, rather than emitting
+      // The mock returns the claims unsigned and says so, in place of
       // something that merely looks like a JWT.
       return reply.send({
         __mock__: 'unsigned; a real verifier returns a signed oauth-authz-req+jwt',
@@ -407,7 +407,7 @@ export function registerMockRoutes(app: FastifyInstance, context: RouteContext):
         return reply.code(400).send({ message: `verification already ${verification.state}` });
       }
 
-      // The holder declining is a first-class outcome, not an error path.
+      // The holder declining is a first-class outcome with its own result.
       if (request.body.consent === false) {
         verification.state = 'FAILED';
         verification.errorCode = 'client_rejected';

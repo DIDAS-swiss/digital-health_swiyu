@@ -80,7 +80,7 @@ describe('subresource integrity', () => {
     expect(verifyIntegrity('{"a":1}', integrity('{"a":2}'))).toBe(false);
   });
 
-  it('rejects an unsupported algorithm rather than accepting it', () => {
+  it('rejects an unsupported algorithm', () => {
     expect(verifyIntegrity('x', 'sha512-abc')).toBe(false);
   });
 });

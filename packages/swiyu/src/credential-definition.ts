@@ -6,7 +6,7 @@
  * entry, the SD-JWT VC Type Metadata, an optional JSON Schema, and an OCA bundle
  * for visualisation. Hand-maintaining four documents per credential is how they
  * drift apart, so here one `CredentialDefinition` generates all four, and the
- * integrity hashes that bind them together are computed rather than pasted.
+ * integrity hashes that bind them together are computed at generation time.
  */
 
 import { withCesrDigest } from './cesr.js';
@@ -54,6 +54,14 @@ export interface SemanticBinding {
   openehr?: {
     /** Archetype the node belongs to, e.g. `openEHR-EHR-OBSERVATION.laboratory_test_result.v1`. */
     archetypeId?: string;
+    /**
+     * The node's name as published in the openEHR Clinical Knowledge Manager,
+     * e.g. `Batch ID`. The flat path below is template-specific and this
+     * repository publishes no operational template, so the archetype and the
+     * node name are the part a receiver can actually resolve: they identify a
+     * governed model in CKM, which the flat path alone does not.
+     */
+    element?: string;
     /** Flat-format path within the operational template. */
     path: string;
   };
@@ -93,7 +101,7 @@ export interface CredentialDefinition {
    */
   configurationId: string;
   /**
-   * The `vct` claim. A stable URN rather than a URL, so that DCQL queries and
+   * The `vct` claim. A stable URN, so that DCQL queries and
    * issued credentials do not change meaning when a deployment moves host —
    * resolution happens through `vct_metadata_uri` instead (swiss-profile-vc
    * §5.3.3 gives that claim precedence anyway).
@@ -165,7 +173,7 @@ export interface VerifierEntitlement {
   purpose: string;
   /**
    * The maximum set of claims this role may request. A request for anything
-   * outside it is a data-minimisation violation, not a preference.
+   * outside it is a data-minimisation violation.
    */
   claims: string[];
   /** Claims from the profile's protected-field list this role is authorized for. */
@@ -512,7 +520,7 @@ export function buildIssuerMetadata(options: {
       enc_values_supported: [...CRYPTO.encValuesSupported],
     },
     // Batch issuance keeps presentations unlinkable; the floor of 10 is a
-    // privacy requirement, not a tuning knob.
+    // privacy requirement fixed by the profile.
     batch_credential_issuance: { batch_size: LIMITS.minBatchSize },
     credential_configurations_supported: Object.fromEntries(
       options.definitions.map((definition) => [

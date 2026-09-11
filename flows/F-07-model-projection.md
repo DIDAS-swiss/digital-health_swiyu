@@ -52,13 +52,13 @@ flowchart LR
     style W stroke-width:3px
 ```
 
-## Two properties that must not be lost
+## Two properties to preserve
 
 - **A projection is derived, never authoritative.** The signed SD-JWT VC is the
   evidence. The FHIR resource built from it carries no signature and proves
   nothing on its own. A system that needs provenance must retain the
-  presentation, not the projection — and most systems will retain the projection,
-  which is a risk worth stating plainly rather than designing around.
+  presentation. Most systems will retain the projection, and that risk is worth
+  stating plainly.
 - **A projection is legitimately partial.** After selective disclosure, a
   `DiagnosticReport` may have findings and no patient name. Receiving systems
   must tolerate that instead of treating a missing element as an error. This is
@@ -71,7 +71,7 @@ flowchart LR
   Nothing downstream can reconstruct them.
 - **Retention attaches to the projection too.** Building a FHIR resource is how a
   verifier retains data; the retention rule on the credential type governs it.
-- **Unmapped claims are reported, not dropped.** Both projections return the list
+- **Unmapped claims are reported.** Both projections return the list
   of disclosed claims that had no binding, so a modelling gap surfaces instead of
   silently losing data.
 
@@ -84,7 +84,7 @@ flowchart LR
 - Laboratory report → `DiagnosticReport` + one `Observation` per finding, and
   `openEHR-EHR-OBSERVATION.laboratory_test_result.v1`.
 - Insurance card → `Coverage` (CH Core). No openEHR model: openEHR describes the
-  clinical record, not the billing relationship.
+  clinical record.
 - Terminology: SNOMED CT for vaccines and diseases, LOINC for analytes, UCUM for
   units, GTIN for medication packs, GLN for professionals, AHVN13 for the
   protected administrative number.
@@ -97,10 +97,10 @@ flowchart LR
 1. **Round-tripping.** Projection is one-way. Whether a FHIR resource should be
    convertible back into a credential — and who would sign it — is a step-2
    question raised by the openEHR/HL7 joint working group's ambitions.
-2. **Profile conformance is claimed, not validated.** The resources assert
+2. **Profile conformance is claimed and never validated.** The resources assert
    `meta.profile` but are not run through a FHIR validator in CI. That is a
    gap, and a cheap one to close.
-3. **openEHR templates are sketched, not published.** `DIDAS.immunisation.v0`
+3. **openEHR templates are sketched and unpublished.** `DIDAS.immunisation.v0`
    and its siblings are named here; real operational templates would have to be
    modelled and published for the paths to be more than plausible.
 

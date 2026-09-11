@@ -57,7 +57,7 @@ afterwards — revocation, suspension and status queries all take it.
 
 ### Things that will bite you
 
-- **`status_lists` takes the `statusRegistryUrl`, not the id.**
+- **`status_lists` takes the `statusRegistryUrl`.** The id is rejected.
 - **A status list is immutable** in type, config and length once initialised.
   Plan capacity; 100'000 entries at two bits is the registry's ceiling.
 - **`exp` and `expiry_date` are different.** `credential_valid_until` sets `exp`:
@@ -82,7 +82,7 @@ const claims = ['target_disease', 'occurrence_date', 'dose_number', 'doses_in_se
 const allowed = reviewRequest({ definition: IMMUNIZATION, role: myRole, requestedClaims: claims });
 if (allowed.outcome === 'deny') throw new Error(allowed.reasons.at(-1));
 
-// 2. Build the request. Both flags are MUSTs of the profile, not options.
+// 2. Build the request. Both flags are MUSTs of the profile.
 const request = {
   dcql_query: dcqlQuery(credentialQuery({
     id: 'immunization', definition: IMMUNIZATION, claims,
@@ -97,7 +97,7 @@ const request = {
     purpose_description: { default: '…' },
   },
 };
-assertVerificationRequest(request);   // fail here, not at the wallet
+assertVerificationRequest(request);   // fail here, ahead of the wallet
 
 const verification = await verifier.createVerification(request);
 // → verification.verification_deeplink into a QR code; state starts PENDING
@@ -128,7 +128,7 @@ if (decision.outcome === 'allow') {
   a consent screen.
 - **A declined request is not an error.** `client_rejected` is a valid answer
   and your flow must work when it arrives.
-- **Claims come back keyed by DCQL query id**, not by credential type.
+- **Claims come back keyed by DCQL query id.** Credential type is not the key.
 
 ## Using what you receive
 
@@ -143,7 +143,7 @@ Two properties you must design around:
 
 1. **The projection is derived, never authoritative.** The signed credential is
    the evidence; the FHIR resource carries no signature. If you need provenance,
-   retain the presentation, not the projection.
+   retain the presentation itself.
 2. **The projection is legitimately partial.** After selective disclosure a
    `DiagnosticReport` may have findings and no patient name. Treating a missing
    element as an error will break you on the first minimal presentation. This is
