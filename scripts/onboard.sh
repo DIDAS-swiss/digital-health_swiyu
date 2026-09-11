@@ -18,6 +18,7 @@
 # sent anywhere. The DID log that *is* uploaded contains public keys only.
 #
 #   ./scripts/onboard.sh preflight
+#   ./scripts/onboard.sh spaces            # read-only: tokens, and which environment
 #   ./scripts/onboard.sh did praxis
 #   ./scripts/onboard.sh trust-first praxis
 #   ./scripts/onboard.sh did travel-clinic
@@ -27,8 +28,17 @@
 #
 set -euo pipefail
 
-readonly IDENTIFIER_API="https://identifier-reg-api.trust-infra.swiyu-int.admin.ch"
-readonly TRUST_API="https://trust-reg-api.trust-infra.swiyu-int.admin.ch"
+# Sandbox and production are separate infrastructures with separate hosts, and
+# CD-001 forbids mixing them. Defaulting to the Sandbox is the safe default;
+# `SWIYU_ENV=prod` switches, and either can be overridden outright.
+readonly SWIYU_ENV="${SWIYU_ENV:-sandbox}"
+case "$SWIYU_ENV" in
+  sandbox) readonly _HOST_SUFFIX="swiyu-int.admin.ch" ;;
+  prod)    readonly _HOST_SUFFIX="swiyu.admin.ch" ;;
+  *) printf 'SWIYU_ENV must be "sandbox" or "prod", got %s\n' "$SWIYU_ENV" >&2; exit 1 ;;
+esac
+readonly IDENTIFIER_API="${SWIYU_IDENTIFIER_API:-https://identifier-reg-api.trust-infra.$_HOST_SUFFIX}"
+readonly TRUST_API="${SWIYU_TRUST_API:-https://trust-reg-api.trust-infra.$_HOST_SUFFIX}"
 readonly STATE_DIR="${SWIYU_STATE_DIR:-.swiyu}"
 readonly ENV_FILE="${SWIYU_ENV_FILE:-.env.onboard}"
 
@@ -183,6 +193,53 @@ cmd_preflight() {
   ok "Ready. Next: $0 did praxis"
 }
 
+# Read-only reconnaissance. Costs nothing, changes nothing, and answers the two
+# questions worth answering before creating a chargeable DID: do the tokens
+# work, and which swiyu environment is this business partner provisioned in?
+cmd_spaces() {
+  load_env; require_var PARTNER_ID; require_var SWIYU_IDENTIFIER_REGISTRY_ACCESS_TOKEN
+
+  step "DID spaces for $PARTNER_ID"
+  dim "    via $IDENTIFIER_API (SWIYU_ENV=$SWIYU_ENV)"
+  local spaces
+  spaces="$(api GET "$IDENTIFIER_API/api/v1/identifier/business-entities/$PARTNER_ID/identifier/" \
+              "$SWIYU_IDENTIFIER_REGISTRY_ACCESS_TOKEN")"
+
+  local count
+  count="$(jq -r '[.content[]?] | length' <<<"$spaces")"
+  if [[ "$count" == "0" ]]; then
+    warn "no DID spaces provisioned yet"
+    dim "    '$0 did <name>' would request one, and each DID is chargeable."
+    return 0
+  fi
+
+  jq -r '.content[]? | "  " + (.status // "?") + "  " + .id + "  " + .identifierRegistryUrl' <<<"$spaces"
+
+  # The DID is derived from identifierRegistryUrl, so that host — not the API
+  # host we called — decides which environment the DID actually lives in.
+  local host
+  host="$(jq -r '[.content[]?][0].identifierRegistryUrl // empty' <<<"$spaces" | sed -E 's#https?://([^/]+)/.*#\1#')"
+  say
+  if [[ -z "$host" ]]; then
+    warn "could not read an identifierRegistryUrl to determine the environment"
+  elif [[ "$host" == *swiyu-int.admin.ch ]]; then
+    ok "these DIDs will live on the SANDBOX ($host)"
+    [[ "$SWIYU_ENV" == "sandbox" ]] || warn "but SWIYU_ENV=$SWIYU_ENV — you are calling the wrong API host"
+  elif [[ "$host" == *swiyu.admin.ch ]]; then
+    warn "these DIDs will live on PRODUCTION ($host)"
+    dim "    This project's generated config points at the Sandbox. Either ask for a"
+    dim "    Sandbox business partner, or regenerate config against the production"
+    dim "    hosts and understand that CD-001 separates the two wallets."
+  else
+    warn "unrecognised registry host: $host"
+  fi
+
+  local free
+  free="$(jq -r '[.content[]? | select(.status=="NOT_INITIALIZED")] | length' <<<"$spaces")"
+  say
+  say "$free space(s) ready to use, $((count - free)) already initialised."
+}
+
 # Claim a DID space, generate keys and a DID log locally, upload the log.
 cmd_did() {
   local name="${1:?usage: $0 did <actor-name>}"
@@ -201,7 +258,16 @@ cmd_did() {
   registry_url="$(jq -r '[.content[]? | select(.status=="NOT_INITIALIZED")][0].identifierRegistryUrl // empty' <<<"$spaces")"
 
   if [[ -z "$entry_id" ]]; then
-    dim "    no uninitialised space left; requesting a new one (this is chargeable)"
+    # Requesting a space costs money. Make that an explicit decision rather
+    # than something that happens because a loop ran one more time.
+    if [[ "${CREATE_SPACE:-}" != "yes" ]]; then
+      warn "no uninitialised DID space is available for '$name'"
+      dim "    Requesting a new one is CHARGEABLE. If that is intended, re-run with:"
+      dim "      CREATE_SPACE=yes $0 did $name"
+      dim "    Check what you already have first:  $0 spaces"
+      exit 1
+    fi
+    dim "    requesting a new DID space (chargeable, CREATE_SPACE=yes given)"
     local created
     created="$(api POST "$IDENTIFIER_API/api/v1/identifier/business-entities/$PARTNER_ID/identifier-entries/" \
                  "$SWIYU_IDENTIFIER_REGISTRY_ACCESS_TOKEN" -H 'Content-Type: application/json')"
@@ -359,6 +425,7 @@ cmd_env() {
 
 case "${1:-}" in
   preflight)   shift; cmd_preflight "$@" ;;
+  spaces)      shift; cmd_spaces "$@" ;;
   did)         shift; cmd_did "$@" ;;
   trust-first) shift; cmd_trust_first "$@" ;;
   trust-add)   shift; cmd_trust_add "$@" ;;

@@ -56,7 +56,9 @@ Once you have an ePortal account, a business partner and API tokens,
 
 ```bash
 cp .env.onboard.example .env.onboard     # fill in PARTNER_ID and the tokens
-./scripts/onboard.sh preflight
+./scripts/onboard.sh preflight            # tokens valid? subscribed to the right APIs?
+./scripts/onboard.sh spaces              # read-only: which environment are you actually in?
+CREATE_SPACE=yes \
 ./scripts/onboard.sh did praxis          # claim a space, make keys, upload the DID log
 #  → start the trust onboarding for this DID in the Service Portal, then:
 ./scripts/onboard.sh trust-first praxis
@@ -71,6 +73,25 @@ are git-ignored, and are never transmitted — the DID log that *is* uploaded
 contains public keys only. **Back that directory up**: a lost signing key means
 a DID you can no longer update, and a lost assertion key means credentials you
 can no longer revoke.
+
+Two guards worth knowing about:
+
+- **`spaces` before `did`.** It is read-only and free, it proves the tokens
+  work, and it prints the registry host your DIDs would actually live on. That
+  host — not the API host you call — decides whether a DID is a Sandbox DID or
+  a production one, because the DID is derived from it. Check it before you
+  spend anything.
+- **`CREATE_SPACE=yes` is required** to request a new DID space, because each
+  one is chargeable. Without it the script stops and tells you what it would
+  have bought.
+
+Running against production instead of the Sandbox: `SWIYU_ENV=prod`. The
+default is `sandbox`, and CD-001 keeps the two strictly apart — a credential
+issued in one cannot be presented in the other, and each needs its own wallet.
+
+Subscribing an application to a new API does **not** widen tokens you already
+hold; mint fresh ones afterwards or `preflight` will tell you the subscription
+is missing.
 
 The manual steps below are what the script automates, kept for when something
 goes wrong and you need to see the actual call.
