@@ -19,26 +19,26 @@ refused when the query is built, so the claim is never transmitted.
 
 ### Immunization Record
 
-| Claim | practice | pharmacy | travel-clinic | research |
-| --- | --- | --- | --- | --- |
-| `immunization_id` | ● | · | · | · |
-| `patient_given_name` | ● | · | · | · |
-| `patient_family_name` | ● | · | · | · |
-| `patient_birth_date` | ● | · | · | · |
-| `vaccine_code` | ● | ● | · | ● |
-| `vaccine_name` | ● | ● | · | · |
-| `target_disease` | ● | ● | ● | ● |
-| `occurrence_date` | ● | ● | ● | ● |
-| `dose_number` | ● | ● | ● | ● |
-| `doses_in_series` | ● | ● | ● | · |
-| `next_dose_due` | ● | ● | · | · |
-| `lot_number` | ● | · | · | · |
-| `route` | ● | · | · | · |
-| `site` | ● | · | · | · |
-| `performer_name` | ● | · | · | · |
-| `performer_gln` | ● | · | · | · |
-| `organization_name` | ● | · | · | · |
-| `country` | ● | · | · | · |
+| Claim | practice | pharmacy | travel-clinic | research | statistics |
+| --- | --- | --- | --- | --- | --- |
+| `immunization_id` | ● | · | · | · | · |
+| `patient_given_name` | ● | · | · | · | · |
+| `patient_family_name` | ● | · | · | · | · |
+| `patient_birth_date` | ● | · | · | · | · |
+| `vaccine_code` | ● | ● | · | ● | ● |
+| `vaccine_name` | ● | ● | · | · | · |
+| `target_disease` | ● | ● | ● | ● | ● |
+| `occurrence_date` | ● | ● | ● | ● | ● |
+| `dose_number` | ● | ● | ● | ● | ● |
+| `doses_in_series` | ● | ● | ● | · | ● |
+| `next_dose_due` | ● | ● | · | · | · |
+| `lot_number` | ● | · | · | · | · |
+| `route` | ● | · | · | · | · |
+| `site` | ● | · | · | · | · |
+| `performer_name` | ● | · | · | · | · |
+| `performer_gln` | ● | · | · | · | · |
+| `organization_name` | ● | · | · | · | · |
+| `country` | ● | · | · | · | · |
 
 ● may request · · never disclosed to this role · ⚑ protected field
 

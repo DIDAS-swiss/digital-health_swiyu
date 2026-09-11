@@ -36,6 +36,7 @@ This is a **governed** credential type: an actor must decline any interaction wh
 | `ch.didas.health.role.pharmacy` | Check the series before administering the next dose | 7 of 18 | — |
 | `ch.didas.health.role.travel-clinic` | Confirm protection against a specific disease for travel advice | 4 of 18 | — |
 | `ch.didas.health.role.research` | Secondary use under explicit, revocable patient consent | 4 of 18 | — |
+| `ch.didas.health.role.statistics` | National vaccination coverage monitoring | 5 of 18 | — |
 
 A request for any claim outside a role's entitlement is refused when the query is
 built, before it reaches the holder. See `reviewRequest()`.

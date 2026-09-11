@@ -35,6 +35,7 @@ computes each view and catches the second kind of mistake.
 | `practiceCheckIn` | [F-04](../F-04-practice-check-in.md) | Two DCQL queries in one request, and the protected AHV number |
 | `prescriptionRedemption` | [F-05](../F-05-prescription-redemption.md) | Presentation, then revocation by the original issuer |
 | `correction` | [F-06](../F-06-lifecycle-and-correction.md) | Revoke, supersede using the CH VACD `relatesTo` shape, and the holder notification that is missing |
+| `coverageSurvey` | [F-11](../F-11-coverage-survey.md) | The EBPI coverage survey: sample drawn from the population register, five claims disclosed, no identifier |
 
 Each step's title reads as an action and its `notes` carry the protocol, the
 format, and the eHealth Suisse or Swiss Profile rule behind it. The diagram

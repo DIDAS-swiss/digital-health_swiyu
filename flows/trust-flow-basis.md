@@ -95,6 +95,7 @@ of their own:
 | F-08 patient summary | many `verification` runs across credential types |
 | F-09 secondary use | `verification` with an unusual verifier and a consent object |
 | F-10 continuous data | `issuance`, with an open question about who authors the claim |
+| F-11 coverage survey | `verification`, with the sample drawn outside the trust infrastructure |
 
 Where one of these needs a step the reference model has no shape for, the note
 is in that flow's own **Standardisation constraints** section.

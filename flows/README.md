@@ -65,6 +65,7 @@ That intent shapes the format:
 | [F-08](F-08-patient-summary.md) | Assembling an International Patient Summary | `roadmap` | 2 |
 | [F-09](F-09-secondary-use.md) | Secondary use under revocable consent | `roadmap` | 2 |
 | [F-10](F-10-continuous-data.md) | Wearables and continuous data | `roadmap` | 3 |
+| [F-11](F-11-coverage-survey.md) | Answering the national coverage survey | `roadmap` | 2 |
 
 ## What is deliberately not here
 

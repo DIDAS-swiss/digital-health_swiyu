@@ -11,9 +11,9 @@ be wrong.
 ## Switzerland does not measure vaccination coverage from a register
 
 The national figure comes from the **Swiss National Vaccination Coverage
-Survey**, running since 1999, coordinated by the Epidemiology, Biostatistics and
-Prevention Institute at the University of Zurich with the Federal Office of
-Public Health and all 26 cantons. Its method:
+Survey**, running since 1999, coordinated by the **Epidemiology, Biostatistics
+and Prevention Institute (EBPI)** at the University of Zurich with the Federal
+Office of Public Health and all 26 cantons. Its method:
 
 - children aged **2, 8 and 16**
 - **randomly selected households**, invited by letter
@@ -51,9 +51,15 @@ photocopy of a booklet discloses today, and the receiving analyst would get
 something machine-readable. F-09 already models the entitlement shape that makes
 this possible.
 
-None of this is built. It is the most concrete public-health use of the
-architecture and it is not on the roadmap, which is an argument for putting it
-there.
+This is now specified as [F-11](../flows/F-11-coverage-survey.md), with the
+entitlement defined on the immunization credential under a `statistics` role
+distinct from `research`. Nothing beyond the entitlement is built.
+
+The constraint that makes or breaks it: **the wallet is a response channel and
+never a sampling frame.** EBPI draws the sample from the population register,
+which is what keeps the estimate unbiased and also why the credential needs to
+carry no demographic claim at all — the frame already has the age and the
+canton.
 
 ## What is genuinely lost
 
