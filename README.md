@@ -87,11 +87,20 @@ its standardisation constraints, and its open questions. It is written to be
 Flows F-08 to F-10 are marked `roadmap` and are specified but deliberately not
 built — see [`docs/roadmap.md`](docs/roadmap.md).
 
+## Running it in a browser
+
+`npm run build:browser` bundles the decision code — the governance engine, the
+DCQL builder, the conformance checks and the projections — into a single script
+that runs in a page. Only the *generators* need Node, because they compute CESR
+and SRI digests over files on disk. This exists so a walkthrough can exercise
+the real rules rather than a reimplementation of them; a demo that reimplements
+the rules it demonstrates proves nothing about the rules.
+
 ## Running it
 
 ```bash
 npm install
-npm run verify        # typecheck + 62 tests
+npm run verify        # typecheck + 63 tests
 npm run dev           # http://localhost:3000
 ```
 

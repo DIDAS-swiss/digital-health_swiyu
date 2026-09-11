@@ -147,13 +147,31 @@ describe('verification requests', () => {
     expect(checkVerificationRequest(request).some((f) => f.rule.includes('swiss-profile-trust'))).toBe(true);
   });
 
-  it('rejects a purpose name longer than the registry allows', () => {
+  it('rejects a purpose name longer than the Trust Registry allows', () => {
     const request = base();
+    // 45 characters passes the verifier's own validation and then fails at the
+    // vqPS submission, so the tighter registry limit is the one to enforce.
     request.verification_purpose = {
       scope: 'ch.didas.health.dispense',
-      purpose_name: { default: 'x'.repeat(51) },
+      purpose_name: { default: 'x'.repeat(45) },
       purpose_description: { default: 'ok' },
     };
-    expect(checkVerificationRequest(request).some((f) => f.message.includes('50 characters'))).toBe(true);
+    expect(checkVerificationRequest(request).some((f) => f.message.includes('40 characters'))).toBe(true);
+  });
+
+  it('accepts the purpose names this project actually uses', () => {
+    for (const name of [
+      'Check vaccination protection',
+      'Check-in at the practice',
+      'Dispense prescribed medication',
+    ]) {
+      const request = base();
+      request.verification_purpose = {
+        scope: 'ch.didas.health.test',
+        purpose_name: { default: name },
+        purpose_description: { default: 'ok' },
+      };
+      expect(checkVerificationRequest(request), name).toEqual([]);
+    }
   });
 });

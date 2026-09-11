@@ -20,7 +20,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "verify": "npm run typecheck && npm run test",
-    "generate:config": "tsx scripts/generate-config.ts"
+    "generate:config": "tsx scripts/generate-config.ts",
+    "build:browser": "esbuild packages/swiyu/src/browser.ts --bundle --format=iife --global-name=SWIYU --target=es2022 --minify --outfile=dist/swiyu.browser.js"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

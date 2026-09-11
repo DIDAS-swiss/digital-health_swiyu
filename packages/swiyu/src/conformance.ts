@@ -195,11 +195,21 @@ export function checkVerificationRequest(request: CreateVerificationRequest): Fi
         add('swiyu-verifier management API', `verification_purpose.${field} must contain a non-blank "default" entry`);
       }
     }
-    const nameLimit = 50;
+    // Two different limits apply to the same string, and the tighter one is
+    // not the one the verifier enforces. The generic verifier's management API
+    // accepts a purpose_name up to 50 characters, but the Trust Registry's
+    // vqPS submission — where the purpose is actually published — caps it at
+    // 40 per locale. A 45-character name therefore passes locally and fails
+    // when the verifier registers the query, which is a miserable thing to
+    // debug live. Enforce the registry's limit.
+    const nameLimit = 40;
     const descriptionLimit = 500;
     for (const [locale, text] of Object.entries(purpose.purpose_name ?? {})) {
       if (text.length > nameLimit) {
-        add('swiyu-verifier management API', `verification_purpose.purpose_name[${locale}] exceeds ${nameLimit} characters`);
+        add(
+          'swiyu Trust Registry, vqPS submission',
+          `verification_purpose.purpose_name[${locale}] exceeds ${nameLimit} characters, the limit the Trust Registry enforces when the query is published`,
+        );
       }
     }
     for (const [locale, text] of Object.entries(purpose.purpose_description ?? {})) {

@@ -6,3 +6,6 @@ dist/
 !.env.example
 coverage/
 .DS_Store
+
+# Browser bundle, produced by `npm run build:browser`
+dist/

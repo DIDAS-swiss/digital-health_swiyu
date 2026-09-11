@@ -60,6 +60,21 @@ sequenceDiagram
     TR-->>A: gucaTM for the credential types of those roles
 ```
 
+## Three layers, often collapsed into one
+
+"Onboarding" names three different things here, and conflating them is why this
+flow is usually misjudged as blocked when two thirds of it are available today:
+
+| Layer | What it establishes | Available? |
+| --- | --- | --- |
+| Organisation | An ePortal account, a business partner, API access | **Yes** — self-service, chargeable per DID |
+| Identity | A `did:webvh` on the Base Registry, proven by possession → `viTM` | **Yes** — self-service |
+| Transparency | A Verification Query Public Statement: this verifier, this scope, this DCQL query, published | **Yes** — self-service, per verifier per query |
+| Entitlement | `gucaTM`: this DID may issue *this credential type* in health | **No** — nobody can issue it |
+
+Only the last layer is blocked. A pilot runs on the first three plus explicitly
+listed `accepted_issuer_dids`, which is what this project does.
+
 ## Governance constraints
 
 - **A role is granted by someone, not claimed.** The health domain needs a
@@ -109,7 +124,10 @@ sequenceDiagram
    sector association, or a body constituted for the purpose. Until this is
    answered, `gucaTM` cannot be issued for health credential types and every
    deployment falls back to explicitly listed issuer DIDs, which does not scale
-   past a pilot.
+   past a pilot. Note what this does *not* block: a verifier can already publish
+   a vqPS declaring exactly what it asks for and why, so the transparency half
+   of the Trust Protocol is available now. What is missing is the half that says
+   an actor is *entitled* to ask.
 2. **How are roles expressed in a trust statement?** This project uses reverse
    DNS strings (`ch.didas.health.role.practice`). Whether the ecosystem adopts
    a shared vocabulary or each domain invents its own determines whether a
