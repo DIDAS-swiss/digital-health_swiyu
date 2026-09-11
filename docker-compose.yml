@@ -1,0 +1,237 @@
+# Sandbox deployment: one swiyu-issuer and/or swiyu-verifier per actor.
+#
+# Each actor is a separate legal entity with its own DID, its own signing keys
+# and its own generic component instances. That separation is the architecture,
+# not an artefact of the compose file — collapsing them into one instance would
+# mean one DID signing on behalf of four organisations.
+#
+# Before starting:
+#   1. Onboard each actor (docs/onboarding-sandbox.md) and fill in .env.
+#   2. npm run generate:config -- --praxis-url https://… (etc.)
+#   3. docker compose up
+#
+# The generic issuer must be reachable by the wallet over https at EXTERNAL_URL.
+# In local testing that means a tunnel; the wallet refuses plain http.
+
+name: digital-health-swiyu
+
+x-issuer-common: &issuer-common
+  image: ghcr.io/swiyu-admin-ch/swiyu-issuer:latest
+  restart: unless-stopped
+  environment: &issuer-env
+    SWIYU_STATUS_REGISTRY_TOKEN_URL: ${SWIYU_STATUS_REGISTRY_TOKEN_URL}
+    SWIYU_STATUS_REGISTRY_API_URL: ${SWIYU_STATUS_REGISTRY_API_URL}
+    SWIYU_STATUS_REGISTRY_AUTH_ENABLE_REFRESH_TOKEN_FLOW: "true"
+    OPENID_CONFIG_FILE: "file:/cfg-files/openid_metadata.json"
+    METADATA_CONFIG_FILE: "file:/cfg-files/issuer_metadata.json"
+    SPRING_CONFIG_ADDITIONAL_LOCATION: "file:/cfg-files/application-credentials.yml"
+    TOKEN_TTL: 600
+
+x-verifier-common: &verifier-common
+  image: ghcr.io/swiyu-admin-ch/swiyu-verifier:latest
+  restart: unless-stopped
+
+services:
+  # ----------------------------------------------------------------- insurer
+  insurer-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: issuer
+      POSTGRES_PASSWORD: ${INSURER_DB_PASSWORD:-secret}
+      POSTGRES_DB: insurer_issuer
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U issuer -d insurer_issuer"]
+      interval: 5s
+      retries: 10
+    volumes: [insurer_db:/var/lib/postgresql/data]
+
+  insurer-issuer:
+    <<: *issuer-common
+    environment:
+      <<: *issuer-env
+      SPRING_APPLICATION_NAME: insurer-issuer
+      EXTERNAL_URL: ${INSURER_EXTERNAL_URL}
+      ISSUER_ID: ${INSURER_DID}
+      DID_SDJWT_VERIFICATION_METHOD: ${INSURER_SDJWT_VERIFICATION_METHOD}
+      SDJWT_KEY: ${INSURER_SDJWT_KEY}
+      DID_STATUS_LIST_VERIFICATION_METHOD: ${INSURER_STATUS_LIST_VERIFICATION_METHOD}
+      STATUS_LIST_KEY: ${INSURER_STATUS_LIST_KEY}
+      SWIYU_PARTNER_ID: ${INSURER_PARTNER_ID}
+      SWIYU_STATUS_REGISTRY_CUSTOMER_KEY: ${INSURER_STATUS_REGISTRY_CUSTOMER_KEY}
+      SWIYU_STATUS_REGISTRY_CUSTOMER_SECRET: ${INSURER_STATUS_REGISTRY_CUSTOMER_SECRET}
+      SWIYU_STATUS_REGISTRY_ACCESS_TOKEN: ${INSURER_STATUS_REGISTRY_ACCESS_TOKEN}
+      SWIYU_STATUS_REGISTRY_BOOTSTRAP_REFRESH_TOKEN: ${INSURER_STATUS_REGISTRY_REFRESH_TOKEN}
+      POSTGRES_USER: issuer
+      POSTGRES_PASSWORD: ${INSURER_DB_PASSWORD:-secret}
+      POSTGRES_DB: insurer_issuer
+      POSTGRES_JDBC: jdbc:postgresql://insurer-db:5432/insurer_issuer
+    volumes:
+      - ./config/insurer:/cfg-files:ro
+    ports: ["8080:8080"]
+    depends_on:
+      insurer-db: { condition: service_healthy }
+
+  # ------------------------------------------------------------------ praxis
+  praxis-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: issuer
+      POSTGRES_PASSWORD: ${PRAXIS_DB_PASSWORD:-secret}
+      POSTGRES_DB: praxis_issuer
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U issuer -d praxis_issuer"]
+      interval: 5s
+      retries: 10
+    volumes: [praxis_db:/var/lib/postgresql/data]
+
+  praxis-issuer:
+    <<: *issuer-common
+    environment:
+      <<: *issuer-env
+      SPRING_APPLICATION_NAME: praxis-issuer
+      EXTERNAL_URL: ${PRAXIS_EXTERNAL_URL}
+      ISSUER_ID: ${PRAXIS_DID}
+      DID_SDJWT_VERIFICATION_METHOD: ${PRAXIS_SDJWT_VERIFICATION_METHOD}
+      SDJWT_KEY: ${PRAXIS_SDJWT_KEY}
+      DID_STATUS_LIST_VERIFICATION_METHOD: ${PRAXIS_STATUS_LIST_VERIFICATION_METHOD}
+      STATUS_LIST_KEY: ${PRAXIS_STATUS_LIST_KEY}
+      SWIYU_PARTNER_ID: ${PRAXIS_PARTNER_ID}
+      SWIYU_STATUS_REGISTRY_CUSTOMER_KEY: ${PRAXIS_STATUS_REGISTRY_CUSTOMER_KEY}
+      SWIYU_STATUS_REGISTRY_CUSTOMER_SECRET: ${PRAXIS_STATUS_REGISTRY_CUSTOMER_SECRET}
+      SWIYU_STATUS_REGISTRY_ACCESS_TOKEN: ${PRAXIS_STATUS_REGISTRY_ACCESS_TOKEN}
+      SWIYU_STATUS_REGISTRY_BOOTSTRAP_REFRESH_TOKEN: ${PRAXIS_STATUS_REGISTRY_REFRESH_TOKEN}
+      POSTGRES_USER: issuer
+      POSTGRES_PASSWORD: ${PRAXIS_DB_PASSWORD:-secret}
+      POSTGRES_DB: praxis_issuer
+      POSTGRES_JDBC: jdbc:postgresql://praxis-db:5432/praxis_issuer
+    volumes:
+      - ./config/praxis:/cfg-files:ro
+    ports: ["8081:8080"]
+    depends_on:
+      praxis-db: { condition: service_healthy }
+
+  praxis-verifier-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: verifier
+      POSTGRES_PASSWORD: ${PRAXIS_DB_PASSWORD:-secret}
+      POSTGRES_DB: praxis_verifier
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U verifier -d praxis_verifier"]
+      interval: 5s
+      retries: 10
+    volumes: [praxis_verifier_db:/var/lib/postgresql/data]
+
+  praxis-verifier:
+    <<: *verifier-common
+    environment:
+      EXTERNAL_URL: ${PRAXIS_VERIFIER_EXTERNAL_URL}
+      VERIFIER_DID: ${PRAXIS_DID}
+      DID_VERIFICATION_METHOD: ${PRAXIS_AUTH_VERIFICATION_METHOD}
+      SIGNING_KEY: ${PRAXIS_AUTH_KEY}
+      OPENID_CLIENT_METADATA_FILE: file:/cfg-files/verifier_metadata.json
+      POSTGRES_USER: verifier
+      POSTGRES_PASSWORD: ${PRAXIS_DB_PASSWORD:-secret}
+      POSTGRES_DB: praxis_verifier
+      POSTGRES_JDBC: jdbc:postgresql://praxis-verifier-db:5432/praxis_verifier
+    volumes:
+      - ./config/praxis:/cfg-files:ro
+    ports: ["8181:8080"]
+    depends_on:
+      praxis-verifier-db: { condition: service_healthy }
+
+  # ---------------------------------------------------------------- pharmacy
+  pharmacy-verifier-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: verifier
+      POSTGRES_PASSWORD: ${PHARMACY_DB_PASSWORD:-secret}
+      POSTGRES_DB: pharmacy_verifier
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U verifier -d pharmacy_verifier"]
+      interval: 5s
+      retries: 10
+    volumes: [pharmacy_verifier_db:/var/lib/postgresql/data]
+
+  pharmacy-verifier:
+    <<: *verifier-common
+    environment:
+      EXTERNAL_URL: ${PHARMACY_EXTERNAL_URL}
+      VERIFIER_DID: ${PHARMACY_DID}
+      DID_VERIFICATION_METHOD: ${PHARMACY_AUTH_VERIFICATION_METHOD}
+      SIGNING_KEY: ${PHARMACY_AUTH_KEY}
+      OPENID_CLIENT_METADATA_FILE: file:/cfg-files/verifier_metadata.json
+      POSTGRES_USER: verifier
+      POSTGRES_PASSWORD: ${PHARMACY_DB_PASSWORD:-secret}
+      POSTGRES_DB: pharmacy_verifier
+      POSTGRES_JDBC: jdbc:postgresql://pharmacy-verifier-db:5432/pharmacy_verifier
+    volumes:
+      - ./config/pharmacy:/cfg-files:ro
+    ports: ["8082:8080"]
+    depends_on:
+      pharmacy-verifier-db: { condition: service_healthy }
+
+  # ----------------------------------------------------------- travel clinic
+  travel-clinic-verifier-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: verifier
+      POSTGRES_PASSWORD: ${TRAVEL_CLINIC_DB_PASSWORD:-secret}
+      POSTGRES_DB: travel_verifier
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U verifier -d travel_verifier"]
+      interval: 5s
+      retries: 10
+    volumes: [travel_verifier_db:/var/lib/postgresql/data]
+
+  travel-clinic-verifier:
+    <<: *verifier-common
+    environment:
+      EXTERNAL_URL: ${TRAVEL_CLINIC_EXTERNAL_URL}
+      VERIFIER_DID: ${TRAVEL_CLINIC_DID}
+      DID_VERIFICATION_METHOD: ${TRAVEL_CLINIC_AUTH_VERIFICATION_METHOD}
+      SIGNING_KEY: ${TRAVEL_CLINIC_AUTH_KEY}
+      OPENID_CLIENT_METADATA_FILE: file:/cfg-files/verifier_metadata.json
+      POSTGRES_USER: verifier
+      POSTGRES_PASSWORD: ${TRAVEL_CLINIC_DB_PASSWORD:-secret}
+      POSTGRES_DB: travel_verifier
+      POSTGRES_JDBC: jdbc:postgresql://travel-clinic-verifier-db:5432/travel_verifier
+    volumes:
+      - ./config/travel-clinic:/cfg-files:ro
+    ports: ["8083:8080"]
+    depends_on:
+      travel-clinic-verifier-db: { condition: service_healthy }
+
+  # ------------------------------------------------------------- business app
+  demo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      SWIYU_MODE: sandbox
+      PORT: 3000
+      SWIYU_TRUST_POLICY: ${SWIYU_TRUST_POLICY:-sandbox}
+      INSURER_DID: ${INSURER_DID}
+      INSURER_ISSUER_URL: http://insurer-issuer:8080
+      PRAXIS_DID: ${PRAXIS_DID}
+      PRAXIS_ISSUER_URL: http://praxis-issuer:8080
+      PRAXIS_VERIFIER_URL: http://praxis-verifier:8080
+      PHARMACY_DID: ${PHARMACY_DID}
+      PHARMACY_VERIFIER_URL: http://pharmacy-verifier:8080
+      TRAVEL_CLINIC_DID: ${TRAVEL_CLINIC_DID}
+      TRAVEL_CLINIC_VERIFIER_URL: http://travel-clinic-verifier:8080
+    ports: ["3000:3000"]
+    depends_on:
+      - insurer-issuer
+      - praxis-issuer
+      - praxis-verifier
+      - pharmacy-verifier
+      - travel-clinic-verifier
+
+volumes:
+  insurer_db:
+  praxis_db:
+  praxis_verifier_db:
+  pharmacy_verifier_db:
+  travel_verifier_db:

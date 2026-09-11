@@ -1,0 +1,367 @@
+{
+  "profile_version": "swiss-profile-issuance:1.0.0",
+  "credential_issuer": "http://localhost:8080",
+  "credential_endpoint": "http://localhost:8080/oid4vci/api/credential",
+  "deferred_credential_endpoint": "http://localhost:8080/oid4vci/api/deferred_credential",
+  "nonce_endpoint": "http://localhost:8080/oid4vci/api/nonce",
+  "version": "1.0",
+  "display": [
+    {
+      "name": "DIDAS Krankenversicherung (Demo)",
+      "locale": "de-CH"
+    },
+    {
+      "name": "DIDAS assurance-maladie (démo)",
+      "locale": "fr-CH"
+    },
+    {
+      "name": "DIDAS assicurazione malattia (demo)",
+      "locale": "it-CH"
+    },
+    {
+      "name": "DIDAS Health Insurance (demo)",
+      "locale": "en-GB"
+    }
+  ],
+  "credential_request_encryption": {
+    "encryption_required": true,
+    "alg_values_supported": [
+      "ECDH-ES"
+    ],
+    "enc_values_supported": [
+      "A128GCM",
+      "A256GCM"
+    ]
+  },
+  "credential_response_encryption": {
+    "encryption_required": true,
+    "alg_values_supported": [
+      "ECDH-ES"
+    ],
+    "enc_values_supported": [
+      "A128GCM",
+      "A256GCM"
+    ]
+  },
+  "batch_credential_issuance": {
+    "batch_size": 10
+  },
+  "credential_configurations_supported": {
+    "health_insurance_card_sd_jwt": {
+      "format": "dc+sd-jwt",
+      "credential_signing_alg_values_supported": [
+        "ES256"
+      ],
+      "cryptographic_binding_methods_supported": [
+        "jwk"
+      ],
+      "proof_types_supported": {
+        "jwt": {
+          "proof_signing_alg_values_supported": [
+            "ES256"
+          ]
+        }
+      },
+      "credential_refresh_disabled": false,
+      "vct": "urn:vct:ch.didas.health.insurance-card:1.0",
+      "vct_metadata_uri": "http://localhost:8080/oid4vci/vct/health-insurance-card-sd-jwt",
+      "vct_metadata_uri#integrity": "sha256-I3K+WwsS3hsocsPy93nN9tAx1sVlo4a5Rd9SUo4BUTI=",
+      "credential_metadata": {
+        "display": [
+          {
+            "name": "Versichertenkarte",
+            "locale": "de-CH",
+            "description": "Elektronische Versichertenkarte der obligatorischen Krankenpflegeversicherung.",
+            "background_color": "#0B5D8F"
+          },
+          {
+            "name": "Carte d'assuré",
+            "locale": "fr-CH",
+            "description": "Carte d'assuré électronique de l'assurance obligatoire des soins.",
+            "background_color": "#0B5D8F"
+          },
+          {
+            "name": "Tessera di assicurato",
+            "locale": "it-CH",
+            "description": "Tessera di assicurato elettronica dell'assicurazione obbligatoria delle cure medico-sanitarie.",
+            "background_color": "#0B5D8F"
+          },
+          {
+            "name": "Health Insurance Card",
+            "locale": "en-GB",
+            "description": "Electronic insurance card for Swiss mandatory health insurance.",
+            "background_color": "#0B5D8F"
+          }
+        ],
+        "claims": [
+          {
+            "path": [
+              "given_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Vorname(n)"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Prénom(s)"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Nome(i)"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Given name(s)"
+              }
+            ]
+          },
+          {
+            "path": [
+              "family_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Name"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Nom"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Cognome"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Surname"
+              }
+            ]
+          },
+          {
+            "path": [
+              "birth_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Geburtsdatum"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Date de naissance"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Data di nascita"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Date of birth"
+              }
+            ]
+          },
+          {
+            "path": [
+              "card_number"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Kartennummer"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Numéro de carte"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Numero della tessera"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Card number"
+              }
+            ]
+          },
+          {
+            "path": [
+              "personal_administrative_number"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "AHV-Nummer"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Numéro AVS"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Numero AVS"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Social security number"
+              }
+            ]
+          },
+          {
+            "path": [
+              "insurer_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Versicherer"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Assureur"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Assicuratore"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Insurer"
+              }
+            ]
+          },
+          {
+            "path": [
+              "insurer_bag_number"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "BAG-Nummer"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Numéro OFSP"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Numero UFSP"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Insurer registration number"
+              }
+            ]
+          },
+          {
+            "path": [
+              "insurance_model"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Modell"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Modèle"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Modello"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Model"
+              }
+            ]
+          },
+          {
+            "path": [
+              "coverage"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Deckung"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Couverture"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Copertura"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Coverage"
+              }
+            ]
+          },
+          {
+            "path": [
+              "valid_from"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Gültig ab"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Valable dès"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Valido dal"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Valid from"
+              }
+            ]
+          },
+          {
+            "path": [
+              "expiry_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Gültig bis"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Valable jusqu'au"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Valido fino al"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Valid until"
+              }
+            ]
+          }
+        ]
+      },
+      "order": [
+        "given_name",
+        "family_name",
+        "birth_date",
+        "insurer_name",
+        "insurance_model",
+        "coverage",
+        "card_number",
+        "insurer_bag_number",
+        "valid_from",
+        "expiry_date",
+        "personal_administrative_number"
+      ]
+    }
+  }
+}

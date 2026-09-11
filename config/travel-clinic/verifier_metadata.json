@@ -1,0 +1,18 @@
+{
+  "client_id": "${VERIFIER_DID}",
+  "client_name": "DIDAS Travel Medicine",
+  "client_name#de-CH": "DIDAS Reisemedizin",
+  "client_name#fr-CH": "DIDAS Médecine des voyages",
+  "client_name#it-CH": "DIDAS Medicina di viaggio",
+  "client_name#en": "DIDAS Travel Medicine",
+  "vp_formats_supported": {
+    "dc+sd-jwt": {
+      "sd-jwt_alg_values": [
+        "ES256"
+      ],
+      "kb-jwt_alg_values": [
+        "ES256"
+      ]
+    }
+  }
+}

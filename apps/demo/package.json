@@ -1,0 +1,22 @@
+{
+  "name": "@didas/demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@didas/swiyu": "*",
+    "@fastify/formbody": "^8.0.1",
+    "@fastify/static": "^8.0.3",
+    "fastify": "^5.2.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.5"
+  }
+}

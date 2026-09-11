@@ -1,0 +1,34 @@
+{
+  "name": "digital-health-swiyu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Digital Health on the swiyu Swiss Trust Infrastructure (E-ID) — GovTech Hackathon project 1103",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.10"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @didas/demo",
+    "start": "npm run start -w @didas/demo",
+    "build": "tsc --build",
+    "typecheck": "tsc --build --force",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "npm run typecheck && npm run test",
+    "generate:config": "tsx scripts/generate-config.ts",
+    "build:browser": "esbuild packages/swiyu/src/browser.ts --bundle --format=iife --global-name=SWIYU --target=es2022 --minify --outfile=dist/swiyu.browser.js",
+    "vqps": "tsx scripts/vqps.ts",
+    "generate:docs": "tsx scripts/generate-docs.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,1119 @@
+{
+  "profile_version": "swiss-profile-issuance:1.0.0",
+  "credential_issuer": "http://localhost:8081",
+  "credential_endpoint": "http://localhost:8081/oid4vci/api/credential",
+  "deferred_credential_endpoint": "http://localhost:8081/oid4vci/api/deferred_credential",
+  "nonce_endpoint": "http://localhost:8081/oid4vci/api/nonce",
+  "version": "1.0",
+  "display": [
+    {
+      "name": "DIDAS Hausarztpraxis (Demo)",
+      "locale": "de-CH"
+    },
+    {
+      "name": "DIDAS Cabinet médical (démo)",
+      "locale": "fr-CH"
+    },
+    {
+      "name": "DIDAS Studio medico (demo)",
+      "locale": "it-CH"
+    },
+    {
+      "name": "DIDAS Family Practice (demo)",
+      "locale": "en-GB"
+    }
+  ],
+  "credential_request_encryption": {
+    "encryption_required": true,
+    "alg_values_supported": [
+      "ECDH-ES"
+    ],
+    "enc_values_supported": [
+      "A128GCM",
+      "A256GCM"
+    ]
+  },
+  "credential_response_encryption": {
+    "encryption_required": true,
+    "alg_values_supported": [
+      "ECDH-ES"
+    ],
+    "enc_values_supported": [
+      "A128GCM",
+      "A256GCM"
+    ]
+  },
+  "batch_credential_issuance": {
+    "batch_size": 10
+  },
+  "credential_configurations_supported": {
+    "health_immunization_sd_jwt": {
+      "format": "dc+sd-jwt",
+      "credential_signing_alg_values_supported": [
+        "ES256"
+      ],
+      "cryptographic_binding_methods_supported": [
+        "jwk"
+      ],
+      "proof_types_supported": {
+        "jwt": {
+          "proof_signing_alg_values_supported": [
+            "ES256"
+          ]
+        }
+      },
+      "credential_refresh_disabled": true,
+      "vct": "urn:vct:ch.didas.health.immunization:1.0",
+      "vct_metadata_uri": "http://localhost:8081/oid4vci/vct/health-immunization-sd-jwt",
+      "vct_metadata_uri#integrity": "sha256-WqMVAbmlbg/C1+6WjISJxEH9h1YdemibLdMNElRzyhI=",
+      "credential_metadata": {
+        "display": [
+          {
+            "name": "Impfeintrag",
+            "locale": "de-CH",
+            "description": "Nachweis einer verabreichten Impfung, ausgestellt durch die impfende Stelle.",
+            "background_color": "#0F6E8C"
+          },
+          {
+            "name": "Vaccination",
+            "locale": "fr-CH",
+            "description": "Preuve d'une vaccination administrée, délivrée par le vaccinateur.",
+            "background_color": "#0F6E8C"
+          },
+          {
+            "name": "Vaccinazione",
+            "locale": "it-CH",
+            "description": "Prova di una vaccinazione somministrata, rilasciata da chi la somministra.",
+            "background_color": "#0F6E8C"
+          },
+          {
+            "name": "Immunization",
+            "locale": "en-GB",
+            "description": "Proof of one administered vaccination, issued by whoever administered it.",
+            "background_color": "#0F6E8C"
+          }
+        ],
+        "claims": [
+          {
+            "path": [
+              "immunization_id"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Eintragsnummer"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Numéro d'enregistrement"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Numero di registrazione"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Record number"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_given_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Vorname(n)"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Prénom(s)"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Nome(i)"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Given name(s)"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_family_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Name"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Nom"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Cognome"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Surname"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_birth_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Geburtsdatum"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Date de naissance"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Data di nascita"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Date of birth"
+              }
+            ]
+          },
+          {
+            "path": [
+              "vaccine_code"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Impfstoffcode"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Code du vaccin"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Codice del vaccino"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Vaccine code"
+              }
+            ]
+          },
+          {
+            "path": [
+              "vaccine_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Impfstoff"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Vaccin"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Vaccino"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Vaccine"
+              }
+            ]
+          },
+          {
+            "path": [
+              "target_disease"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Schützt gegen"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Protège contre"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Protegge da"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Protects against"
+              }
+            ]
+          },
+          {
+            "path": [
+              "occurrence_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Impfdatum"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Date de vaccination"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Data di vaccinazione"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Date given"
+              }
+            ]
+          },
+          {
+            "path": [
+              "dose_number"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Dosis Nr."
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Dose n°"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Dose n."
+              },
+              {
+                "locale": "en-GB",
+                "name": "Dose number"
+              }
+            ]
+          },
+          {
+            "path": [
+              "doses_in_series"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Dosen in der Serie"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Doses dans la série"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Dosi nella serie"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Doses in series"
+              }
+            ]
+          },
+          {
+            "path": [
+              "next_dose_due"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Nächste Dosis fällig"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Prochaine dose"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Prossima dose"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Next dose due"
+              }
+            ]
+          },
+          {
+            "path": [
+              "lot_number"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Chargennummer"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Numéro de lot"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Numero di lotto"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Lot number"
+              }
+            ]
+          },
+          {
+            "path": [
+              "route"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Applikationsart"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Voie d'administration"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Via di somministrazione"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Route"
+              }
+            ]
+          },
+          {
+            "path": [
+              "site"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Injektionsstelle"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Site d'injection"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Sede di iniezione"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Site"
+              }
+            ]
+          },
+          {
+            "path": [
+              "performer_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Impfende Person"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Vaccinateur"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Vaccinatore"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Administered by"
+              }
+            ]
+          },
+          {
+            "path": [
+              "performer_gln"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "GLN"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "GLN"
+              },
+              {
+                "locale": "it-CH",
+                "name": "GLN"
+              },
+              {
+                "locale": "en-GB",
+                "name": "GLN"
+              }
+            ]
+          },
+          {
+            "path": [
+              "organization_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Impfstelle"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Lieu de vaccination"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Luogo di vaccinazione"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Location"
+              }
+            ]
+          },
+          {
+            "path": [
+              "country"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Land"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Pays"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Paese"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Country"
+              }
+            ]
+          }
+        ]
+      },
+      "order": [
+        "vaccine_name",
+        "target_disease",
+        "occurrence_date",
+        "dose_number",
+        "doses_in_series",
+        "next_dose_due",
+        "patient_given_name",
+        "patient_family_name",
+        "patient_birth_date",
+        "performer_name",
+        "performer_gln",
+        "organization_name",
+        "vaccine_code",
+        "lot_number",
+        "route",
+        "site",
+        "country",
+        "immunization_id"
+      ]
+    },
+    "health_prescription_sd_jwt": {
+      "format": "dc+sd-jwt",
+      "credential_signing_alg_values_supported": [
+        "ES256"
+      ],
+      "cryptographic_binding_methods_supported": [
+        "jwk"
+      ],
+      "proof_types_supported": {
+        "jwt": {
+          "proof_signing_alg_values_supported": [
+            "ES256"
+          ]
+        }
+      },
+      "credential_refresh_disabled": true,
+      "vct": "urn:vct:ch.didas.health.prescription:1.0",
+      "vct_metadata_uri": "http://localhost:8081/oid4vci/vct/health-prescription-sd-jwt",
+      "vct_metadata_uri#integrity": "sha256-AZwLU8RxC+CUHItjgEwjoVksf8XnZQTkfVEf9/Hc9h0=",
+      "credential_metadata": {
+        "display": [
+          {
+            "name": "Rezept",
+            "locale": "de-CH",
+            "description": "Elektronisches Rezept, ausgestellt durch die behandelnde Ärztin oder den behandelnden Arzt.",
+            "background_color": "#1E7A4C"
+          },
+          {
+            "name": "Ordonnance",
+            "locale": "fr-CH",
+            "description": "Ordonnance électronique établie par le médecin traitant.",
+            "background_color": "#1E7A4C"
+          },
+          {
+            "name": "Ricetta",
+            "locale": "it-CH",
+            "description": "Ricetta elettronica rilasciata dal medico curante.",
+            "background_color": "#1E7A4C"
+          },
+          {
+            "name": "Prescription",
+            "locale": "en-GB",
+            "description": "Electronic prescription issued by the treating physician.",
+            "background_color": "#1E7A4C"
+          }
+        ],
+        "claims": [
+          {
+            "path": [
+              "prescription_id"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Rezeptnummer"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Numéro d'ordonnance"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Numero della ricetta"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Prescription number"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_given_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Vorname(n)"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Prénom(s)"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Nome(i)"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Given name(s)"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_family_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Name"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Nom"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Cognome"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Surname"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_birth_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Geburtsdatum"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Date de naissance"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Data di nascita"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Date of birth"
+              }
+            ]
+          },
+          {
+            "path": [
+              "medication"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Medikamente"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Médicaments"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Medicamenti"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Medication"
+              }
+            ]
+          },
+          {
+            "path": [
+              "prescriber_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Verordnende Person"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Prescripteur"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Prescrittore"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Prescriber"
+              }
+            ]
+          },
+          {
+            "path": [
+              "prescriber_gln"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "GLN"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "GLN"
+              },
+              {
+                "locale": "it-CH",
+                "name": "GLN"
+              },
+              {
+                "locale": "en-GB",
+                "name": "GLN"
+              }
+            ]
+          },
+          {
+            "path": [
+              "issued_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Ausstellungsdatum"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Date d'établissement"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Data di rilascio"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Date of issue"
+              }
+            ]
+          },
+          {
+            "path": [
+              "expiry_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Gültig bis"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Valable jusqu'au"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Valido fino al"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Valid until"
+              }
+            ]
+          },
+          {
+            "path": [
+              "repeats_authorized"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Wiederholungen"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Répétitions"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Ripetizioni"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Repeats"
+              }
+            ]
+          }
+        ]
+      },
+      "order": [
+        "medication",
+        "patient_given_name",
+        "patient_family_name",
+        "patient_birth_date",
+        "prescriber_name",
+        "prescriber_gln",
+        "issued_date",
+        "expiry_date",
+        "repeats_authorized",
+        "prescription_id"
+      ]
+    },
+    "health_lab_report_sd_jwt": {
+      "format": "dc+sd-jwt",
+      "credential_signing_alg_values_supported": [
+        "ES256"
+      ],
+      "cryptographic_binding_methods_supported": [
+        "jwk"
+      ],
+      "proof_types_supported": {
+        "jwt": {
+          "proof_signing_alg_values_supported": [
+            "ES256"
+          ]
+        }
+      },
+      "credential_refresh_disabled": true,
+      "vct": "urn:vct:ch.didas.health.lab-report:1.0",
+      "vct_metadata_uri": "http://localhost:8081/oid4vci/vct/health-lab-report-sd-jwt",
+      "vct_metadata_uri#integrity": "sha256-mKAxlIzR62Qpw+zMQbgbjrQuGaa2z1oTKNnxzzo6Elc=",
+      "credential_metadata": {
+        "display": [
+          {
+            "name": "Laborbefund",
+            "locale": "de-CH",
+            "description": "Laborbefund einer ärztlichen Konsultation.",
+            "background_color": "#5B3E8E"
+          },
+          {
+            "name": "Rapport de laboratoire",
+            "locale": "fr-CH",
+            "description": "Rapport de laboratoire d'une consultation médicale.",
+            "background_color": "#5B3E8E"
+          },
+          {
+            "name": "Referto di laboratorio",
+            "locale": "it-CH",
+            "description": "Referto di laboratorio di una consultazione medica.",
+            "background_color": "#5B3E8E"
+          },
+          {
+            "name": "Laboratory Report",
+            "locale": "en-GB",
+            "description": "Laboratory findings from a medical consultation.",
+            "background_color": "#5B3E8E"
+          }
+        ],
+        "claims": [
+          {
+            "path": [
+              "report_id"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Befundnummer"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Numéro du rapport"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Numero del referto"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Report number"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_given_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Vorname(n)"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Prénom(s)"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Nome(i)"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Given name(s)"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_family_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Name"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Nom"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Cognome"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Surname"
+              }
+            ]
+          },
+          {
+            "path": [
+              "patient_birth_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Geburtsdatum"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Date de naissance"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Data di nascita"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Date of birth"
+              }
+            ]
+          },
+          {
+            "path": [
+              "findings"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Befunde"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Résultats"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Risultati"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Findings"
+              }
+            ]
+          },
+          {
+            "path": [
+              "interpretation"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Beurteilung"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Appréciation"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Valutazione"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Assessment"
+              }
+            ]
+          },
+          {
+            "path": [
+              "specimen_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Entnahmedatum"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Date du prélèvement"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Data del prelievo"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Specimen date"
+              }
+            ]
+          },
+          {
+            "path": [
+              "report_date"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Befunddatum"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Date du rapport"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Data del referto"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Report date"
+              }
+            ]
+          },
+          {
+            "path": [
+              "laboratory_name"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "Labor"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "Laboratoire"
+              },
+              {
+                "locale": "it-CH",
+                "name": "Laboratorio"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Laboratory"
+              }
+            ]
+          },
+          {
+            "path": [
+              "ordering_physician_gln"
+            ],
+            "display": [
+              {
+                "locale": "de-CH",
+                "name": "GLN Auftraggeber"
+              },
+              {
+                "locale": "fr-CH",
+                "name": "GLN du prescripteur"
+              },
+              {
+                "locale": "it-CH",
+                "name": "GLN del richiedente"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Ordering physician GLN"
+              }
+            ]
+          }
+        ]
+      },
+      "order": [
+        "findings",
+        "interpretation",
+        "report_date",
+        "specimen_date",
+        "patient_given_name",
+        "patient_family_name",
+        "patient_birth_date",
+        "laboratory_name",
+        "ordering_physician_gln",
+        "report_id"
+      ]
+    }
+  }
+}
