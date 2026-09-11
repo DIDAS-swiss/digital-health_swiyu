@@ -9,3 +9,8 @@ coverage/
 
 # Browser bundle, produced by `npm run build:browser`
 dist/
+
+# Onboarding: private key material and tokens. Never commit these.
+.swiyu/
+.env.onboard
+build/

@@ -22,6 +22,7 @@ export * from './dcql.js';
 export * from './governance.js';
 export * from './projections.js';
 export * from './conformance.js';
+export * from './queries.js';
 export * from './credentials/index.js';
 
 // The definition model is exported as types only: the builders that turn a

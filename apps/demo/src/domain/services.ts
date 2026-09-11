@@ -11,6 +11,7 @@ import { randomUUID } from 'node:crypto';
 
 import {
   assertVerificationRequest,
+  BETA_ID_CREDENTIAL,
   BETA_ID,
   credentialQuery,
   dcqlQuery,
@@ -22,6 +23,9 @@ import {
   LAB_REPORT,
   PRESCRIPTION,
   PROTECTED_CLAIMS,
+  IMMUNIZATION_STATUS,
+  CHECK_IN,
+  DISPENSE,
   recordDecision,
   reviewIssuance,
   reviewPresentation,
@@ -33,6 +37,7 @@ import {
   type GovernanceRecord,
   type TrustPolicy,
   type VerificationManagementResponse,
+  type VerificationQuerySpec,
 } from '@didas/swiyu';
 
 import type { ActorConfig, AppConfig } from '../config.js';
@@ -205,6 +210,41 @@ function authoriseIssuance(
   return decision.reasons;
 }
 
+/**
+ * Send one of the project's declared verification queries.
+ *
+ * The claim lists live in `VERIFICATION_QUERIES`, not here, because the same
+ * objects generate the Verification Query Public Statements published to the
+ * Trust Registry. A query that drifts from its published statement makes the
+ * statement a false claim, so there is only one copy.
+ */
+function requestFromSpec(
+  deps: ServiceDeps,
+  actor: ActorConfig,
+  spec: VerificationQuerySpec,
+  issuers: Record<string, string[]>,
+): Promise<VerificationStart> {
+  const [first, ...rest] = spec.plans;
+  if (!first) throw new Error(`verification query ${spec.scope} has no credential plans`);
+  return requestPresentation({
+    deps,
+    actor,
+    definition: first.definition,
+    queryId: first.id,
+    claims: first.claims,
+    acceptedIssuerDids: issuers[first.id] ?? [],
+    purposeScope: spec.scope,
+    purposeName: spec.purposeName,
+    purposeDescription: spec.purposeDescription,
+    extraQueries: rest.map((plan) => ({
+      definition: plan.definition,
+      queryId: plan.id,
+      claims: plan.claims,
+      acceptedIssuerDids: issuers[plan.id] ?? [],
+    })),
+  });
+}
+
 /* --------------------------------------------------------------- insurer */
 
 export class InsurerService {
@@ -317,51 +357,13 @@ export class PraxisService {
     const actor = this.deps.config.actors.praxis;
     const encounter = this.deps.store.createEncounter();
 
-    const betaIdIssuer = this.deps.config.betaIdIssuerDid;
-
-    const start = await requestPresentation({
-      deps: this.deps,
-      actor,
-      definition: INSURANCE_CARD,
-      queryId: 'insurance_card',
-      claims: [
-        'given_name',
-        'family_name',
-        'birth_date',
-        'card_number',
-        'insurer_name',
-        'insurer_bag_number',
-        'insurance_model',
-        'coverage',
-        'expiry_date',
-        'personal_administrative_number',
-      ],
-      acceptedIssuerDids: [this.deps.config.actors.insurer.did],
-      purposeScope: 'ch.didas.health.checkin',
-      purposeName: {
-        default: 'Check-in at the practice',
-        'de-CH': 'Anmeldung in der Praxis',
-        'fr-CH': 'Enregistrement au cabinet',
-        'it-CH': 'Registrazione presso lo studio',
-      },
-      purposeDescription: {
-        default:
-          'Confirms who you are and which insurance covers this consultation. No health data is requested.',
-        'de-CH':
-          'Bestätigt Ihre Identität und Ihre Versicherungsdeckung für diese Konsultation. Es werden keine Gesundheitsdaten abgefragt.',
-      },
-      extraQueries: [
-        {
-          // Identity comes from the Beta-ID, the Sandbox stand-in for the e-ID.
-          // Asking the card for a name and the e-ID for the same name is the
-          // point: one is a billing attribute, the other is an identity claim
-          // backed by the Confederation.
-          definition: betaIdDefinition,
-          queryId: 'identity',
-          claims: ['given_name', 'family_name', 'birth_date'],
-          acceptedIssuerDids: [betaIdIssuer],
-        },
-      ],
+    const start = await requestFromSpec(this.deps, actor, CHECK_IN, {
+      insurance_card: [this.deps.config.actors.insurer.did],
+      // Identity comes from the Beta-ID, the Sandbox stand-in for the e-ID.
+      // Asking the card for a name and the e-ID for the same name is the
+      // point: one is a billing attribute, the other an identity claim backed
+      // by the Confederation, and a mismatch is worth noticing.
+      identity: [this.deps.config.betaIdIssuerDid],
     });
 
     encounter.checkInVerificationId = start.verificationId;
@@ -725,35 +727,8 @@ export class PharmacyService {
   /** Ask the patient to present their prescription. */
   async startDispense(): Promise<VerificationStart> {
     const actor = this.deps.config.actors.pharmacy;
-    return requestPresentation({
-      deps: this.deps,
-      actor,
-      definition: PRESCRIPTION,
-      queryId: 'prescription',
-      claims: [
-        'prescription_id',
-        'patient_given_name',
-        'patient_family_name',
-        'patient_birth_date',
-        'medication',
-        'prescriber_name',
-        'prescriber_gln',
-        'issued_date',
-        'expiry_date',
-        'repeats_authorized',
-      ],
-      acceptedIssuerDids: [this.deps.config.actors.praxis.did],
-      purposeScope: 'ch.didas.health.dispense',
-      purposeName: {
-        default: 'Dispense prescribed medication',
-        'de-CH': 'Abgabe verordneter Medikamente',
-        'fr-CH': 'Remise des médicaments prescrits',
-      },
-      purposeDescription: {
-        default: 'Reads your prescription so the medication can be handed over and the prescription used up.',
-        'de-CH':
-          'Liest Ihr Rezept, damit die Medikamente abgegeben und das Rezept eingelöst werden kann.',
-      },
+    return requestFromSpec(this.deps, actor, DISPENSE, {
+      prescription: [this.deps.config.actors.praxis.did],
     });
   }
 
@@ -830,30 +805,11 @@ export class TravelClinicService {
 
   async startCheck(): Promise<VerificationStart> {
     const actor = this.deps.config.actors.travelClinic;
-    return requestPresentation({
-      deps: this.deps,
-      actor,
-      definition: IMMUNIZATION,
-      queryId: 'immunization',
-      claims: ['target_disease', 'occurrence_date', 'dose_number', 'doses_in_series'],
-      acceptedIssuerDids: [
+    return requestFromSpec(this.deps, actor, IMMUNIZATION_STATUS, {
+      immunization: [
         this.deps.config.actors.praxis.did,
         this.deps.config.actors.pharmacy.did,
       ],
-      purposeScope: 'ch.didas.health.immunization.status',
-      purposeName: {
-        default: 'Check vaccination protection',
-        'de-CH': 'Impfschutz prüfen',
-        'fr-CH': 'Vérifier la protection vaccinale',
-      },
-      purposeDescription: {
-        default:
-          'Asks only which diseases you are protected against and when — not the vaccine brand, ' +
-          'the batch, or who vaccinated you.',
-        'de-CH':
-          'Fragt nur, gegen welche Krankheiten Sie geschützt sind und seit wann — nicht den ' +
-          'Impfstoff, die Charge oder wer Sie geimpft hat.',
-      },
     });
   }
 
@@ -915,33 +871,7 @@ export class TravelClinicService {
 }
 
 /**
- * The Beta-ID, described in the same shape as our own credential types so it
- * can be used in a DCQL query. It has no `governance` block: the Confederation
- * governs it, not this project, and pretending otherwise would put rules in our
- * repository that no one here can enforce.
+ * The Beta-ID now lives in `@didas/swiyu` so the demo, the browser build and
+ * the vqPS generator all describe it identically.
  */
-const betaIdDefinition: CredentialDefinition = {
-  configurationId: 'betaid_sd_jwt',
-  vct: BETA_ID.vct,
-  name: 'Beta-ID',
-  displayName: { 'de-CH': 'Beta-ID', 'en-GB': 'Beta-ID' },
-  description: {
-    'de-CH': 'Pseudo-Identitätsnachweis der Sandbox mit den Attributen der künftigen E-ID.',
-    'en-GB': 'Sandbox pseudo-identity credential carrying the attribute set of the future e-ID.',
-  },
-  backgroundColor: '#D8232A',
-  claims: [
-    { name: 'given_name', type: 'Text', label: { 'de-CH': 'Vorname(n)' }, schema: { type: 'string' } },
-    { name: 'family_name', type: 'Text', label: { 'de-CH': 'Name' }, schema: { type: 'string' } },
-    { name: 'birth_date', type: 'DateTime', label: { 'de-CH': 'Geburtsdatum' }, schema: { type: 'string' } },
-    { name: 'age_over_18', type: 'Boolean', label: { 'de-CH': 'Über 18' }, schema: { type: 'boolean' } },
-    {
-      name: 'personal_administrative_number',
-      type: 'Text',
-      label: { 'de-CH': 'AHV-Nummer' },
-      schema: { type: 'string' },
-    },
-  ],
-};
-
-export { betaIdDefinition };
+export { BETA_ID_CREDENTIAL as betaIdDefinition };

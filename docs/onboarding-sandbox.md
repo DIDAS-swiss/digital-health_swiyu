@@ -49,6 +49,32 @@ Two DIDs. The insurer and pharmacy can come later; the Beta-ID is free from the
 Beta Credential Service. Check-in needs an insurance card, so either add a third
 DID for the insurer or run the immunization flow on its own.
 
+## The scripted path
+
+Once you have an ePortal account, a business partner and API tokens,
+`scripts/onboard.sh` does the rest:
+
+```bash
+cp .env.onboard.example .env.onboard     # fill in PARTNER_ID and the tokens
+./scripts/onboard.sh preflight
+./scripts/onboard.sh did praxis          # claim a space, make keys, upload the DID log
+#  → start the trust onboarding for this DID in the Service Portal, then:
+./scripts/onboard.sh trust-first praxis
+./scripts/onboard.sh did travel-clinic
+./scripts/onboard.sh trust-add praxis travel-clinic
+./scripts/onboard.sh vqps                # publish what each verifier asks for
+./scripts/onboard.sh env                 # DIDs and verification methods for .env
+```
+
+Private keys are generated on your machine under `.swiyu/<actor>/.didtoolbox/`,
+are git-ignored, and are never transmitted — the DID log that *is* uploaded
+contains public keys only. **Back that directory up**: a lost signing key means
+a DID you can no longer update, and a lost assertion key means credentials you
+can no longer revoke.
+
+The manual steps below are what the script automates, kept for when something
+goes wrong and you need to see the actual call.
+
 ## 1 · Business partner and API access
 
 1. Register on the [swiyu Service Portal](https://portal.trust-infra.swiyu-int.admin.ch)

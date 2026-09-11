@@ -10,4 +10,5 @@ export * from './cesr.js';
 export * from './sri.js';
 export * from './governance.js';
 export * from './projections.js';
+export * from './queries.js';
 export * from './credentials/index.js';
