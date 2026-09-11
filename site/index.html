@@ -431,7 +431,7 @@
 
     <figure>
       <div class="figbox">
-        <svg viewBox="0 0 900 436" role="img" aria-label="Issuers write credentials into the patient's wallet over OpenID4VCI; verifiers ask the wallet for specific claims over OpenID4VP; both sides touch only a status list on the Base Registry, which carries no patient data.">
+        <svg viewBox="0 0 900 470" role="img" aria-label="Issuers write credentials into the patient's wallet over OpenID4VCI; four verifiers — practice reception, travel clinic, pharmacy and the national coverage survey — ask the wallet for specific claims over OpenID4VP; both sides touch only a status list on the Base Registry, which carries no patient data.">
           <defs>
             <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
@@ -488,6 +488,10 @@
             <rect x="688" y="174" width="196" height="56" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.35"></rect>
             <text x="702" y="195">Pharmacy</text>
             <text x="702" y="214" font-size="11" opacity="0.62">10 claims · to dispense</text>
+
+            <rect x="688" y="244" width="196" height="56" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-dasharray="5 4"></rect>
+            <text x="702" y="265">EBPI coverage survey</text>
+            <text x="702" y="284" font-size="11" opacity="0.62">5 claims · no identifier</text>
           </g>
 
           <!-- issue arrows -->
@@ -503,36 +507,38 @@
           <g stroke="currentColor" stroke-opacity="0.5" fill="none">
             <path d="M 548 84 L 680 62" marker-end="url(#ar)"></path>
             <path d="M 548 178 L 680 202" marker-end="url(#ar)"></path>
+            <path d="M 548 206 L 680 272" marker-end="url(#ar)"></path>
           </g>
           <path d="M 548 132 L 680 132" stroke="#0B6E5F" stroke-width="1.6" fill="none" marker-end="url(#ar-acc)"></path>
           <text x="572" y="112" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">OpenID4VP</text>
           <text x="572" y="126" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.55">asks for n claims</text>
 
           <!-- base registry -->
-          <rect x="212" y="332" width="476" height="62" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="5 4"></rect>
-          <text x="232" y="356" font-family="Archivo, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">Base Registry · status lists</text>
-          <text x="232" y="376" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.62">2 bits per credential. No patient, no medication, no pharmacy.</text>
+          <rect x="212" y="366" width="476" height="62" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="5 4"></rect>
+          <text x="232" y="390" font-family="Archivo, sans-serif" font-size="12.5" font-weight="600" fill="currentColor">Base Registry · status lists</text>
+          <text x="232" y="410" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.62">2 bits per credential. No patient, no medication, no pharmacy.</text>
 
           <!-- status arrows -->
           <g stroke="currentColor" stroke-opacity="0.45" fill="none" stroke-dasharray="4 4">
-            <path d="M 114 252 L 114 362 L 204 362" marker-end="url(#ar)"></path>
-            <path d="M 786 232 L 786 362 L 696 362" marker-end="url(#ar)"></path>
+            <path d="M 114 252 L 114 396 L 204 396" marker-end="url(#ar)"></path>
+            <path d="M 830 302 L 830 396 L 696 396" marker-end="url(#ar)"></path>
           </g>
-          <text x="126" y="290" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">publishes ·</text>
-          <text x="126" y="304" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">revokes</text>
-          <text x="700" y="290" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">checks</text>
-          <text x="700" y="304" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">validity</text>
+          <text x="126" y="300" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">publishes ·</text>
+          <text x="126" y="314" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">revokes</text>
+          <text x="736" y="330" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">checks</text>
+          <text x="736" y="344" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">validity</text>
 
-          <!-- redemption edge -->
-          <path d="M 786 232 L 786 268 L 114 268 L 114 258" stroke="currentColor" stroke-opacity="0.35" fill="none" marker-end="url(#ar)"></path>
-          <text x="286" y="262" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.62">pharmacy asks the prescriber to revoke — only the issuer can</text>
-          <text x="16" y="424" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.55">Green marks the immunization showcase path.</text>
+          <!-- redemption edge: pharmacy asks the prescriber to revoke -->
+          <path d="M 688 202 L 664 202 L 664 340 L 148 340 L 148 258" stroke="currentColor" stroke-opacity="0.35" fill="none" marker-end="url(#ar)"></path>
+          <text x="206" y="334" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.62">pharmacy asks the prescriber to revoke — only the issuer can</text>
+          <text x="16" y="458" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.55">Green marks the immunization showcase path. The coverage survey is dashed: specified, not built.</text>
         </svg>
       </div>
       <figcaption>
         The status list is the only thing both sides touch, and it carries two bits per credential —
         which is why a prescription can be made single-use without anyone keeping a register of who
-        was prescribed what.
+        was prescribed what. The fourth verifier is the national coverage survey, which asks for five
+        claims and no identifier, and whose counterfactual is a photocopied booklet in an envelope.
       </figcaption>
     </figure>
   </section>
