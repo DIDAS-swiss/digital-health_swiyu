@@ -23,8 +23,9 @@ application-layer encryption, signed issuer metadata, SD-JWT assembly and
 disclosure handling, JAR signing, response decryption, key binding verification,
 DID resolution, status list signing and publication, or trust marker evaluation.
 
-That is the whole point of the generic components. It is also where conformance
-is won or lost, and none of it belongs in a practice management system.
+That list is what the generic components exist to provide. It is also where
+conformance is decided, so implementing it inside a practice management system
+would place that burden on every vendor separately.
 
 ## Issuing a credential
 

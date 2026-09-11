@@ -377,13 +377,15 @@
     </div>
     <h1>Vaccination records in the patient's wallet</h1>
     <p class="lede">
-      Built on <strong>swiyu</strong>, Switzerland's e-ID trust infrastructure. A practice records an
-      administered dose into the patient's wallet, and a travel clinic later confirms protection —
-      receiving <strong>four of the eighteen claims</strong> the credential holds, because the other
-      fourteen never leave the phone. Running code against the swiyu Sandbox and Swiss Profiles 1.0.
+      A vaccination record can be held by the patient rather than by a central database. This project
+      implements that on <strong>swiyu</strong>, Switzerland's e-ID trust infrastructure. A practice
+      writes an administered dose into an app on the patient's phone as a signed digital document. A
+      travel clinic later asks whether the patient is protected, and receives <strong>four of the
+      eighteen data items</strong> that document holds; the other fourteen are not transmitted. The
+      code runs against the swiyu Sandbox and Swiss Profiles 1.0.
     </p>
     <div class="facts">
-      <div class="fact"><b>4 / 18</b><span>claims released when a travel clinic asks about protection</span></div>
+      <div class="fact"><b>4 / 18</b><span>data items released when a travel clinic asks about protection</span></div>
       <div class="fact"><b>4</b><span>credential types issued, each generating its own metadata, schema and wallet rendering</span></div>
       <div class="fact"><b>11</b><span>documented flows with governance and standardisation constraints</span></div>
       <div class="fact"><b>0</b><span>registries, repositories or patient indexes operated by anyone</span></div>
@@ -394,6 +396,29 @@
 <main class="wrap">
 
   <section>
+    <p class="kicker">Terms</p>
+    <h2>Terms used on this page</h2>
+    <p>
+      The words below have a narrow technical meaning in this field, and are used in that meaning
+      throughout this page.
+    </p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Term</th><th>Meaning here</th></tr></thead>
+        <tbody>
+          <tr><td>Credential</td><td>A digital document signed by the organisation that issued it, held on the patient's phone. One administered dose is one credential.</td></tr>
+          <tr><td>Claim</td><td>A single data item inside a credential, such as the date of a dose or the disease it targets. The immunization credential has eighteen.</td></tr>
+          <tr><td>Wallet</td><td>The app that stores credentials and releases claims from them. The patient operates it.</td></tr>
+          <tr><td>Issuer</td><td>The organisation that signs and hands over a credential — here a practice, a pharmacy, an insurer or the Confederation.</td></tr>
+          <tr><td>Verifier</td><td>The organisation that asks for claims — here a travel clinic, a practice reception, a pharmacy or a survey.</td></tr>
+          <tr><td>Selective disclosure</td><td>The property that a verifier receives only the claims it asked for and is entitled to. The rest stay on the phone.</td></tr>
+          <tr><td>Status list</td><td>A published list of bits, one pair per credential, saying whether it is still valid. It contains no patient data.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
     <p class="kicker">Background</p>
     <h2>What we learned from the past</h2>
     <p>
@@ -402,10 +427,10 @@
       their own vaccination history at once.
     </p>
     <p>
-      The conclusion usually drawn is that the platform was badly built. The more useful one is
-      structural: a design in which one database holds everyone's record has a failure mode that
-      careful engineering does not remove. It can be breached, defunded, or simply switched off — and
-      when it is, everyone loses simultaneously.
+      The platform was badly built, and that explanation is accurate as far as it goes. There is a
+      second, structural point. A design in which one database holds everyone's record carries a
+      failure mode that careful engineering does not remove: the database can be breached, defunded,
+      or switched off, and each of those removes access for every person at the same moment.
     </p>
     <div class="pull">
       <p>The paper vaccination booklet has one property the platform never had: it survives the
@@ -421,17 +446,19 @@
 
   <section>
     <p class="kicker">The mechanism</p>
-    <h2>Four organisations, one wallet, no shared database</h2>
+    <h2>How credentials reach the wallet, and how claims leave it</h2>
     <p>
-      Credentials flow into the wallet from whoever is entitled to assert them, and out of it only in
-      answer to a specific question. The one piece of shared infrastructure is the status list — a bit
-      array published by the Confederation's Base Registry that says whether a credential is still
-      valid, and nothing else about it.
+      Four organisations issue credentials into the wallet: the Confederation, a health insurer, a
+      practice and a pharmacy. Each issues only what it is entitled to assert. Claims leave the wallet
+      in answer to a specific question from a verifier, with the patient's consent, one question at a
+      time. The only infrastructure the two sides share is the status list published by the
+      Confederation's Base Registry, which records whether a credential is still valid and nothing
+      else about it.
     </p>
 
     <figure>
       <div class="figbox">
-        <svg viewBox="0 0 900 470" role="img" aria-label="Issuers write credentials into the patient's wallet over OpenID4VCI; four verifiers — practice reception, travel clinic, pharmacy and the national coverage survey — ask the wallet for specific claims over OpenID4VP; both sides touch only a status list on the Base Registry, which carries no patient data.">
+        <svg viewBox="0 0 900 470" role="img" aria-label="Issuers write credentials into the patient's wallet over OpenID4VCI; four verifiers — practice reception, travel clinic, pharmacy and the national coverage survey — ask the wallet for specific claims over OpenID4VP; the coverage survey also issues a single-use invitation credential into the wallet; both sides touch only a status list on the Base Registry, which carries no patient data.">
           <defs>
             <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
@@ -463,7 +490,7 @@
           </g>
 
           <!-- wallet -->
-          <rect x="352" y="34" width="196" height="216" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.6"></rect>
+          <rect x="352" y="34" width="196" height="232" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-width="1.6"></rect>
           <text x="366" y="55" font-family="Archivo, sans-serif" font-size="13" font-weight="600" fill="currentColor">Patient wallet</text>
           <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.72">
             <text x="366" y="82">betaid-sdjwt</text>
@@ -472,8 +499,10 @@
             <text x="366" y="148">lab-report:1.0</text>
             <text x="366" y="170">prescription:1.0</text>
           </g>
-          <text x="366" y="204" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.6">SD-JWT VC · every claim</text>
-          <text x="366" y="220" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.6">selectively disclosable</text>
+          <text x="366" y="192" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.45">survey-invitation:1.0</text>
+          <text x="366" y="206" font-family="Archivo, sans-serif" font-size="10" fill="currentColor" opacity="0.45">single use · specified, not built</text>
+          <text x="366" y="236" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.6">SD-JWT VC · every claim</text>
+          <text x="366" y="252" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.6">selectively disclosable</text>
 
           <!-- verifiers -->
           <g font-family="Archivo, sans-serif" font-size="12.5" fill="currentColor">
@@ -507,8 +536,13 @@
           <g stroke="currentColor" stroke-opacity="0.5" fill="none">
             <path d="M 548 84 L 680 62" marker-end="url(#ar)"></path>
             <path d="M 548 178 L 680 202" marker-end="url(#ar)"></path>
-            <path d="M 548 206 L 680 272" marker-end="url(#ar)"></path>
+            <path d="M 548 222 L 680 272" marker-end="url(#ar)"></path>
           </g>
+          <!-- the survey issues the single-use invitation into the wallet -->
+          <g stroke="currentColor" stroke-opacity="0.4" fill="none" stroke-dasharray="4 4">
+            <path d="M 688 292 L 556 244" marker-end="url(#ar)"></path>
+          </g>
+          <text x="572" y="292" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.55">issues the single-use invitation</text>
           <path d="M 548 132 L 680 132" stroke="#0B6E5F" stroke-width="1.6" fill="none" marker-end="url(#ar-acc)"></path>
           <text x="572" y="112" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">OpenID4VP</text>
           <text x="572" y="126" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.55">asks for n claims</text>
@@ -531,14 +565,18 @@
           <!-- redemption edge: pharmacy asks the prescriber to revoke -->
           <path d="M 688 202 L 664 202 L 664 340 L 148 340 L 148 258" stroke="currentColor" stroke-opacity="0.35" fill="none" marker-end="url(#ar)"></path>
           <text x="206" y="334" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.62">pharmacy asks the prescriber to revoke — only the issuer can</text>
-          <text x="16" y="458" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.55">Green marks the immunization showcase path. The coverage survey is dashed: specified, not built.</text>
+          <text x="16" y="458" font-family="Archivo, sans-serif" font-size="11" fill="currentColor" opacity="0.55">Green marks the immunization showcase path. Dashed lines are specified and not built: the coverage survey, and the invitation it issues.</text>
         </svg>
       </div>
       <figcaption>
-        The status list is the only thing both sides touch, and it carries two bits per credential —
-        which is why a prescription can be made single-use without anyone keeping a register of who
+        The status list is the only component both sides touch. It carries two bits per credential,
+        which is enough to make a prescription single-use without anyone keeping a register of who
         was prescribed what. The fourth verifier is the national coverage survey, which asks for five
-        claims and no identifier, and whose counterfactual is a photocopied booklet in an envelope.
+        claims and no identifier, and which today collects the same information as a photocopied
+        booklet sent by post. It is also the one verifier that issues: the letter it posts to a
+        sampled household carries a single-use invitation credential, which the wallet presents back
+        alongside the dose claims and which is revoked once the response is accepted. Both it and the
+        survey are drawn dashed, because they are specified and not built.
       </figcaption>
     </figure>
   </section>
@@ -547,10 +585,11 @@
     <p class="kicker">Selective disclosure</p>
     <h2>What each verifier receives</h2>
     <p>
-      The immunization credential carries eighteen claims. What a verifier receives is not decided by
-      their good behaviour, and not filtered after the fact — it is decided by an entitlement attached
-      to their registered role, and the request is refused when the query is <em>built</em>. Once the
-      wallet has answered, the data is out, and a check any later is only a promise.
+      The immunization credential carries eighteen claims. What a verifier receives is decided by an
+      entitlement attached to its registered role, and a query for claims outside that entitlement is
+      refused at the point where the query is built — before it is sent to the wallet. The timing
+      matters: once the wallet has answered, the data has left the phone, and any check applied after
+      that point is a promise about how the recipient will behave.
     </p>
 
     <div class="explorer">
@@ -570,19 +609,21 @@
     </div>
 
     <p class="prose-note" style="margin-top:22px">
-      A paper vaccination booklet handed across a counter discloses everything on the page. A PDF from
-      a portal discloses everything in the file. A registry lookup discloses everything the registry
-      holds, plus the fact that the lookup happened.
+      For comparison: a paper vaccination booklet handed across a counter discloses everything on the
+      page. A PDF exported from a portal discloses everything in the file. A registry lookup discloses
+      everything the registry holds about the patient, and additionally records that the lookup
+      happened.
     </p>
   </section>
 
   <section>
     <p class="kicker">Governance</p>
-    <h2>Three gates, enforced in the flow</h2>
+    <h2>Three checks the code runs before health data moves</h2>
     <p>
-      The technical profile answers "can this message be validated". It does not answer the questions
-      that actually decide whether health data should change hands. Those live in code, run in order,
-      and record their reasons either way.
+      The technical profile answers whether a message is well formed and correctly signed. It does not
+      answer who is allowed to assert a clinical fact, who is allowed to ask for one, and whether a
+      particular presentation should be accepted. Those three questions are implemented as functions,
+      run in that order, and each records its reason whether it permits or refuses.
     </p>
     <div class="gates">
       <div class="gate">
@@ -606,32 +647,33 @@
     </div>
 
     <p style="margin-top:26px">
-      One detail demonstrators usually get wrong. The Swiss Profile's
-      <em>SHOULD</em>-level trust rules cannot be satisfied in the Sandbox, where actors have no
-      identity onboarding. Rather than deleting them, the Sandbox policy <strong>records them as
-      waived</strong> — the journal shows which rule was relaxed and why. A demo that silently drops
-      rules teaches that the rules are optional.
+      Some of the Swiss Profile's trust rules are stated at <em>SHOULD</em> level and cannot be
+      satisfied in the Sandbox, because actors there have no identity onboarding. The Sandbox policy
+      <strong>records each such rule as waived</strong>, and the journal shows which rule was relaxed
+      and on what grounds. A demonstrator that deletes the rule instead reports the same success and
+      leaves no trace that anything was skipped.
     </p>
     <p>
-      And the journal itself holds claim <em>names</em>, never claim values. It proves an interaction
-      stayed within the rules without quietly becoming a second copy of the patient's data. A test
-      asserts that no AHV number and no vaccine lot number ever reaches it.
+      The journal holds claim <em>names</em> and no claim values. It therefore shows that an
+      interaction stayed within the rules without becoming a second copy of the patient's data. A test
+      asserts that no AHV number and no vaccine lot number reaches it.
     </p>
   </section>
 
   <section>
     <p class="kicker">Standards</p>
-    <h2>The clinical models without the shared repository</h2>
+    <h2>Using the openEHR and HL7 FHIR models without a shared repository</h2>
     <p>
-      openEHR and HL7 FHIR are normally adopted as a package: shared information models <em>and</em> a
-      shared repository someone operates, governs, and the patient does not control. This project takes
-      the first and declines the second.
+      openEHR and HL7 FHIR are normally adopted as a package: a set of shared information models that
+      define what a vaccination record contains, together with a shared repository that some
+      organisation operates and governs. This project adopts the information models and does not
+      adopt the repository.
     </p>
     <p>
-      Every claim carries its FHIR element path and, where one exists, its openEHR archetype path. At
-      the moment of presentation the receiving system rebuilds the representation it already
-      understands — locally, from what the holder released, with no CDR and no FHIR server on either
-      side.
+      Every claim carries the FHIR element path it corresponds to and, where one exists, its openEHR
+      archetype path. When a presentation arrives, the receiving system rebuilds the representation it
+      already understands from the claims the holder released. That happens locally, with no clinical
+      data repository and no FHIR server on either side of the exchange.
     </p>
     <div class="projections">
       <div class="projection">
@@ -666,11 +708,12 @@
       </div>
     </div>
     <p class="prose-note" style="margin-top:18px">
-      Two properties are load-bearing and are stated wherever the code does it. A projection is
-      <strong>derived, never authoritative</strong> — the signed credential stays the evidence. And it
-      is <strong>legitimately partial</strong>: after selective disclosure a resource may have findings
-      and no patient name, and receiving systems have to accept a missing element as a
-      legitimate outcome. That is the real integration cost of this approach.
+      Two properties hold for every projection, and the code states them at the point where it
+      performs one. First, a projection is <strong>derived and not authoritative</strong>: the signed
+      credential remains the evidence. Second, a projection is <strong>legitimately partial</strong>:
+      after selective disclosure a FHIR resource may carry findings and no patient name, so receiving
+      systems have to treat a missing element as a valid outcome rather than an error. That second
+      property is the main integration cost of this approach.
     </p>
 
     <div class="tablewrap">
@@ -692,20 +735,20 @@
 
   <section>
     <p class="kicker">The blueprint</p>
-    <h2>Eleven flows, written for transfer to a trust flows repository</h2>
+    <h2>Eleven documented flows</h2>
     <p>
-      Each flow is a self-contained file with machine-readable front matter, a sequence diagram, its
-      governance constraints, its standardisation constraints, and its open questions — written for
-      transfer into a trust flows repository, where it will sit beside flows from sectors that have
-      nothing to do with this codebase.
+      A flow is a description of one complete exchange: who does what, in what order, under which
+      protocol. Each of the eleven is a self-contained file with machine-readable front matter, a
+      sequence diagram, the governance constraints that apply, the standardisation constraints that
+      apply, and the questions it leaves open. They are written so that they can be moved into a
+      trust flows repository and sit beside flows from unrelated sectors.
     </p>
     <p class="c4link">
-      Six of them are also modelled in <a href="https://likec4.dev">LikeC4</a>, the same way the
-      <a href="https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/">DIDAS reference
-      flow</a> is modelled, so they can move there without being redrawn. Every step carries the
-      protocol, the format and the eHealth Suisse rule behind it in its notes.
-      Seven of the flows below have a diagram and link straight to it; F-07 to F-10 are specified
-      and not yet modelled.
+      Seven of them are also modelled in <a href="https://likec4.dev">LikeC4</a>, in the same form as
+      the <a href="https://didas-swiss.github.io/Trust-Flow-Diagram-Repository/basic-flow/">DIDAS
+      reference flow</a>, so that they can move without being redrawn. Every step in the model carries
+      the protocol, the data format and the eHealth Suisse rule behind it in its notes. The seven
+      modelled flows link to their diagram below; F-07 to F-10 are specified and not yet modelled.
       <a class="cta" href="flows/">Open all the diagrams →</a>
     </p>
     <div class="flows">
@@ -724,8 +767,8 @@
   </section>
 
   <section>
-    <p class="kicker">Mid-term ambition</p>
-    <h2>Roadmap</h2>
+    <p class="kicker">Roadmap</p>
+    <h2>Planned work, 2026 to 2028</h2>
     <div class="roadmap">
       <div class="stage now">
         <span class="yr">2026 · delivered</span>
@@ -807,23 +850,23 @@
       openEHR Switzerland brought a second vaccination showcase to the same hackathon: FHIR intake in
       CH VACD format, persisted as an openEHR composition in a clinical data repository. openEHR
       Switzerland and HL7 Switzerland have since formed a joint working group to turn it into a
-      reusable implementation blueprint. Their objection to the design on this page is the strongest
-      one available — a vaccination record has to stay clinically usable for a lifetime, and a
-      document exchanged at one moment is a different object from a record maintained over decades.
+      reusable implementation blueprint. They raise the substantive objection to the design on this
+      page: a vaccination record has to stay clinically usable for a lifetime, and a document
+      exchanged at one moment is a different object from a record maintained over decades.
     </p>
     <p class="rmnote">
-      The 2024 project's own staging is where the two meet: document-oriented "EPD 1.0", structured
-      and server-based "EPD 2.0", structured and wallet-based "EPD 3.0". The openEHR showcase is a
-      working stage 2 and this one is a working stage 3, and both directions of composition are
-      already specified — a repository issuing credentials from records it holds, and a presented
-      credential projecting into the ingestion path that blueprint defines. Building that composition
-      is the highest-value item on the 2027 list.
+      The 2024 project's own staging is where the two approaches meet. It described three stages:
+      document-oriented "EPD 1.0", structured and server-based "EPD 2.0", structured and wallet-based
+      "EPD 3.0". The openEHR showcase is a working stage 2 and this project is a working stage 3.
+      Composition in both directions is already specified — a repository issuing credentials from the
+      records it holds, and a presented credential projecting into the ingestion path that blueprint
+      defines. Building that composition is the main item on the 2027 list.
     </p>
   </section>
 
   <section>
     <p class="kicker">Public health</p>
-    <h2>The strongest case is a survey nobody thinks of as a credential use case</h2>
+    <h2>Vaccination coverage monitoring in Switzerland</h2>
     <p>
       Switzerland measures vaccination coverage through the <strong>Swiss National Vaccination Coverage
       Survey</strong>, run since 1999 by the <strong>Epidemiology, Biostatistics and Prevention Institute
@@ -849,47 +892,61 @@
       </div>
     </div>
     <p class="prose-note">
-      This is the one flow in the set where selective disclosure gives up <em>less</em> than the process
-      it replaces already required. It needs no identifying claim at all, because the sampling frame
-      already carries the age band and the canton — and consent is not a new imposition, because
-      households are invited and may already refuse.
+      Of the eleven flows, this is the one where a credential presentation discloses less than the
+      procedure it would replace. The survey needs no identifying claim, because it drew the household
+      from the population register and therefore already holds the age band and the canton. Consent
+      adds no new step either: households are invited by letter today and may decline today.
     </p>
     <p class="prose-note">
-      <strong>The constraint that decides it:</strong> the wallet is a response channel and never a
-      sampling frame. A survey that let holders volunteer their credentials would measure the people who
-      volunteer, and that bias cannot be corrected from inside the sample. EBPI draws the sample; the
-      wallet only answers.
+      <strong>One methodological constraint governs the whole design.</strong> The wallet is a response
+      channel and not a sampling frame. A survey that allowed holders to volunteer their credentials
+      would measure the people who choose to volunteer, and that selection bias cannot be corrected
+      from inside the sample. EBPI draws the sample from the register; the wallet only answers.
     </p>
 
-    <h3 class="rmsub">Unlinkable by design, and the part that is not yet</h3>
+    <h3 class="rmsub">Unlinkability</h3>
     <p>
-      A survey response that can be traced to a household is a register of who replied and what they
-      replied. The posted invitation therefore carries a <strong>single-use credential holding the
-      stratum</strong> — age band, canton, cycle — and no household identifier. It travels with the dose
-      claims in <strong>one combined proof</strong>, and is <strong>revoked on acceptance</strong>, the
-      same two bits on a public list that make a prescription single-use in F-05.
+      <strong>Unlinkability</strong> means that the party receiving data cannot connect it to the
+      person it came from, and cannot connect two separate submissions to each other. For a coverage
+      survey it is the property that matters most: a response that can be traced back to a household
+      turns the survey into a register of who replied and what they replied, which is exactly what
+      this architecture exists to avoid.
     </p>
     <p>
-      So the survey learns <em>"a household in this canton with an 8-year-old reported these doses"</em>
-      and holds no key that would let it say which household. There is nothing to join on, because the
-      stratum arrived inside the credential.
+      The design addresses the first half. The invitation posted to the household carries a
+      <strong>single-use credential holding the stratum</strong> — age band, canton, survey cycle —
+      and no household identifier. It is presented together with the dose claims in <strong>one
+      combined proof</strong> and is <strong>revoked once the response is accepted</strong>, using the
+      same two bits on a public status list that make a prescription single-use in F-05. The survey
+      therefore learns that a household in a given canton with an 8-year-old reported a given set of
+      doses, and holds no identifier it could join that record to.
     </p>
     <div class="survey">
       <div>
         <h3>Record nothing that could be recorded</h3>
-        <p>A verifier receives a signed presentation and is technically free to keep all of it. The
-          analysis variables are extracted and the rest — transcript, credentials, signatures, timing,
-          IP, user agent, response ordering — is discarded. All of it is identifying in a sample this
-          small.</p>
+        <p>A verifier receives a signed presentation and is technically able to keep all of it. The
+          rule here is that the analysis variables are extracted and everything else is discarded:
+          the transcript, the credentials, the signatures, and the request metadata — timing, IP
+          address, user agent, response ordering. In a sample this small, each of those is
+          identifying.</p>
       </div>
       <div>
-        <h3>What is still leaky</h3>
-        <p>The survey both issues and revokes the invitation, so a retained mapping from invitation to
-          posted address would re-link a response by timing. Closing that needs batch issuance or a
-          zero-knowledge presentation. Neither is in place, so this is unlinkable <em>by governance</em>
-          and not yet by construction.</p>
+        <h3>Where unlinkability is not yet structural</h3>
+        <p>The survey both issues the invitation and revokes it, so a retained mapping from invitation
+          to posted address would re-link a response by timing. The same dose credentials presented in
+          two cycles are also linkable to each other. Closing both requires either batch issuance or a
+          zero-knowledge presentation, and neither is in place.</p>
       </div>
     </div>
+    <p class="prose-note">
+      Until one of those two mechanisms is implemented, this flow is unlinkable by governance rule
+      rather than by construction, which is the weaker guarantee. A zero-knowledge presentation would
+      let the wallet prove that a valid, unused invitation exists without revealing which one, and
+      would remove the timing correlation. The candidate scheme and its fit to this profile are
+      tracked in
+      <a href="https://github.com/DIDAS-swiss/digital-health_swiyu/issues/10">issue 10, Longfellow
+      ZK</a>.
+    </p>
     <p class="prose-note">
       <a class="cta" href="flows/#/view/coverageSurvey/">Open the F-11 diagram →</a>
     </p>
@@ -904,9 +961,10 @@
         <p>
           Nothing here deploys until some body can issue the trust statement that says "this DID is a
           practice authorised to vaccinate". The Confederation's onboarding verifies <em>who</em> an
-          organisation is; it does not say what it may do in healthcare. No health-domain governance
-          body exists to say that. The technology is ready some distance ahead of the institutional
-          arrangements — that is the headline finding of step 1, and no amount of code closes it.
+          organisation is; it does not state what that organisation may do in healthcare, and no
+          health-domain governance body exists to state it. The technology is therefore ready some
+          distance ahead of the institutional arrangements. That is the principal finding of step 1,
+          and no amount of code changes it.
         </p>
       </div>
       <div>
@@ -928,27 +986,69 @@
       </div>
       <div>
         <h3>Presentations are not unlinkable</h3>
-        <p>A credential presented twice is the same credential. Batch issuance mitigates this but is
-          not used here, because with a dose series the claim values are themselves close to
-          identifying.</p>
+        <p>A credential presented twice is the same credential, so two verifiers comparing notes can
+          tell it is the same person. Batch issuance reduces this and is not used here, because with a
+          dose series the claim values are themselves close to identifying. A zero-knowledge
+          presentation would address it directly; the candidate is tracked in
+          <a href="https://github.com/DIDAS-swiss/digital-health_swiyu/issues/10">issue 10</a>.</p>
       </div>
       <div>
         <h3>The susceptible cannot be enumerated</h3>
-        <p>Coverage <em>measurement</em> survives, because Switzerland never measured it from a register
-          — see below. What a decentralised record removes is the ability to act on named individuals:
-          outbreak response, recall, catch-up campaigns. A sample gives a rate; a register would give a
-          list; a wallet gives neither. That follows from the design and is a policy question.</p>
+        <p>Coverage <em>measurement</em> survives, because Switzerland has never measured it from a
+          register, as the section above sets out. What a decentralised record removes is the ability
+          to act on named individuals: outbreak response, recall, and catch-up campaigns all require
+          knowing who is behind on a series. A sample yields a rate, a register would yield a list,
+          and a wallet yields neither. This follows from the design and is a policy question rather
+          than an engineering one.</p>
       </div>
     </div>
+  </section>
+
+  <section>
+    <p class="kicker">Origins</p>
+    <h2>Where this work comes from</h2>
+    <p>
+      This showcase was prompted by two GovTech Hackathons, and both supplied part of the basis it
+      builds on.
+    </p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Use case</th><th>What it contributed</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://hack.opendata.ch/project/1103">GovTech Hackathon 2024, project 1103</a><br>
+              "Digital Health mit der neuen E-ID Trust-Infrastruktur"</td>
+            <td>Led by DIDAS, with Peter Janes as project lead. It established the use case, the
+              stakeholder model and the staged EPD 1.0 / 2.0 / 3.0 framing that this repository
+              continues. It won the future-oriented category that year.</td>
+          </tr>
+          <tr>
+            <td><a href="https://govtech.digisus-lab.ch/project/28">GovTech Hackathon 2026, project 28</a><br>
+              "Showcase Impf-Modul"</td>
+            <td>Brought by openEHR Switzerland with a DIDAS contribution. It supplied the clinical
+              model side — CH VACD profiling, terminology binding and openEHR persistence — which
+              this project reuses without adopting the central repository.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The implementation in this repository was written and contributed by
+      <a href="https://www.accelerate.swiss/">accelerate.swiss</a>, through the GitHub account
+      <a href="https://github.com/danielsaeuberli"><code>danielsaeuberli</code></a>. The
+      <code>daniel-didas</code> account appears in the repository's contributor list in an
+      administrative capacity and did not author the code.
+    </p>
   </section>
 </main>
 
 <footer class="wrap">
   <p>
     Implementation of <a href="https://hack.opendata.ch/project/1103">hack.opendata.ch project 1103</a>,
-    "Digital Health mit der neuen E-ID Trust-Infrastruktur". Built against the swiyu Sandbox — the
-    environment renamed from Public Beta and separated from production by change dossier CD-001 — using
-    the Confederation's generic issuer and verifier components.
+    "Digital Health mit der neuen E-ID Trust-Infrastruktur", continued on the swiyu trust
+    infrastructure. Built against the swiyu Sandbox — the environment renamed from Public Beta and
+    separated from production by change dossier CD-001 — using the Confederation's generic issuer and
+    verifier components. Code contributed by <a href="https://www.accelerate.swiss/">accelerate.swiss</a>.
   </p>
   <p class="repo" style="margin-top:14px">
     <a href="https://github.com/DIDAS-swiss/digital-health_swiyu">github.com/DIDAS-swiss/digital-health_swiyu</a>
@@ -969,29 +1069,29 @@
   // packages/swiyu/src/credentials/immunization.ts.
   const ROLES = {
     travel: {
-      purpose: 'Confirm protection against a specific disease for travel advice. It cannot obtain the vaccine brand, the batch, the clinic or your name — even if its software asks.',
+      purpose: 'Confirm protection against a specific disease before giving travel advice. This role has no entitlement to the vaccine brand, the batch number, the administering clinic or the patient name, so a query for them is refused before it is sent.',
       claims: ['target_disease', 'occurrence_date', 'dose_number', 'doses_in_series'],
-      foot: 'Fourteen claims stay in the wallet. Not redacted afterwards — <strong>never disclosed</strong>, because the wallet releases only the claim paths the query names.'
+      foot: 'Fourteen claims stay in the wallet. They are <strong>not transmitted and then redacted</strong>; the wallet releases only the claim paths the query names.'
     },
     pharmacy: {
       purpose: 'Check the series before administering the next dose. A pharmacy with a vaccination permit needs the product and where you are in the schedule.',
       claims: ['vaccine_code', 'vaccine_name', 'target_disease', 'occurrence_date', 'dose_number', 'doses_in_series', 'next_dose_due'],
-      foot: 'The same credential, a different question. Identity claims are outside this role&rsquo;s entitlement, so <strong>a request for them is refused before it is sent</strong>.'
+      foot: 'The same credential answering a different question. Identity claims fall outside this role&rsquo;s entitlement, so <strong>a request for them is refused before it is sent</strong>.'
     },
     practice: {
-      purpose: 'Establish vaccination status before advising or vaccinating. The treating practice is the one role entitled to the whole record — and it still has to ask.',
+      purpose: 'Establish vaccination status before advising or vaccinating. The treating practice is the only role entitled to all eighteen claims, and it still has to ask for them.',
       claims: CLAIMS.slice(),
-      foot: 'Entitlement to everything is not the same as access to everything: <strong>the holder still consents, per presentation</strong>, and can decline.'
+      foot: 'An entitlement to all eighteen claims is not access to all eighteen. <strong>The holder consents per presentation</strong> and may decline.'
     },
     research: {
       purpose: 'Secondary use under explicit, revocable patient consent. The entitlement excludes every identifying claim by construction.',
       claims: ['vaccine_code', 'target_disease', 'occurrence_date', 'dose_number'],
-      foot: 'Four coded claims with dates are <strong>not anonymous</strong>. A minimisation envelope is not de-identification, and treating it as one would be this blueprint&rsquo;s weakest claim.'
+      foot: 'Four coded claims carrying dates are <strong>not anonymous data</strong>. Minimising what is disclosed is not the same as de-identifying it, and the two should not be reported as if they were.'
     },
     statistics: {
-      purpose: 'National vaccination coverage monitoring. The EBPI survey sampled this household from the population register, so it already knows the age band and the canton — and asks for neither.',
+      purpose: 'National vaccination coverage monitoring. The EBPI survey drew this household from the population register, so it already holds the age band and the canton, and asks for neither.',
       claims: ['target_disease', 'occurrence_date', 'dose_number', 'doses_in_series', 'vaccine_code'],
-      foot: 'The counterfactual is a <strong>photocopied vaccination booklet in an envelope</strong>, which shows every dose, every date, the vaccinating physician and usually the child&rsquo;s name. This is the one role that discloses less than the process it replaces.'
+      foot: 'The procedure this replaces is a <strong>photocopied vaccination booklet sent by post</strong>, showing every dose, every date, the vaccinating physician and usually the child&rsquo;s name. This is the only role here that discloses less than the procedure it replaces.'
     }
   };
 

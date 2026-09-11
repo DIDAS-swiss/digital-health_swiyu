@@ -111,8 +111,8 @@ sequenceDiagram
   records claim *names*, never values.
 - **Trust runs both ways.** The holder's wallet checks the verifier's trust
   statement before showing the consent screen. A verifier without `viTM` asking
-  for health data is exactly the case the Trust Protocol exists for, and the
-  wallet is where that check has to happen.
+  for health data is the case the Trust Protocol is designed to catch, and the
+  wallet is the only place that check can happen before the data moves.
 
 ## Standardisation constraints
 

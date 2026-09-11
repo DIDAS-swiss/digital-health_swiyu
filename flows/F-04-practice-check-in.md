@@ -73,10 +73,10 @@ sequenceDiagram
 - **No health data at check-in.** The purpose scope `ch.didas.health.checkin`
   covers identity and cover. A practice that wants the patient's medication list
   is asking a different question and must register a different purpose.
-- **A name mismatch is flagged to a human.** The two
-  issuers disagreeing is the interesting case — a married name, a data entry
-  error, or something worse — and reception is better placed than software to
-  decide which.
+- **A name mismatch is flagged to a human.** When the two issuers disagree the
+  cause may be a married name, a data entry error, or a fraudulent presentation.
+  Reception is better placed than software to decide which, so the flow raises
+  the discrepancy rather than resolving it.
 - **Retention follows the billing record**: ten years under
   OR Art. 958f for what the practice legitimately keeps. The credential itself is
   not stored.

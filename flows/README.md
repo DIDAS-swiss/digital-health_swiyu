@@ -1,11 +1,10 @@
 # Flow blueprint
 
-This directory is the **blueprint** deliverable of roadmap step 1: the flows of
-the use case written down so they can be reviewed, argued with, and moved
-somewhere else. They are kept separate from the code and from `docs/` on
-purpose — they are meant to be **transferred into a trust flows repository**,
-where they will sit next to flows from other sectors that have nothing to do
-with this codebase.
+This directory is the **blueprint** deliverable of roadmap step 1: eleven flows
+of the use case, written down so that they can be reviewed, disputed, and reused
+by other projects. They are kept separate from the code and from `docs/` because
+they are intended for **transfer into a trust flows repository**, where they
+will sit next to flows from sectors unrelated to this codebase.
 
 The reference model they build on is the [Trust Flow Diagram
 Repository](https://github.com/DIDAS-swiss/Trust-Flow-Diagram-Repository), whose

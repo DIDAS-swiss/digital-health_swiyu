@@ -24,8 +24,8 @@ produces:
 
 # F-11 · Answering the national coverage survey (roadmap, 2027)
 
-The one flow in this set where selective disclosure is not a mitigation of a
-privacy problem but the whole point of the exercise.
+Of the eleven flows in this set, this is the one where a credential presentation
+discloses less than the procedure it would replace.
 
 Switzerland measures vaccination coverage with the Swiss National Vaccination
 Coverage Survey, coordinated by the **Epidemiology, Biostatistics and
@@ -37,12 +37,12 @@ a request that the family **post a copy of the child's vaccination record**.
 The data source is already the record the family holds. This flow replaces the
 photocopy.
 
-## Why this fits better than the clinical flows
+## How a coverage survey differs from the clinical flows
 
-Every other verification here asks a holder to disclose something to an
-organisation acting in its own interest — a clinic, a pharmacy, an insurer.
-A coverage survey is different in four ways, and each of them removes a
-difficulty the other flows have to argue around.
+In every other verification here, a holder discloses something to an
+organisation acting in its own interest: a clinic, a pharmacy, an insurer. A
+coverage survey differs in four respects, and each of them removes a difficulty
+the other flows have to address.
 
 - **Consent is already the model.** Households are invited and may refuse. The
   flow does not introduce a consent step; it replaces a postal one.
@@ -52,9 +52,9 @@ difficulty the other flows have to argue around.
 - **The purpose is public and stable.** "National vaccination coverage
   monitoring" is exactly what a Verification Query Public Statement is for, and
   it stays true across cycles.
-- **Disclosure goes down, not up.** A photocopied booklet shows every dose,
-  every date, the vaccinating physician, and usually the child's name. The
-  entitlement below shows five claims and no identifier.
+- **Disclosure decreases.** A photocopied booklet shows every dose, every date,
+  the vaccinating physician, and usually the child's name. The entitlement below
+  releases five claims and no identifier.
 
 ## Sequence
 
@@ -81,13 +81,18 @@ sequenceDiagram
     Note over BR: Single use. A second response cannot be made,<br/>and no register of who replied is kept.
 ```
 
-## Privacy by design, not by promise
+## Unlinkability
 
-The earlier draft of this flow had the survey join each response to its
-sampling record by an invitation token. That token is a household identifier,
-and holding it would have given the survey a register of who replied and what
-they replied — exactly the thing this architecture exists to avoid. The design
-below removes the need for it.
+Unlinkability means that the party receiving the data cannot connect it to the
+person it came from, and cannot connect two separate submissions to each other.
+For a coverage survey it is the property that matters most: a response that can
+be traced back to a household turns the survey into a register of who replied
+and what they replied.
+
+An earlier draft of this flow had the survey join each response to its sampling
+record by an invitation token. That token is a household identifier, and holding
+it would have produced exactly that register. The design below removes the need
+for it.
 
 **The invitation credential carries the stratum.** The QR in the posted letter
 offers a single-use credential issued by the survey, holding the age band, the
@@ -115,12 +120,12 @@ public list, and no register of who was invited or who replied.
    existing postal follow-up, which knows who was invited. Nothing needs a
    record that a particular household opened a request and refused.
 
-**What is still technically leaky, and why it needs work.** The survey both
-issues the invitation and revokes it. If it retains the mapping from invitation
-index to posted address, revoking index *n* after a response tells it which
-household replied, and the analysis row arriving at the same moment is
-correlatable by timing. Governance can forbid keeping that mapping; nothing in
-the protocol prevents it.
+**What remains technically linkable.** The survey both issues the invitation and
+revokes it. If it retains the mapping from invitation index to posted address,
+revoking index *n* after a response tells it which household replied, and the
+analysis row arriving at the same moment can be correlated to it by timing.
+Governance can forbid retaining that mapping; nothing in the protocol prevents
+it.
 
 Closing that properly needs one of two things, and both are open:
 
@@ -133,9 +138,10 @@ Closing that properly needs one of two things, and both are open:
   is the candidate, because it proves statements about ES256 signatures without
   changing the credential.
 
-Until one of them is in place, the unlinkability of this flow rests on the
-survey behaving, which is the weaker kind of guarantee and should be named as
-such.
+Until one of them is in place, the unlinkability of this flow rests on the survey
+following its own rules. That is a weaker guarantee than one enforced by the
+protocol, and this document states it as such rather than describing the flow as
+unlinkable without qualification.
 
 ## What is disclosed
 
@@ -173,8 +179,8 @@ identifies a person or a practitioner.
   never the *selection*. A survey that let people volunteer their credentials
   would be measuring the people who volunteer, and
   [the public health view](../docs/public-health.md) explains why that estimate
-  cannot be corrected from inside the sample. This is the constraint that makes
-  or breaks the flow.
+  cannot be corrected from inside the sample. This constraint governs the whole
+  design.
 - **A statistics role, distinct from research.** A coverage survey runs under a
   statistical mandate; F-09's research use runs under the Human Research Act,
   with a review board and revocable consent. Different legal basis, different
@@ -219,14 +225,15 @@ identifies a person or a practitioner.
 
 ## Open questions
 
-1. **Absence is ambiguous, and for this flow that is fatal if unsolved.** A
+1. **Absence is ambiguous, and unresolved it invalidates the estimate.** A
    missing credential may mean no dose, or a dose given before credentials
    existed, or a dose from an issuer who never issued one. A coverage estimate
-   that reads absence as "unvaccinated" is wrong in a direction that matters.
-   The survey's paper method has the same problem and handles it by asking; a
-   credential flow needs an explicit "no further doses" attestation, which
-   nothing in this project issues. This is the same absence-semantics gap
-   [F-08](F-08-patient-summary.md) records, and it bites harder here.
+   that reads absence as "unvaccinated" is biased downwards by an unknown
+   amount. The survey's paper method has the same problem and handles it by
+   asking; a credential flow needs an explicit "no further doses" attestation,
+   which nothing in this project issues. This is the same absence-semantics gap
+   [F-08](F-08-patient-summary.md) records, and it matters more here because the
+   output is a published statistic.
 2. **Unlinkability is designed for and not yet enforced.** The invitation
    credential removes the household identifier and the status list makes the
    response single-use, so the survey has no key to join on. Two leaks remain,
@@ -244,7 +251,7 @@ identifies a person or a practitioner.
 3. **Who accredits a survey.** The statistics role needs the same
    authorisation layer that does not exist for any health role
    ([F-01](F-01-actor-onboarding.md)). A verifier claiming to be a national
-   survey is exactly the verifier a holder should be able to check.
+   survey is the case where a holder most needs to be able to check the claim.
 4. **Whether a partial history is usable.** If a household presents four of six
    dose credentials, the survey has to decide whether that is a coverage
    observation or a non-response. That is a methodological question for the
@@ -262,5 +269,6 @@ from the code. The two mechanisms that would make the unlinkability structural �
 batch issuance, or a zero-knowledge presentation — are unused and unavailable
 respectively.
 
-It is the most concrete public-interest use of this architecture, and the
-cheapest to pilot, because the counterfactual is a photocopy in an envelope.
+Of the uses described in this repository, this one has the clearest
+public-interest rationale and the lowest cost to pilot, because the procedure it
+would replace is a photocopy sent by post.

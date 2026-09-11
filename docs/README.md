@@ -16,7 +16,7 @@ Start wherever your question is.
 | | |
 | --- | --- |
 | [**Governance framework**](governance-framework.md) | Roles, the three gates, trust markers and policies, protected fields, legal bases, retention, lifecycle, the audit journal — and the one layer that is missing. |
-| [**Flows** (the blueprint)](../flows/README.md) | Ten documented flows, each with governance constraints, standardisation constraints and open questions. Written to be transferred into a trust flows repository. |
+| [**Flows** (the blueprint)](../flows/README.md) | Eleven documented flows, each with governance constraints, standardisation constraints and open questions. Written to be transferred into a trust flows repository. |
 
 ## How it works
 

@@ -35,9 +35,9 @@ belongs in this blueprint — immunizations. It is designed for the case where a
 clinician who has never seen you needs to know the few things that could kill
 you, possibly in another country.
 
-The interesting question is **where the summary is assembled**. The usual answer
-is a national infrastructure that holds the data and renders a summary on
-request. The proposal here is that the wallet assembles it: an IPS Bundle
+The design question is **where the summary is assembled**. The usual answer is a
+national infrastructure that holds the data and renders a summary on request.
+The proposal here is that the wallet assembles it: an IPS Bundle
 constructed at presentation time from the credentials the patient holds, each
 contributed by whoever issued it, each independently verifiable.
 
@@ -59,7 +59,7 @@ flowchart TB
 
 - **Credential types this project does not model.** Allergies and intolerances,
   active problems, and medication *statements* as distinct from prescriptions.
-  These are the clinically load-bearing parts of an IPS and each needs the same
+  These carry most of the clinical weight in an IPS and each needs the same
   treatment F-02 gave immunizations: a model, an issuer role, an entitlement.
 - **Multi-credential presentation.** An IPS spans several credentials, but the
   Swiss Profile currently allows one credential per DCQL query and no `multiple`.

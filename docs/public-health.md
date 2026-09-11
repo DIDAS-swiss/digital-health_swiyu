@@ -1,12 +1,12 @@
 # The public health view
 
 Everything else in this repository looks at one patient at a time: a dose, a
-consultation, a presentation at a counter. Public health asks a different
-question — what is true of the population — and that question is where a
-wallet-held record is usually assumed to fail.
+consultation, a presentation at a counter. Public health asks what is true of a
+population, and a wallet-held record is commonly assumed to fail at that.
 
-The assumption is worth checking, because on the central point it turns out to
-be wrong.
+This document checks the assumption. On the central point — whether coverage can
+still be measured — it does not hold. On a second point — whether individuals can
+still be acted on — it does.
 
 ## Switzerland does not measure vaccination coverage from a register
 
@@ -25,10 +25,10 @@ holds*. Coverage monitoring has never depended on a central database. When
 `meineimpfungen.ch` closed in 2021, the coverage survey carried on, because the
 survey was never reading from it.
 
-This repository currently says that a decentralised record "does not produce
-coverage statistics as a side effect". That is true and it implies something
-false — that a central register was producing them. It was not. The sentence
-should say what is actually lost, which is narrower and sharper.
+A decentralised record does not produce coverage statistics as a side effect.
+That statement is true, and it carries a false implication: that a central
+register was producing them. No Swiss register was. What is actually lost is
+narrower, and the section below states it.
 
 ## What a credential would do for that survey
 
@@ -63,7 +63,8 @@ canton.
 
 ## What is genuinely lost
 
-Not the statistics. **The ability to act on named individuals.**
+What is lost is **the ability to act on named individuals**, not the ability to
+measure the population.
 
 - **Outbreak response.** A measles case in a school means finding who around
   them is susceptible, now. A sample gives a rate; a wallet gives nothing
@@ -75,20 +76,21 @@ Not the statistics. **The ability to act on named individuals.**
   socioeconomic stratum needs a denominator the survey supplies by construction
   and a decentralised record cannot.
 
-These are real losses, and they follow from the design instead of being gaps
-to close later. Deciding whether the population can live with them is a policy
-question; no amount of engineering answers it.
+These losses follow from the design and are not gaps that later work closes.
+Whether the population can accept them is a policy question, and engineering
+does not answer it.
 
-Stated plainly: this architecture is compatible with **measuring** population
-health and incompatible with **targeting** individuals within it.
-Whether that trade is acceptable depends on how much the second matters, and in
-an outbreak it matters a great deal.
+Summarised: this architecture supports **measuring** population health and does
+not support **targeting** individuals within it. How acceptable that is depends
+on how much the second capability is worth, and during an outbreak it is worth a
+great deal.
 
 ## Equity is a public health question
 
-The business case files "patients without a smartphone" under things this
-project does not solve. From a public health view that filing is wrong: it is
-not a usability footnote, it is a question about who the system works for.
+The business case lists "patients without a smartphone" among the things this
+project does not solve, which treats the matter as a usability limitation. From
+a public health view it is a question about who the system works for, and it
+belongs with the other population-level questions in this document.
 
 A wallet-first design assumes a smartphone, a working knowledge of what a
 credential is, the capacity to manage one's own records over decades, and
@@ -98,10 +100,10 @@ decline, people without stable housing, recent arrivals, the digitally
 excluded — overlap substantially with the populations with the worst
 vaccination coverage.
 
-The survey's own method is the evidence that the paper path has to persist:
-it asks families to **post a copy**, in 2026, because that is what reliably
-reaches everyone. Every flow here must degrade to that path without making
-those patients second-class, and this repository demonstrates none of that.
+The survey's own method is evidence that the paper path has to persist: it asks
+families to **post a copy**, in 2026, because that is what reliably reaches
+everyone. Every flow here has to degrade to that path without placing those
+patients at a disadvantage, and this repository demonstrates no such fallback.
 
 ## "Complete series" is defined by the vaccination plan
 
@@ -127,7 +129,7 @@ recommendation service is the modelled answer and this project does not use it.
 
 ## Consent-based secondary use is not surveillance, and the reason is methodological
 
-F-09 says this. Here is why, since the reason is the useful part.
+F-09 states this. The reasoning is as follows.
 
 A consent-based contribution produces a **self-selected sample**. People who
 consent to share health data differ systematically from those who do not — in
@@ -153,17 +155,18 @@ these to be settled, and none of them are engineering:
 2. **Quantify the equity gap** before it is designed in. Who cannot hold a
    credential, how does that overlap with existing coverage gaps, and what does
    the fallback path have to guarantee.
-3. **Put a number on the targeting loss.** What does outbreak response actually
-   cost when the susceptible cannot be enumerated, compared with a canton that
-   can? That is an answerable question and it is the strongest argument either
-   way.
+3. **Put a number on the targeting loss.** What does outbreak response cost when
+   the susceptible cannot be enumerated, compared with a canton that can
+   enumerate them? The question is answerable empirically, and the answer bears
+   directly on whether the design is acceptable.
 4. **Decide whether the vaccination plan belongs in a service.** If verifiers
    each infer "complete" locally, they will disagree. Whether that is tolerable
    is a clinical-governance judgement.
 
 ## Status of this document
 
-An argument. Nothing described here as a possibility is built. The survey method, the CH VACD value sets and the SSPH+ structure were
-checked against published sources; see [source
-verification](source-verification.md) for how that distinction is kept in this
-repository.
+This document is an argument, not a specification. Nothing described here as a
+possibility is built. The survey method, the CH VACD value sets and the SSPH+
+structure were checked against published sources; see
+[source verification](source-verification.md) for how the repository separates
+verified facts from claims made in argument.

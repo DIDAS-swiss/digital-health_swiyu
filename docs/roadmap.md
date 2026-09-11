@@ -19,16 +19,16 @@ flowchart LR
 | End-to-end prototype | done | `apps/demo`, runnable offline |
 | Immunization credential, issuance and verification | done | F-02, F-03 |
 | FHIR/openEHR interplay | done | F-07, `packages/swiyu/src/projections.ts` |
-| Blueprint | done | [`flows/`](../flows/README.md) — ten flows with governance and standardisation constraints |
+| Blueprint | done | [`flows/`](../flows/README.md) — eleven flows with governance and standardisation constraints |
 | Governance model | done | roles, entitlements, protected fields, trust policies, journal |
 | Supporting consultation flows | done | F-04, F-05 |
 | Lifecycle and correction | partial | F-06: holder notification and supersession missing |
 | Actor onboarding | partial | F-01: no health-domain governance body exists to grant roles |
 
-**The gap that matters.** Nothing here can be deployed until someone can issue
-the trust statement that says "this DID is a practice authorised to vaccinate".
-That is a governance question, and it is the headline of step 1: the
-technology is ready some distance ahead of the
+**The blocking gap.** Nothing here can be deployed until some body can issue the
+trust statement that says "this DID is a practice authorised to vaccinate". That
+is a governance question rather than a technical one, and it is the principal
+finding of step 1: the technology is ready some distance ahead of the
 institutional arrangements. See F-01, open question 1.
 
 ## Step 2 — International Patient Summary (2027)
@@ -67,17 +67,17 @@ What has to be built:
    the family holds, by asking for a photocopy. Replacing that photocopy with a
    presentation discloses less, arrives structured and signed, and needs no
    identifying claim, because the sampling frame already carries the age and the
-   canton. The cheapest pilot in this list, because the counterfactual is an
-   envelope.
+   canton. It is the least costly pilot in this list, because the procedure it
+   would replace is a photocopy sent by post.
 7. **Composition with the openEHR/HL7 blueprint.** The joint working group of
    openEHR Switzerland and HL7 Switzerland is turning the other 2026 showcase —
    FHIR intake into an openEHR clinical data repository — into a reusable
    blueprint. Both directions of composition are already specified here (a
    repository issuing credentials from its own records; a presented credential
    projecting into the ingestion path that blueprint defines), and neither has
-   been built. This is the highest-value item on this list, because it is the
-   one that makes a wallet credential useful to a longitudinal record rather
-   than a competitor to it. See [positioning](positioning.md).
+   been built. This is the main item on this list, because it is what makes a
+   wallet credential useful to a longitudinal record instead of an alternative
+   to one. See [positioning](positioning.md).
 8. **Emergency access.** The hardest question in the architecture: a patient who
    is unconscious cannot consent, and any break-glass mechanism reintroduces a
    party that can read the record without them.

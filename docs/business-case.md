@@ -49,8 +49,8 @@ consequences follow that no amount of integration work delivers otherwise:
 | **Pharmacy** | A prescription that can be verified and used up exactly once, without a central e-prescription register | A verifier deployment; a DID |
 | **Insurer** | Card data that can be revoked the day cover ends, in place of a plastic card that stays in circulation for years | An issuer deployment; a DID |
 | **Laboratory** | Results delivered to the patient without operating a portal | An issuer deployment |
-| **Public health** | A coverage survey that reads structured, signed, already-coded records instead of photocopied booklets | Loses the ability to enumerate susceptible individuals for outbreak response or recall (see below) |
-| **Confederation / cantons** | A health use case on infrastructure already being built for the e-ID; no new register to fund, secure or defend | Standing up a health-domain governance body — the real cost, and the real blocker |
+| **Public health** | A coverage survey that reads structured, signed, already-coded records in place of photocopied booklets | Loses the ability to enumerate susceptible individuals for outbreak response or recall (see below) |
+| **Confederation / cantons** | A health use case on infrastructure already being built for the e-ID; no new register to fund, secure or defend | Standing up a health-domain governance body, which is the largest cost item and the current blocker |
 
 ## What it costs to run
 
@@ -123,12 +123,13 @@ usually lack.
   dose, schedule and elapsed time. The credential carries facts; somebody still
   has to be accountable for the inference.
 
-## The risk that actually matters
+## The principal risk
 
-Not technical. **No health-domain governance body exists** to say "this DID is a
-practice authorised to vaccinate". Until one does, verification falls back to
-explicitly listed issuer DIDs — workable for a pilot, unworkable at scale.
+The principal risk is institutional rather than technical. **No health-domain
+governance body exists** to say "this DID is a practice authorised to
+vaccinate". Until one does, verification falls back to explicitly listed issuer
+DIDs, which is workable for a pilot and unworkable at scale.
 
-The technology is ready some distance ahead of the institutional arrangements.
-That is this project's main finding, and the decision it puts in front of the
-sector.
+The technology is therefore ready some distance ahead of the institutional
+arrangements. That is this project's main finding, and it is the decision it
+puts in front of the sector.

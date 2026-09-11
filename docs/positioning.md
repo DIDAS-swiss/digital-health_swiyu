@@ -38,7 +38,7 @@ The openEHR position is this:
 > lifetime, and a document exchanged at a particular point in time is not the
 > same as a longitudinal record maintained over decades.
 
-This is correct, and it is the strongest argument against the design in this
+This is correct, and it is the substantive argument against the design in this
 repository. A credential is a signed statement about one event, made at one
 moment, by one issuer. Forty years of immunisations are forty such statements,
 held by a person who has changed phones eleven times, whose issuers have merged,
@@ -72,10 +72,11 @@ repository records, in its learnings log, a pivot:
 > referenced information to accommodate for other sources of health data (e.g.
 > local Apple HealthKit / Android Health Connect, remote EHR).
 
-The same conclusion, reached from the wallet side and for a more mundane reason:
-health data has other homes, and a wallet that insists on being the only one
-loses. That was written before this repository existed, and it argues against
-the strongest form of the position this repository takes.
+That is the same conclusion reached from the wallet side, for a more practical
+reason: health data has other homes, and a wallet that insists on being the only
+one does not survive contact with them. It was written before this repository
+existed, and it argues against the maximal form of the position this repository
+takes.
 
 So the defensible claim is narrower than "records belong in the wallet":
 
@@ -104,8 +105,8 @@ with the caveat, from the same document, that "there will certainly be extended
 transition periods and overlaps between the above stages".
 
 Project 28 is a working demonstration of stage 2. This repository is a working
-demonstration of stage 3. They are not rival answers to one question; they are
-adjacent stages, and the overlap between them is the interesting part.
+demonstration of stage 3. They are adjacent stages rather than competing answers
+to one question, and the section below sets out where they compose.
 
 ## Where they compose
 
@@ -117,7 +118,8 @@ The models are the shared surface, which is why this repository reuses them:
 - `projectToFhir` and `projectToOpenEhr` turn a presented credential into a
   CH VACD `Immunization` or a flat openEHR composition at the point of receipt.
 
-Which means the composition is already specified, and in both directions:
+Composition between the two approaches is therefore already specified, in both
+directions:
 
 **Repository → wallet.** A CDR holding a patient's immunisations can issue any
 one of them as a credential, because the credential's claims are already

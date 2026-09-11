@@ -92,11 +92,11 @@ sequenceDiagram
     P->>GI: (later, on a recording error only) PATCH …/status?credentialStatus=REVOKED
 ```
 
-Steps 8–14 are entirely the generic issuer's work. The business application
-does steps 1–5 and, rarely, the last one. That division is the point of using
-the generic components: DPoP, key attestation, mandatory response encryption and
-signed metadata are where conformance is won or lost, and none of it belongs in
-a practice management system.
+Steps 8–14 are entirely the generic issuer's work. The business application does
+steps 1–5 and, rarely, the last one. That division is the reason for using the
+generic components: DPoP, key attestation, mandatory response encryption and
+signed metadata are where conformance is decided, and implementing them inside a
+practice management system would place that burden on every vendor.
 
 ## Governance constraints
 
