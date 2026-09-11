@@ -320,6 +320,14 @@
     border-bottom: 1px solid currentColor; padding-bottom: 1px;
   }
 
+  .survey {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule); border-radius: 4px;
+    margin: 24px 0 18px; overflow: hidden;
+  }
+  .survey > div { background: var(--surface); padding: 16px 18px; }
+  .survey p { font-size: 0.89rem; color: var(--ink-2); margin: 0; }
+
   /* ---- code sample ------------------------------------------------- */
   .projections { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 24px; }
   .projection { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
@@ -545,6 +553,7 @@
         <button role="tab" data-role="pharmacy" aria-selected="false">Pharmacy<span class="rid">role.pharmacy</span></button>
         <button role="tab" data-role="practice" aria-selected="false">Practice<span class="rid">role.practice</span></button>
         <button role="tab" data-role="research" aria-selected="false">Research<span class="rid">role.research</span></button>
+        <button role="tab" data-role="statistics" aria-selected="false">Coverage survey<span class="rid">role.statistics</span></button>
       </div>
       <div class="purpose">
         <p class="why" id="purpose-text"></p>
@@ -677,7 +686,7 @@
 
   <section>
     <p class="kicker">The blueprint</p>
-    <h2>Ten flows, written for transfer to a trust flows repository</h2>
+    <h2>Eleven flows, written for transfer to a trust flows repository</h2>
     <p>
       Each flow is a self-contained file with machine-readable front matter, a sequence diagram, its
       governance constraints, its standardisation constraints, and its open questions — written for
@@ -718,7 +727,7 @@
         <ul>
           <li>FHIR / openEHR interplay</li>
           <li>End-to-end prototype, runnable offline</li>
-          <li>Blueprint — the ten flows</li>
+          <li>Blueprint — the eleven flows</li>
           <li>Governance model with real refusals</li>
         </ul>
       </div>
@@ -753,7 +762,7 @@
           <tr><td>End-to-end prototype</td><td>Done</td><td class="mono">apps/demo</td></tr>
           <tr><td>Immunization credential, issuance and verification</td><td>Done</td><td class="mono">F-02, F-03</td></tr>
           <tr><td>FHIR / openEHR interplay</td><td>Done</td><td class="mono">F-07, projections.ts</td></tr>
-          <tr><td>Blueprint</td><td>Done</td><td class="mono">flows/ — ten flows</td></tr>
+          <tr><td>Blueprint</td><td>Done</td><td class="mono">flows/ — eleven flows</td></tr>
           <tr><td>Governance model</td><td>Done</td><td class="mono">governance.ts</td></tr>
           <tr><td>Supporting consultation flows</td><td>Done</td><td class="mono">F-04, F-05</td></tr>
           <tr><td>Lifecycle and correction</td><td>Partial</td><td class="mono">F-06 — supersession missing</td></tr>
@@ -807,6 +816,48 @@
   </section>
 
   <section>
+    <p class="kicker">Public health</p>
+    <h2>The strongest case is a survey nobody thinks of as a credential use case</h2>
+    <p>
+      Switzerland measures vaccination coverage through the <strong>Swiss National Vaccination Coverage
+      Survey</strong>, run since 1999 by the <strong>Epidemiology, Biostatistics and Prevention Institute
+      (EBPI)</strong> at the University of Zurich with the Federal Office of Public Health and all 26
+      cantons. It samples randomly selected households of 2-, 8- and 16-year-olds on a three-year rolling
+      cycle, and asks the family to <strong>post a copy of the child's vaccination record</strong>.
+    </p>
+    <p>
+      The data source is already the record the family holds. Coverage monitoring never depended on a
+      central register — when <code>meineimpfungen.ch</code> closed in 2021, the survey carried on,
+      because it was never reading from it.
+    </p>
+    <div class="survey">
+      <div>
+        <h3>What the photocopy discloses</h3>
+        <p>Every dose, every date, the vaccinating physician, and usually the child's name. Then manual
+          transcription, manual coding, and up to three contact attempts by post and telephone.</p>
+      </div>
+      <div>
+        <h3>What a presentation discloses</h3>
+        <p>Five claims — target disease, date, dose number, doses in series, vaccine code. No name, no
+          birth date, no performer, no lot number. Structured, signed, already coded to SNOMED.</p>
+      </div>
+    </div>
+    <p class="prose-note">
+      This is the one flow in the set where selective disclosure gives up <em>less</em> than the process
+      it replaces already required. It needs no identifying claim at all, because the sampling frame
+      already carries the age band and the canton — and consent is not a new imposition, because
+      households are invited and may already refuse.
+    </p>
+    <p class="prose-note">
+      <strong>The constraint that decides it:</strong> the wallet is a response channel and never a
+      sampling frame. A survey that let holders volunteer their credentials would measure the people who
+      volunteer, and that bias cannot be corrected from inside the sample. EBPI draws the sample; the
+      wallet only answers.
+      <a class="cta" href="flows/#/view/coverageSurvey/">Open the F-11 diagram →</a>
+    </p>
+  </section>
+
+  <section>
     <p class="kicker">Open questions</p>
     <h2>What is not solved</h2>
     <div class="oq">
@@ -844,10 +895,11 @@
           identifying.</p>
       </div>
       <div>
-        <h3>Public health still needs numbers</h3>
-        <p>A fully decentralised record does not produce coverage statistics as a side effect.
-          Consent-based secondary use is sketched in F-09; it is not a substitute for surveillance, and
-          saying otherwise would be the weakest claim in this blueprint.</p>
+        <h3>The susceptible cannot be enumerated</h3>
+        <p>Coverage <em>measurement</em> survives, because Switzerland never measured it from a register
+          — see below. What a decentralised record removes is the ability to act on named individuals:
+          outbreak response, recall, catch-up campaigns. A sample gives a rate; a register would give a
+          list; a wallet gives neither. That follows from the design and is a policy question.</p>
       </div>
     </div>
   </section>
@@ -897,6 +949,11 @@
       purpose: 'Secondary use under explicit, revocable patient consent. The entitlement excludes every identifying claim by construction.',
       claims: ['vaccine_code', 'target_disease', 'occurrence_date', 'dose_number'],
       foot: 'Four coded claims with dates are <strong>not anonymous</strong>. A minimisation envelope is not de-identification, and treating it as one would be this blueprint&rsquo;s weakest claim.'
+    },
+    statistics: {
+      purpose: 'National vaccination coverage monitoring. The EBPI survey sampled this household from the population register, so it already knows the age band and the canton — and asks for neither.',
+      claims: ['target_disease', 'occurrence_date', 'dose_number', 'doses_in_series', 'vaccine_code'],
+      foot: 'The counterfactual is a <strong>photocopied vaccination booklet in an envelope</strong>, which shows every dose, every date, the vaccinating physician and usually the child&rsquo;s name. This is the one role that discloses less than the process it replaces.'
     }
   };
 

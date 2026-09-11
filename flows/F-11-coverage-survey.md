@@ -94,11 +94,12 @@ credential:
 | `doses_in_series` | What the series was expected to be |
 | `vaccine_code` | Product-level analysis, and combination vaccines |
 
-Not disclosed: `patient_given_name`, `patient_family_name`,
-`patient_birth_date`, `performer_name`, `performer_gln`, `organization_name`,
-`lot_number`, `route`, `site`, `country`, `immunization_id`, `next_dose_due`.
-Eleven of eighteen claims, and every one that identifies a person or a
-practitioner, stay in the wallet.
+Not disclosed: `immunization_id`, `patient_given_name`, `patient_family_name`,
+`patient_birth_date`, `vaccine_name`, `next_dose_due`, `lot_number`, `route`,
+`site`, `performer_name`, `performer_gln`, `organization_name`, `country`.
+
+Thirteen of eighteen claims stay in the wallet, including every one that
+identifies a person or a practitioner.
 
 ## Governance constraints
 
