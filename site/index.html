@@ -1,3 +1,9 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Vaccination records held in the patient's wallet on swiyu, Switzerland's e-ID trust infrastructure. An end-to-end implementation against the swiyu Sandbox and Swiss Profiles 1.0.">
 <title>Immunization Showcase</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -336,21 +342,21 @@
     .flow .status { grid-column: 2; justify-self: start; }
   }
 </style>
-
+</head>
+<body>
 <header class="masthead">
   <div class="wrap">
     <p class="eyebrow">DIDAS · GovTech Hackathon · roadmap step 1 · 2026</p>
-    <h1>A vaccination record that <em>no one has to operate</em></h1>
+    <h1>Vaccination records in the patient's wallet</h1>
     <p class="lede">
-      Switzerland's e-ID trust infrastructure, <strong>swiyu</strong>, is built for credentials the
-      holder keeps. This is what happens when you point it at health data: a practice records an
+      Built on <strong>swiyu</strong>, Switzerland's e-ID trust infrastructure. A practice records an
       administered dose into the patient's wallet, and a travel clinic later confirms protection —
       receiving <strong>four of the eighteen claims</strong> the credential holds, because the other
       fourteen never leave the phone. Running code against the swiyu Sandbox and Swiss Profiles 1.0.
     </p>
     <div class="facts">
       <div class="fact"><b>4 / 18</b><span>claims released when a travel clinic asks about protection</span></div>
-      <div class="fact"><b>5</b><span>credential types, each generating its own metadata, schema and wallet rendering</span></div>
+      <div class="fact"><b>4</b><span>credential types issued, each generating its own metadata, schema and wallet rendering</span></div>
       <div class="fact"><b>10</b><span>documented flows with governance and standardisation constraints</span></div>
       <div class="fact"><b>0</b><span>registries, repositories or patient indexes operated by anyone</span></div>
     </div>
@@ -504,8 +510,8 @@
   </section>
 
   <section>
-    <p class="kicker">The thesis, made operable</p>
-    <h2>Pick who is asking. Watch what they get.</h2>
+    <p class="kicker">Selective disclosure</p>
+    <h2>What each verifier receives</h2>
     <p>
       The immunization credential carries eighteen claims. What a verifier receives is not decided by
       their good behaviour, and not filtered after the fact — it is decided by an entitlement attached
@@ -580,7 +586,7 @@
 
   <section>
     <p class="kicker">Standards</p>
-    <h2>Reuse the clinical models. Decline the repository.</h2>
+    <h2>The clinical models without the shared repository</h2>
     <p>
       openEHR and HL7 FHIR are normally adopted as a package: shared information models <em>and</em> a
       shared repository someone operates, governs, and the patient does not control. This project takes
@@ -651,7 +657,7 @@
 
   <section>
     <p class="kicker">The blueprint</p>
-    <h2>Ten flows, written to be handed to someone else</h2>
+    <h2>Ten flows, written for transfer to a trust flows repository</h2>
     <p>
       Each flow is a self-contained file with machine-readable front matter, a sequence diagram, its
       governance constraints, its standardisation constraints, and its open questions — written for
@@ -683,7 +689,7 @@
 
   <section>
     <p class="kicker">Mid-term ambition</p>
-    <h2>Where this goes</h2>
+    <h2>Roadmap</h2>
     <div class="roadmap">
       <div class="stage now">
         <span class="yr">2026 · delivered</span>
@@ -901,3 +907,6 @@
 
   render('travel');
 </script>
+
+</body>
+</html>
