@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: ['**']
+    branches: [main]
   pull_request:
 
 permissions:
@@ -34,10 +34,9 @@ jobs:
         run: npm run check:mermaid
 
       # Prose that states a protocol property as a human, legal or clinical
-      # conclusion reads as a stronger claim than the mechanism supports. The
-      # 2026-09-13 pass rewrote those sentences and recorded the ones it read
-      # and kept. This fails when new prose introduces a sentence that has not
-      # been through that reading. See docs/articulation-pass.md.
+      # conclusion reads as a stronger claim than the mechanism supports.
+      # This fails when new prose introduces a watched sentence that has not
+      # been reviewed against docs/writing-standard.md.
       - name: Articulation rule
         run: npm run check:articulation
 

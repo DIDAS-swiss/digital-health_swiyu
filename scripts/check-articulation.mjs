@@ -6,8 +6,8 @@
  *     node scripts/check-articulation.mjs --list   # print what is flagged
  *     node scripts/check-articulation.mjs --accept # record the current set as reviewed
  *
- * The rule, from the 2026-09-13 pass recorded in docs/articulation-pass.md:
- * every statement should identify the object or data under discussion, the
+ * The rule is defined in docs/writing-standard.md: every statement should
+ * identify the object or data under discussion, the
  * actor performing the action, the mechanism producing the result, what
  * conclusion follows and what conclusion does not. A protocol property is not a
  * human, legal, clinical or business conclusion.
@@ -304,7 +304,7 @@ if (unreviewed.length) {
   console.log();
   console.log('Rewrite the sentence, or record it as reviewed with:');
   console.log('  node scripts/check-articulation.mjs --accept');
-  console.log('See docs/articulation-pass.md for the rule and the categories.');
+  console.log('See docs/writing-standard.md for the rule and the categories.');
   process.exit(1);
 }
 

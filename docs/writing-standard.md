@@ -5,8 +5,8 @@ architects, protocol engineers, healthcare professionals and regulators. The
 prose is written to be read literally by them and to remain defensible when it
 is.
 
-This document is the standing rule. [`articulation-pass.md`](articulation-pass.md)
-records the pass that applied it and the sentences it accepted.
+This document defines the standing editorial rule. The automated review gate
+records reviewed sentences in `scripts/articulation-accepted.json`.
 
 `npm run check:articulation` is a **review gate, not semantic validation**. It
 finds sentences that use a watched word without the surrounding precision and
