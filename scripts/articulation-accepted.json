@@ -127,20 +127,15 @@
    "risk": "absolute",
    "sentence": "The susceptible cannot be enumerated Coverage measurement survives, because Switzerland has never measured it from a register, as the section above sets out."
   },
-  "d5f1b027b4e25fe8": {
+  "90bba543873312a1": {
    "file": "site/index.html",
    "risk": "trust-bare",
-   "sentence": "Implementation of hack.opendata.ch project 1103 , \"Digital Health mit der neuen E-ID Trust-Infrastruktur\", continued on the swiyu Trust Infrastructure."
+   "sentence": "Continues hack.opendata.ch project 1103 , \"Digital Health mit der neuen E-ID Trust-Infrastruktur\", on the swiyu Trust Infrastructure."
   },
   "884254900b3b8bc6": {
    "file": "site/index.html",
    "risk": "anonymous",
    "sentence": "Four coded claims carrying dates are not anonymised data ."
-  },
-  "ced5a6e2468d5775": {
-   "file": "README.md",
-   "risk": "trust-bare",
-   "sentence": "# Digital Health on the swiyu Trust Infrastructure **Immunisation showcase portal | | **Beyond the current specification** | Behaviour this project models but t"
   },
   "b3033cc1ccbf3ed0": {
    "file": "README.md",
@@ -167,7 +162,7 @@
    "risk": "trust-bare",
    "sentence": "Verifiable credentials and the swiyu Trust Infrastructure address authenticity, provenance, controlled presentation and trust relationships."
   },
-  "3b235f20f787c442": {
+  "f5cd1e2ae15f255d": {
    "file": "README.md",
    "risk": "verify-no-object,identity,protected",
    "sentence": "| Flow | Subject | Status | | --- | --- | --- | | F-01 | Actor onboarding: identifier publication, identity verification, role grant, verification query publica"

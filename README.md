@@ -11,7 +11,7 @@
 This repository demonstrates how verifiable digital health credentials can be
 issued, held, presented and verified using the Swiss swiyu Trust Infrastructure.
 
-The implementation builds on the Digital Health use case developed through the
+This showcase builds on the Digital Health use case developed through the
 Swiss GovTech Hackathons and demonstrates an end-to-end patient journey using the
 swiyu Sandbox and the applicable Swiss Profiles.
 
@@ -20,8 +20,8 @@ be issued to a patient wallet and subsequently presented to an authorised
 healthcare provider, including through selective disclosure where supported by
 the credential design and protocol.
 
-The implementation also explores additional digital-health credential types,
-including patient identification, insurance information, laboratory reports and
+The showcase also models additional digital-health credential types, including
+patient identification, insurance information, laboratory reports and
 prescriptions.
 
 The objective is not to replace established healthcare information standards such
@@ -44,9 +44,8 @@ The repository addresses three complementary layers:
 - **Governance** — definition of the rules and trust relationships governing who
   may issue, request, present and verify particular credentials and attributes.
 
-The result is a practical reference implementation for exploring how
-Switzerland's digital trust infrastructure can support interoperable
-digital-health use cases.
+The result is a working prototype for exploring how Switzerland's digital
+trust infrastructure can support interoperable digital-health use cases.
 
 ## What this repository demonstrates
 
@@ -244,7 +243,7 @@ independently of the rest of this repository.
 
 ## Relationship to swiyu
 
-The implementation is pinned to the Swiss Profiles version 1.0 as published for
+This showcase is pinned to the Swiss Profiles version 1.0 as published for
 the swiyu Sandbox, and to Trust Protocol 2.0. It uses the swiyu generic issuer
 and generic verifier components rather than reimplementing the protocols, and it
 follows the swiyu onboarding process for each actor.
@@ -262,7 +261,7 @@ so:
   when a credential is superseded. The current profiles define no mechanism for
   it.
 
-This repository is an independent implementation. It is not an official
+This repository is an independent contribution. It is not an official
 deliverable of the swiyu programme, the Confederation or any federal office.
 
 ## Current implementation scope and limitations
@@ -270,9 +269,9 @@ deliverable of the swiyu programme, the Confederation or any federal office.
 These limitations are material to any assessment of the work and are stated
 rather than implied.
 
-- **Not production-ready.** This is a reference implementation for exploration
-  and discussion. It has not undergone a security review, a data protection
-  impact assessment or operational hardening.
+- **Not production-ready.** This is a prototype for exploration and discussion.
+  It has not undergone a security review, a data protection impact assessment or
+  operational hardening.
 - **The bundled mock is not a protocol test.** The default `SWIYU_MODE=mock`
   runs the journey offline against a bundled mock of the swiyu generic
   components, including a simulated wallet. The mock performs **no signing, no
@@ -417,8 +416,8 @@ contributed part of the basis it builds on.
 | [GovTech Hackathon 2024, project 1103](https://hack.opendata.ch/project/1103), "Digital Health mit der neuen E-ID Trust-Infrastruktur" | Led by DIDAS, with Peter Janes as project lead. Established the use case, the stakeholder model and the staged EPD 1.0 / 2.0 / 3.0 framing this repository continues. Awarded in the future-oriented category. |
 | [GovTech Hackathon 2026, project 28](https://govtech.digisus-lab.ch/project/28), "Showcase Impf-Modul" | Brought by openEHR Switzerland with a DIDAS contribution. Supplied the clinical model perspective: CH VACD profiling, terminology binding and openEHR persistence. This project reuses that work without adopting a central repository. See [`docs/positioning.md`](docs/positioning.md). |
 
-The original implementation in this repository was developed and contributed by
-[Accelerate GmbH](https://www.accelerate.swiss/).
+The code in this repository and the runnable application it builds were
+originally developed and contributed by [Accelerate GmbH](https://www.accelerate.swiss/).
 
 ## Licence
 
