@@ -1,5 +1,10 @@
 # Digital Health on the swiyu Trust Infrastructure
 
+> **Origin and attribution**  
+> Developed and contributed by **Accelerate GmbH** and published by DIDAS as an open-source ecosystem contribution.  
+> Canonical upstream: https://github.com/Accelerate-GmbH/digital-health-swiyu-vaccination  
+> DIDAS publication: https://github.com/DIDAS-swiss/digital-health_swiyu
+
 **[Immunisation showcase portal](https://didas-swiss.github.io/digital-health_swiyu/)**
 · [Flow diagrams](https://didas-swiss.github.io/digital-health_swiyu/flows/)
 
@@ -412,9 +417,9 @@ contributed part of the basis it builds on.
 | [GovTech Hackathon 2024, project 1103](https://hack.opendata.ch/project/1103), "Digital Health mit der neuen E-ID Trust-Infrastruktur" | Led by DIDAS, with Peter Janes as project lead. Established the use case, the stakeholder model and the staged EPD 1.0 / 2.0 / 3.0 framing this repository continues. Awarded in the future-oriented category. |
 | [GovTech Hackathon 2026, project 28](https://govtech.digisus-lab.ch/project/28), "Showcase Impf-Modul" | Brought by openEHR Switzerland with a DIDAS contribution. Supplied the clinical model perspective: CH VACD profiling, terminology binding and openEHR persistence. This project reuses that work without adopting a central repository. See [`docs/positioning.md`](docs/positioning.md). |
 
-The implementation in this repository was written and contributed by
-[accelerate.swiss](https://www.accelerate.swiss/).
+The original implementation in this repository was developed and contributed by
+[Accelerate GmbH](https://www.accelerate.swiss/).
 
 ## Licence
 
-MIT. See [LICENSE](LICENSE).
+Software is licensed under the MIT License; see [LICENSE](LICENSE). Documentation, flow specifications, diagrams, governance material and other original repository content are licensed under Creative Commons Attribution 4.0 International; see [LICENSE-CONTENT](LICENSE-CONTENT). Third-party materials remain subject to their respective terms; see [NOTICE.md](NOTICE.md).
