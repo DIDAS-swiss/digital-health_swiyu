@@ -137,11 +137,6 @@
    "risk": "anonymous",
    "sentence": "Four coded claims carrying dates are not anonymised data ."
   },
-  "ced5a6e2468d5775": {
-   "file": "README.md",
-   "risk": "trust-bare",
-   "sentence": "# Digital Health on the swiyu Trust Infrastructure **Immunisation showcase portal | | **Beyond the current specification** | Behaviour this project models but t"
-  },
   "b3033cc1ccbf3ed0": {
    "file": "README.md",
    "risk": "protected",
