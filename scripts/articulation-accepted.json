@@ -952,10 +952,10 @@
    "risk": "verify-no-object",
    "sentence": "OR Art. 958f, ten years, where the record falls within the accounting-law obligation | External law, read against Fedlex | Fedlex, 2026-09-13 | Whether a given "
   },
-  "4445c167c95bdab8": {
+  "a0860aec4e55b497": {
    "file": "docs/review-report.md",
    "risk": "verify-no-object",
-   "sentence": "**No date is asserted and the production credential is not assumed to be a drop-in replacement** | | CODE | No FHIR server and no clinical data repository are o"
+   "sentence": "CI fails when stale | Generated prose carries the definitions' wording, so a defect in a template or an CODE string reaches a reader through it | | CODE | No FH"
   },
   "eb459df35f84baf9": {
    "file": "docs/review-report.md",

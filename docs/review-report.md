@@ -133,6 +133,7 @@ against production swiyu.
 | `README.md`, `spec-conformance.md` | Nothing here has run against production swiyu | Statement about this repository | Its own history | — |
 | `spec-conformance.md` | Under `SWIYU_MODE=mock` there is no signing, no DPoP, no encryption and no DID resolution | DIDAS implementation choice | The bundled mock | Everything attributed to "generic issuer" or "generic verifier" is unexercised in that mode |
 | F-04, `beta-id.ts` | The demonstrator uses the Sandbox Beta-ID | DIDAS implementation choice | What is available on the Sandbox today | Migration to the production e-ID will require the final production issuer, `vct` and schema or profile details once available. **No date is asserted and the production credential is not assumed to be a drop-in replacement** |
+| `docs/credentials/*.md` | Claims, constraints, bindings and the disclosure matrix | Generated from `packages/swiyu/src/credentials/` | `npm run generate:docs`; CI fails when stale | Generated prose carries the definitions' wording, so a defect in a template or an `issuerBasis` string reaches a reader through it |
 | `architecture.md` | No FHIR server and no clinical data repository are operated here | DIDAS implementation choice | A scope choice for this prototype | Not a judgement on either architecture |
 | F-01 | Verification falls back to explicitly listed issuer DIDs | DIDAS governance choice | Adequate for a pilot | Inadequate at scale; the missing layer is the health governance body |
 
@@ -184,8 +185,13 @@ None of the three can tell whether a classification in the first table above is
 correct. That remains a reading.
 
 **What the checks do not read.** `check-articulation.mjs` covers
-`site/index.html`, `README.md`, `docs/*.md`, `flows/*.md` and the LikeC4 model.
-It does not read TypeScript. Building this report found two doc comments in
+`site/index.html`, `README.md`, `docs/*.md`, `docs/credentials/*.md`,
+`flows/*.md` and the LikeC4 model. `docs/credentials/` was added after this
+report first found the gap: it is generated from the credential definitions, and
+a template string that named a marker as something a counterparty "carries"
+reached three credential types through it. Generated prose is still prose.
+
+The checker does not read TypeScript. Building this report found two doc comments in
 `governance.ts` that the documentation had moved past: the `statistics` role
 said a coverage survey "needs no identifying claim at all because its own
 sampling frame already supplies age and canton", which is the claim source
