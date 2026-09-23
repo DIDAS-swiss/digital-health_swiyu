@@ -82,6 +82,17 @@ jobs:
       - name: Validate synchronized health repository
         if: steps.drift.outputs.changed == 'true'
         run: |
+          # Stage the synchronized tree before generating anything.
+          #
+          # The two checks below compare the working tree against the index, and
+          # the index still holds DIDAS main until the sync is staged. Without
+          # this line they report the upstream drift itself rather than a
+          # generator disagreeing with its sources, so they fail on every sync
+          # that touches a generated directory. Staging first makes them mean
+          # what they are meant to mean: regenerating from the synchronized
+          # sources reproduces the output the synchronized tree carries.
+          git add -A
+
           npm ci
           npm run typecheck
           npm test
