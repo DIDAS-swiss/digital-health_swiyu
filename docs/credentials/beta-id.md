@@ -36,13 +36,17 @@ below is one the holder releases or withholds, and the credential cannot
 make any of them mandatory to release.
 
 Which claims are asked for is the verifier's decision and the credential
-format does not constrain it. What this repository does about that is publish
-each query it sends — its purpose, its scope and the DCQL query — as a
-Verification Query Public Statement, see
+format does not constrain it. For credential types governed by this demonstrator,
+the Governance section above records a candidate proportionality and
+request-minimisation model as a role, a purpose and a maximum claim set.
+Those exact sets are project governance choices, not Swiss Profile requirements
+or legal determinations.
+
+The verifier also provides the intended query shape — its purpose, scope and
+DCQL query — through a Verification Query Public Statement, see
 [governance framework](../governance-framework.md#transparency-the-vqps).
-That publishes the query shape, not the transaction. Whether a given request
-is proportionate is a separate question, answered per credential and per
-process, and this repository does not answer it here.
+The vqPS makes the intended verification scope reviewable; transparency does not
+by itself establish that the request is proportionate.
 
 | Claim | Label | Type | Constraint | Semantic binding | Notes |
 | --- | --- | --- | --- | --- | --- |
