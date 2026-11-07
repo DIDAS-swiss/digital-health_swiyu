@@ -1936,6 +1936,76 @@
    "file": "flows/likec4/health-flow.likec4",
    "risk": "absolute",
    "sentence": "**Gap.** Revocation reaches the verifier and never the holder."
+  },
+  "00043d38fae189be": {
+   "file": "docs/credentials/beta-id.md",
+   "risk": "verify-no-object",
+   "sentence": "The verifier also provides the intended query shape — its purpose, scope and DCQL query — through a Verification Query Public Statement, see governance framewor"
+  },
+  "86f2653ac966ac1f": {
+   "file": "docs/credentials/beta-id.md",
+   "risk": "verify-no-object",
+   "sentence": "The vqPS makes the intended verification scope reviewable; transparency does not by itself establish that the request is proportionate."
+  },
+  "e62676b44b073ada": {
+   "file": "docs/credentials/immunization.md",
+   "risk": "trust-bare,consent",
+   "sentence": "This is a **governed** credential type: an actor must decline any interaction for which the Trust Protocol evaluation derives the Governed Use Case Trust Marker"
+  },
+  "3ff7bb7696ff9156": {
+   "file": "docs/credentials/immunization.md",
+   "risk": "verify-no-object",
+   "sentence": "The verifier also provides the intended query shape — its purpose, scope and DCQL query — through a Verification Query Public Statement, see governance framewor"
+  },
+  "71e7e4d3bb651632": {
+   "file": "docs/credentials/immunization.md",
+   "risk": "verify-no-object",
+   "sentence": "The vqPS makes the intended verification scope reviewable; transparency does not by itself establish that the request is proportionate."
+  },
+  "bb02fd9121539980": {
+   "file": "docs/credentials/insurance-card.md",
+   "risk": "trust-bare",
+   "sentence": "Modelled here on the basis of KVG/LAMal Art. 42a, under which the insurer issues the insurance card; legal review is required before deployment This is a **gove"
+  },
+  "792c5010c71f77aa": {
+   "file": "docs/credentials/insurance-card.md",
+   "risk": "verify-no-object",
+   "sentence": "The verifier also provides the intended query shape — its purpose, scope and DCQL query — through a Verification Query Public Statement, see governance framewor"
+  },
+  "a7d130e2b8eb3cc9": {
+   "file": "docs/credentials/insurance-card.md",
+   "risk": "verify-no-object",
+   "sentence": "The vqPS makes the intended verification scope reviewable; transparency does not by itself establish that the request is proportionate."
+  },
+  "34925888350fa797": {
+   "file": "docs/credentials/lab-report.md",
+   "risk": "trust-bare,consent",
+   "sentence": "Legal review is required before deployment This is a **governed** credential type: an actor must decline any interaction for which the Trust Protocol evaluation"
+  },
+  "5e95a86af153222b": {
+   "file": "docs/credentials/lab-report.md",
+   "risk": "verify-no-object",
+   "sentence": "The verifier also provides the intended query shape — its purpose, scope and DCQL query — through a Verification Query Public Statement, see governance framewor"
+  },
+  "ab959a860308c760": {
+   "file": "docs/credentials/lab-report.md",
+   "risk": "verify-no-object",
+   "sentence": "The vqPS makes the intended verification scope reviewable; transparency does not by itself establish that the request is proportionate."
+  },
+  "1683c915043c4516": {
+   "file": "docs/credentials/prescription.md",
+   "risk": "trust-bare",
+   "sentence": "In a deployed ecosystem the governing actor would publish an authorisation statement naming this credential type for the practice, from which a verifier evaluat"
+  },
+  "0fb5f28299417ef5": {
+   "file": "docs/credentials/prescription.md",
+   "risk": "verify-no-object",
+   "sentence": "The verifier also provides the intended query shape — its purpose, scope and DCQL query — through a Verification Query Public Statement, see governance framewor"
+  },
+  "f871d29ce1d6bbbf": {
+   "file": "docs/credentials/prescription.md",
+   "risk": "verify-no-object",
+   "sentence": "The vqPS makes the intended verification scope reviewable; transparency does not by itself establish that the request is proportionate."
   }
  }
 }
