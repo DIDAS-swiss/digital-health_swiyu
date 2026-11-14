@@ -14,9 +14,12 @@ only ever verifies. The Confederation issues it.
 
 ## Who may ask for what
 
-The whole governance model in one place. A request for a claim marked `·` is
-rejected while the query is built, so no request for it is sent and the claim
-is not included in any presentation this policy layer produces.
+The whole governance model in one place. These matrices are this demonstrator's
+candidate proportionality and request-minimisation model; the exact claim sets
+are project governance choices, not Swiss Profile requirements or legal determinations.
+A request for a claim marked `·` is rejected while the query is built, so no
+request for it is sent and the claim is not included in any presentation this
+policy layer produces.
 
 ### Immunization Record
 
