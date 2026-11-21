@@ -173,8 +173,10 @@ export interface VerifierEntitlement {
   /** Human-readable reason this role is entitled to ask. */
   purpose: string;
   /**
-   * The maximum set of claims this role may request. A request for anything
-   * outside it is a data-minimisation violation.
+   * The maximum set of claims this demonstrator's policy permits for the role
+   * and purpose above. A request outside it is treated as over-broad under the
+   * project's candidate proportionality and request-minimisation model; this is
+   * not a legal determination or a Swiss Profile requirement.
    */
   claims: string[];
   /** Claims from the profile's protected-field list this role is authorized for. */
