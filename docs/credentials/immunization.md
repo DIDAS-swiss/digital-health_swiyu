@@ -38,8 +38,13 @@ This is a **governed** credential type: an actor must decline any interaction fo
 | `ch.didas.health.role.research` | Secondary use under explicit, revocable patient consent | 4 of 18 | n/a |
 | `ch.didas.health.role.statistics` | National vaccination coverage monitoring | 5 of 18 | n/a |
 
-A request for any claim outside a role's entitlement is refused when the query is
-built, before it reaches the holder. See `reviewRequest()`.
+The table above is this demonstrator's candidate per-credential proportionality and
+request-minimisation model. The role, purpose and maximum claim set are project governance
+choices; they do not assert that swiyu or applicable law defines those exact sets.
+Within this model, a request is treated as over-broad when it asks for a claim outside
+the role's listed entitlement, or for a protected field without the applicable
+authorisation. Such requests are refused when the query is built, before they reach
+the holder. See `reviewRequest()`.
 
 **Revocation.** Only the issuer may revoke and only to correct a recording error, never to withdraw a vaccination that took place. Revoking a dose credential does not undo the dose; it withdraws an assertion the issuer should not have made.
 
@@ -65,13 +70,17 @@ below is one the holder releases or withholds, and the credential cannot
 make any of them mandatory to release.
 
 Which claims are asked for is the verifier's decision and the credential
-format does not constrain it. What this repository does about that is publish
-each query it sends — its purpose, its scope and the DCQL query — as a
-Verification Query Public Statement, see
+format does not constrain it. For credential types governed by this demonstrator,
+the Governance section above records a candidate proportionality and
+request-minimisation model as a role, a purpose and a maximum claim set.
+Those exact sets are project governance choices, not Swiss Profile requirements
+or legal determinations.
+
+The verifier also provides the intended query shape — its purpose, scope and
+DCQL query — through a Verification Query Public Statement, see
 [governance framework](../governance-framework.md#transparency-the-vqps).
-That publishes the query shape, not the transaction. Whether a given request
-is proportionate is a separate question, answered per credential and per
-process, and this repository does not answer it here.
+The vqPS makes the intended verification scope reviewable; transparency does not
+by itself establish that the request is proportionate.
 
 | Claim | Label | Type | Constraint | Semantic binding | Notes |
 | --- | --- | --- | --- | --- | --- |
